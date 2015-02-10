@@ -3,47 +3,48 @@
 #
 # Ricty Greek Re-generator
 #
-# Copyright (c) 2012-2014, Yasunori Yusa <yusa at save.sys.t.u-tokyo.ac.jp>
-# All rights reserved.
+# Author: Yasunori Yusa <lastname at save dot sys.t.u-tokyo.ac.jp>
 #
-# This script is to regenerate glyphs of Greek with diacritics.
-# The re-generated glyphs are fullwidth.
+# This script is for regenerating glyphs of Greek with diacritics.
+# The re-generated glyphs are fullwidth. Owing to SIL
+# Open Font License Version 1.1 section 5, it is PROHIBITED to distribute
+# the generated font.
 #
-# Usage:
-usage = "Usage: ricty_greek_regenerator.pe fontfamily-fontstyle.ttf ..."
+# How to use:
+# % fontforge -script ricty_greek_regenerator.pe Ricty-Regular.ttf Ricty-Bold.ttf
 #
 
-# Check args
+# check args
 if ($argc == 1)
-    Print(usage)
+    Print("Usage: ricty_greek_regenerator.pe fontfamily-fontstyle.ttf ...")
     Quit()
 endif
 
-# Begin loop in args
+# begin loop in args
 i = 1
 while (i < $argc)
 
 ########################################
-# Open file and set configuration
+# open file and set configuration
 ########################################
 
-# Open file
+# open file
 Open($argv[i])
 
-# Set encoding to Unicode-bmp
+# set encoding to Unicode-bmp
 Reencode("unicode")
 
 ########################################
-# Edit some glyphs
+# edit some glyphs
 ########################################
 
-# Dialytika
+# dialytika
 Select(0u00a8); SetWidth(1000); CenterInWidth()
 
-# Tonos
+# tonos
 Select(0u0384); SetWidth(1000); CenterInWidth()
 
-# Dialytika tonos
+# dialytika tonos
 Select(0u0385); SetWidth(1000); CenterInWidth()
 
 # Alpha with tonos
@@ -51,7 +52,7 @@ Select(0u0391); Copy(); Select(0u0386); Paste()
 Select(0u0384); Copy(); Select(0u0386); PasteWithOffset(-250, 0)
 RemoveOverlap(); RoundToInt()
 
-# Ano teleia
+# ano teleia
 Select(0u0387); SetWidth(1000); CenterInWidth()
 
 # Epsilon with tonos
@@ -150,14 +151,14 @@ Select(0u0384); Copy(); Select(0u03ce); PasteInto()
 RemoveOverlap(); RoundToInt()
 
 ########################################
-# Generate
+# generate
 ########################################
 
 Generate($argv[i], "", 0x84)
 Print("Generated " + $argv[i] + ".")
 Close()
 
-# End loop
+# end loop
 i += 1; endloop
 
 Quit()

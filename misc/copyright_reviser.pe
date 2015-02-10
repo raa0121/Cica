@@ -3,41 +3,40 @@
 #
 # Copyright Reviser
 #
-# Copyright (c) 2012-2014, Yasunori Yusa <yusa at save.sys.t.u-tokyo.ac.jp>
-# All rights reserved.
+# Author: Yasunori Yusa <lastname at save dot sys.t.u-tokyo.ac.jp>
 #
-# This script is to revise Copyright notice of Ricty.
+# This script is for revising Copyright notice of Ricty.
 # If the license of your composed font is different from the default one,
 # you can use this script and revise it.
 #
-# Usage:
-usage = "Usage: copyright_reviser.pe string fontname.ttf ..."
+# How to use:
+# % fontforge -script copyright_reviser.pe string fontname.ttf ...
 #
 
-# Check args
+# check args
 if ($argc < 2)
-    Print(usage)
+    Print("Usage: copyright_reviser.pe string fontname.ttf ...")
     Quit()
 endif
 
-# Get a new copyright
+# get a new copyright
 copyright = $1
 
-# Begin loop in args
+# begin loop in args
 i = 2
 while (i < $argc)
 
-# Open file and backup it
+# open file and backup it
 Open($argv[i])
 Generate($argv[i]:r + "_bak.ttf", "", 0x84)
 
-# Set copyright notice
+# set copyright notice
 SetFontNames($fontname, $familyname, $fullname, $weight, copyright)
 
-# Generate file
+# generate file
 Generate($argv[i], "", 0x84)
 
-# End loop
+# end loop
 i += 1; endloop
 
 Quit()

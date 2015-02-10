@@ -4,7 +4,7 @@
 /**
  * プログラミング用フォント Ricty で C を書く
  *
- * - 環境は GNU Emacs on Ubuntu
+ * - 環境は GNU Emacs 23 on Ubuntu
  * - Emacs のカラーテーマは Lethe (一部改変)
  * - 予約語、コメント、文字列などはボールドフェース
  */
@@ -37,8 +37,8 @@ int main(int argc, char *argv[])
         printf("%s", unicode_letter);
     }
 
-    /* Ricty で手を入れたグリフの一部 */
-    printf("　，．：；（）–—\n");
+    /* Ricty で手を入れたグリフ */
+    printf("　，．：；–―\n");
 
     return 0;
 }
