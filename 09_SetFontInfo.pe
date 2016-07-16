@@ -1,4 +1,4 @@
-cica_version="1.0.0"
+cica_version="1.0.1"
 cica_license=LoadStringFromFile("LICENSE.txt")
 cica_copyright=LoadStringFromFile("COPYRIGHT.txt")
 # Cica-Regular
