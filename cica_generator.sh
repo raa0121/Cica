@@ -546,9 +546,15 @@ echo "OS2Version to 1 Cica Bold"
 
 echo "Set powerline patch to Cica Regular"
 fontforge -lang=py -script ./fontpatcher/scripts/powerline-fontpatcher --no-rename ./tmp/Cica-Regular.ttf
-mv "./Cica Regular.ttf" ./tmp/Cica-Regular.ttf
 echo "Set powerline patch to Cica Bold"
 fontforge -lang=py -script ./fontpatcher/scripts/powerline-fontpatcher --no-rename ./tmp/Cica-Bold.ttf
+
+echo "Set underline position to Cica Regular"
+fontforge -lang=py -script ./modify_underline.py "./Cica Regular.ttf"
+echo "Set underline position to Cica Bold"
+fontforge -lang=py -script ./modify_underline.py "./Cica Bold.ttf"
+
+mv "./Cica Regular.ttf" ./tmp/Cica-Regular.ttf
 mv "./Cica Bold.ttf" ./tmp/Cica-Bold.ttf
 # echo "Set powerline patch to Cica Light"
 # fontforge -lang=py -script ./fontpatcher/scripts/powerline-fontpatcher --no-rename Cica-Light.ttf
@@ -607,5 +613,8 @@ _EOT_
 $fontforge_command -script ${tmpdir}/${post_script} \
     2> $redirection_stderr || exit 4
 # Exit
+$fontforge_command -script ./02_MergeEmoji.pe
+$fontforge_command -script ./03_MergeDevIcon.pe
+$fontforge_command -script ./09_SetFontInfo.pe
 echo "Succeeded to generate Cica! check ./Cica/ directory"
 exit 0
