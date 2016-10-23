@@ -1,5 +1,8 @@
 #!/bin/bash
-rm -rf ./tmp/* # :p
+rm -rf ./tmp # :p
+rm -rf ./Cica
+mkdir tmp
+mkdir Cica
 #
 # Cica Generator
 cica_version="1.0"
