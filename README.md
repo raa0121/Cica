@@ -69,6 +69,7 @@ unar rounded-mgenplus-20150602.7z
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-bold.ttf ./sourceFonts
 wget https://github.com/konpa/devicon/raw/master/fonts/devicon.ttf -O ./sourceFonts/devicon.ttf
+wget https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -O sourceFonts/NotoEmoji-Regular.ttf
 mkdir tmp
 mkdir Cica
 ./cica_generator.sh auto
