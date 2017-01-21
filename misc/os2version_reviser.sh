@@ -3,41 +3,37 @@
 #
 # OS/2 Version Reviser
 #
-# Copyright (c) 2011-2014, Yasunori Yusa <yusa at save.sys.t.u-tokyo.ac.jp>
-# All rights reserved.
+# Author: Yasunori Yusa <lastname at save dot sys.t.u-tokyo.ac.jp>
 #
-# This script is to revise OS/2 Version of Ricty.
+# This script is for revising OS/2 Version of Ricty.
 # If the spaces between fullwidth charcters are unusually large,
 # you can use this script and revise it.
 #
-# Usage:
-usage="Usage: os2version_reviser.sh filename.ttf ..."
+# How to use:
+# % sh os2version_reviser.sh Ricty-*.ttf RictyDiscord-*.ttf
 #
 
+# parameters
 fontforge_cmd="fontforge"
 os2_version="1"
 
+# usage
 if [ $# -eq 0 ]
 then
-    echo usage
+    echo "Usage: os2version_reviser.sh filename.ttf ..."
     exit 0
 fi
 
-# Make tmp
-if [ -w "/tmp" ]
-then
-    tmpdir=`mktemp -d /tmp/os2version_reviser_tmpdir.XXXXXX`
-else
-    tmpdir=`mktemp -d ./os2version_reviser_tmpdir.XXXXXX`
-fi
+# make tmp
+tmpdir=`mktemp -d ./tmp/os2version_reviser_tmpdir.XXXXXX`
 
-# Remove tmp by trapping
+# remove tmp by trapping
 trap "if [ -d $tmpdir ]; then rm -rf $tmpdir; fi" EXIT HUP INT QUIT
 
-# Args loop
+# args loop
 for filename in $@
 do
-    # Generate scripts
+    # generate scripts
     cat > ${tmpdir}/ttf2sfd.pe << _EOT_
 #!$fontforge_cmd -script
 Open("${filename}")
@@ -48,7 +44,7 @@ _EOT_
 Open("${tmpdir}/tmpsfd2.sfd")
 Generate("${filename}", "", 0x84)
 _EOT_
-    # Convert file
+    # convert file
     $fontforge_cmd -script ${tmpdir}/ttf2sfd.pe 2> /dev/null
     sed -e "s/^OS2Version: .*$/OS2Version: ${os2_version}/" \
         ${tmpdir}/tmpsfd.sfd > ${tmpdir}/tmpsfd2.sfd
