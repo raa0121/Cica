@@ -3,3 +3,4 @@ sourceFonts/*
 Cica/*
 .DS_Store
 *.orig
+dist/*
