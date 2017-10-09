@@ -1,9 +1,24 @@
-Copyright (c) 2016, Takahiro Minami (https://tmnm.tech),
-with Reserved Font Name Cica and CicaE.
+Copyright (c) 2017, Takahiro Minami (https://tmnm.tech),
+with Reserved Font Name Cica
 
 This Font Software is licensed under the
-Ubuntu Font Licence, Version 1.0 (U+21-U+4F9) and
-SIL Open Font License, Version 1.1 (others).
+- Ubuntu Font Licence, Version 1.0
+  - Ubuntu Mono : http://font.ubuntu.com/
+- CC BY 4.0
+  - Seti-UI + Custom : https://github.com/jesseweed/seti-ui
+- MIT Licenses
+  - DevIcons : https://github.com/vorillaz/devicons
+  - Powerline Extra Symbols : https://github.com/ryanoasis/powerline-extra-symbols
+  - Font Awesome : https://github.com/FortAwesome/Font-Awesome
+  - Font Awesome Extension : https://github.com/AndreLZGava/font-awesome-extension
+  - Octicons : https://github.com/primer/octicons
+  - IEC Power Symbols : https://unicodepowersymbol.com/
+  - Powerline Symbols : https://github.com/powerline/powerline
+- Apache License 2.0
+  - Noto Emoji : https://github.com/googlei18n/noto-emoji
+- SIL Open Font License, Version 1.1
+  - Rounded Mgen+ : http://jikasei.me/font/rounded-mgenplus/
+
 
 These licenses are copied below, and is also available with a FAQ at:
 
@@ -121,7 +136,7 @@ with others.
 
 The OFL allows the licensed fonts to be used, studied, modified and
 redistributed freely as long as they are not sold by themselves. The
-fonts, including any derivative works, can be bundled, embedded, 
+fonts, including any derivative works, can be bundled, embedded,
 redistributed and/or sold with any software provided that any reserved
 names are not used by derivative works. The fonts and derivatives,
 however, cannot be released under any other type of license. The

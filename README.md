@@ -11,18 +11,15 @@
 Ricty生成スクリプトをフォークして生成したプログラミング用の等幅フォントです。
 [Ubuntu Mono](http://font.ubuntu.com/) と
 [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/) を合成して少し調整しています。
-
-派生として [Noto Emoji](https://www.google.com/get/noto/) と
-[DevIcon](http://devicon.fr/) を追加合成したものを CicaE ファミリーとして生成しました。
+[Noto Emoji](https://www.google.com/get/noto/) と
+[NERDFonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。
 
 ```
-o CicaE
-|\
-* * DevIcon
-|\
-| * Noto Emoji
-|
 o Cica
+|\
+* * NERDFonts (without Pomicons)
+|\
+* * Noto Emoji
 |\
 * * Ubuntu Mono
  \
@@ -45,30 +42,30 @@ o Cica
 
 ## バリエーション
 
-| ファイル名        | 説明                                 |
-| ----              | ----                                 |
-| Cica-Regular.ttf  | 通常                                 |
-| Cica-Bold.ttf     | 太字                                 |
-| CicaE-Regular.ttf | Cica-Regularに絵文字類を合成したもの |
-| CicaE-Bold.ttf    | Cica-Boldに絵文字類を合成したもの    |
+| ファイル名             | 説明     |
+| ----                   | ----     |
+| Cica-Regular.ttf       | 通常     |
+| Cica-RegularItalic.ttf | 斜体     |
+| Cica-Bold.ttf          | 太字     |
+| Cica-BoldItalic.ttf    | 太字斜体 |
 
 ※CicaEファミリーのPowerlineやDevIconのグリフは [pua.html](pua.html) で一覧が確認出来ます。
 
 ## ビルド手順
 
-2016-10-12時点、Ubuntu 16.04 にて
+2017-10-08時点、Ubuntu 16.04 にて
 
 ```sh
 sudo apt-get -y install fontforge unar
-git clone --recursive git@github.com:miiton/Cica.git
+git clone git@github.com:miiton/Cica.git
 wget http://font.ubuntu.com/download/ubuntu-font-family-0.83.zip
 unar ubuntu-font-family-0.83.zip
-cp ubuntu-font-family-0.83/UbuntuMono-R.ttf ./sourceFonts
+cp ubuntu-font-family-0.83/UbuntuMono-R.ttf ./sourceFonts/
+cp ubuntu-font-family-0.83/UbuntuMono-B.ttf ./sourceFonts/
 wget https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
 unar rounded-mgenplus-20150602.7z
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-bold.ttf ./sourceFonts
-wget https://github.com/konpa/devicon/raw/master/fonts/devicon.ttf -O ./sourceFonts/devicon.ttf
 wget https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -O sourceFonts/NotoEmoji-Regular.ttf
 fontforge -lang=py -script cica.py
 ```

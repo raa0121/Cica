@@ -21,13 +21,13 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.0-rc1'
+VERSION = '2.0.0'
 
 fonts = [
     {
-         'family': 'CicaTest',
-         'name': 'CicaTest-Regular',
-         'filename': 'CicaTest-Regular.ttf',
+         'family': 'Cica',
+         'name': 'Cica-Regular',
+         'filename': 'Cica-Regular.ttf',
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Regular',
@@ -37,9 +37,9 @@ fonts = [
          'mgen_weight_add': 0,
          'italic': False,
      }, {
-         'family': 'CicaTest',
-         'name': 'CicaTest-RegularItalic',
-         'filename': 'CicaTest-RegularItalic.ttf',
+         'family': 'Cica',
+         'name': 'Cica-RegularItalic',
+         'filename': 'Cica-RegularItalic.ttf',
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Italic',
@@ -49,9 +49,9 @@ fonts = [
          'mgen_weight_add': 0,
          'italic': True,
     }, {
-        'family': 'CicaTest',
-        'name': 'CicaTest-Bold',
-        'filename': 'CicaTest-Bold.ttf',
+        'family': 'Cica',
+        'name': 'Cica-Bold',
+        'filename': 'Cica-Bold.ttf',
         'weight': 700,
         'weight_name': 'Bold',
          'style_name': 'Bold',
@@ -61,21 +61,21 @@ fonts = [
         'mgen_weight_add': 0,
         'italic': False,
     }, {
-        'family': 'CicaTest',
-        'name': 'CicaTest-BoldItalic',
-        'filename': 'CicaTest-BoldItalic.ttf',
+        'family': 'Cica',
+        'name': 'Cica-BoldItalic',
+        'filename': 'Cica-BoldItalic.ttf',
         'weight': 700,
         'weight_name': 'Bold',
-         'style_name': 'BoldItalic',
+        'style_name': 'Bold Italic',
         'ubuntu_mono': 'UbuntuMono-B.ttf',
         'mgen_plus': 'rounded-mgenplus-1m-bold.ttf',
         'ubuntu_weight_reduce': 0,
         'mgen_weight_add': 0,
         'italic': True,
 #   }, {
-#       'family': 'CicaTest',
-#       'name': 'CicaTest-DemiLight',
-#       'filename': 'CicaTest-DemiLight.ttf',
+#       'family': 'Cica',
+#       'name': 'Cica-DemiLight',
+#       'filename': 'Cica-DemiLight.ttf',
 #       'weight': 300,
 #       'weight_name': 'DemiLight',
 #       'style_name': 'DemiLight',
@@ -85,21 +85,21 @@ fonts = [
 #       'mgen_weight_add': 20,
 #       'italic': False,
 #   }, {
-#       'family': 'CicaTest',
-#       'name': 'CicaTest-DemiLightItalic',
-#       'filename': 'CicaTest-DemiLightItalic.ttf',
+#       'family': 'Cica',
+#       'name': 'Cica-DemiLightItalic',
+#       'filename': 'Cica-DemiLightItalic.ttf',
 #       'weight': 300,
 #       'weight_name': 'DemiLight',
-#       'style_name': 'DemiLightItalic',
+#       'style_name': 'DemiLight Italic',
 #       'ubuntu_mono': 'UbuntuMono-R.ttf',
 #       'mgen_plus': 'rounded-mgenplus-1m-light.ttf',
 #       'ubuntu_weight_reduce': 10,
 #       'mgen_weight_add': 20,
 #       'italic': True,
 #   }, {
-#       'family': 'CicaTest',
-#       'name': 'CicaTest-Light',
-#       'filename': 'CicaTest-Light.ttf',
+#       'family': 'Cica',
+#       'name': 'Cica-Light',
+#       'filename': 'Cica-Light.ttf',
 #       'weight': 200,
 #       'weight_name': 'Light',
 #       'style_name': 'Light',
@@ -109,12 +109,12 @@ fonts = [
 #       'mgen_weight_add': 10,
 #       'italic': False,
 #   }, {
-#       'family': 'CicaTest',
-#       'name': 'CicaTest-LightItalic',
-#       'filename': 'CicaTest-LightItalic.ttf',
+#       'family': 'Cica',
+#       'name': 'Cica-LightItalic',
+#       'filename': 'Cica-LightItalic.ttf',
 #       'weight': 200,
 #       'weight_name': 'Light',
-#       'style_name': 'LightItalic',
+#       'style_name': 'Light Italic',
 #       'ubuntu_mono': 'UbuntuMono-R.ttf',
 #       'mgen_plus': 'rounded-mgenplus-1m-thin.ttf',
 #       'ubuntu_weight_reduce': 20,
@@ -153,10 +153,6 @@ def check_files():
             logger.error('%s not exists.' % f)
             err = 1
 
-    if not os.path.isfile('./fontpatcher/scripts/powerline-fontpatcher'):
-        logger.error('powerline-fontpatcher not exists.')
-        err = 1
-
 
     if err > 0:
         sys.exit(err)
@@ -167,10 +163,20 @@ def modify_usfont():
 def modify_jpfont():
     pass
 
-def set_os2_values(_font, _weight):
-    _font.os2_weight = _weight
+def set_os2_values(_font, _info):
+    weight = _info.get('weight')
+    style_name = _info.get('style_name')
+    _font.os2_weight = weight
     _font.os2_width = 5
     _font.os2_fstype = 0
+    if style_name == 'Regular':
+        _font.os2_stylemap = 64
+    elif style_name == 'Bold':
+        _font.os2_stylemap = 32
+    elif style_name == 'Italic':
+        _font.os2_stylemap = 1
+    elif style_name == 'Bold Italic':
+        _font.os2_stylemap = 33
     _font.os2_vendor = 'TMNM'
     _font.os2_version = 1
     _font.os2_winascent = ASCENT
@@ -187,7 +193,7 @@ def set_os2_values(_font, _weight):
     _font.hhea_descent = DESCENT
     _font.hhea_descent_add = 0
     _font.hhea_linegap = 0
-    _font.os2_panose = (2, 11, _weight / 100, 9, 2, 2, 3, 2, 2, 7)
+    _font.os2_panose = (2, 11, weight / 100, 9, 2, 2, 3, 2, 2, 7)
     return _font
 
 def align_to_center(_g):
@@ -203,6 +209,71 @@ def align_to_center(_g):
     _g.width = width
 
     return _g
+
+def modify_nerd(_g):
+    align_left = [
+        0xe0b0, 0xe0b1, 0xe0b4, 0xe0b5, 0xe0b8, 0xe0b9, 0xe0bc,
+        0xe0bd, 0xe0c0, 0xe0c1, 0xe0c4, 0xe0c6, 0xe0c8, 0xe0cc, 0xe0cd,
+        0xe0ce, 0xe0d1, 0xe0d2,
+    ]
+    align_right = [
+        0xe0b2, 0xe0b3, 0xe0b6, 0xe0b7, 0xe0b7, 0xe0ba, 0xe0bb, 0xe0be,
+        0xe0bf, 0xe0c2, 0xe0c3, 0xe0c5, 0xe0c7, 0xe0ca, 0xe0d4,
+    ]
+    if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0d4:
+        _g.transform(psMat.translate(0, -55))
+        if _g.encoding >= 0xe0b8:
+            _g.width = 1024
+        else:
+            _g.width = 512
+        if _g.encoding >= 0xe0b8 and _g.encoding <= 0xe0bf:
+            _g.transform(psMat.scale(0.8, 1.0))
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+
+        if _g.encoding >= 0xe0c0 and _g.encoding <= 0xe0c3:
+            _g.transform(psMat.scale(0.7, 1.0))
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+        if _g.encoding >= 0xe0c4 and _g.encoding <= 0xe0c7:
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+        if _g.encoding == 0xe0c8 or _g.encoding == 0xe0ca:
+            _g.transform(psMat.scale(0.7, 1.0))
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+    else:
+        _g.transform(psMat.translate(0, -55))
+        _g.width = 1024
+        _g = align_to_center(_g)
+
+    return _g
+
+
 
 def vertical_line_to_broken_bar(_f):
     _f.selection.select(0x00a6)
@@ -241,12 +312,14 @@ def build_font(_f):
     ubuntu = fontforge.open('./sourceFonts/%s' % _f.get('ubuntu_mono'))
     ubuntu = remove_glyph_from_ubuntu(ubuntu)
     cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
+    nerd = fontforge.open('./sourceFonts/nerd.ttf')
 
     for g in ubuntu.glyphs():
         if _f.get('ubuntu_weight_reduce') != 0:
             # g.changeWeight(_f.get('ubuntu_weight_reduce'), 'auto', 0, 0, 'auto')
             g.stroke("circular", _f.get('ubuntu_weight_reduce'), 'butt', 'round', 'removeexternal')
         g = align_to_center(g)
+
 
     alternate_expands = [
         0x306e,
@@ -257,7 +330,6 @@ def build_font(_f):
             # g.changeWeight(_f.get('mgen_weight_add'), 'auto', 0, 0, 'auto')
             g.stroke("caligraphic", _f.get('mgen_weight_add'), _f.get('mgen_weight_add'), 45, 'removeinternal')
             # g.stroke("circular", _f.get('mgen_weight_add'), 'butt', 'round', 'removeinternal')
-
 
 
     ignoring_center = [
@@ -284,20 +356,30 @@ def build_font(_f):
             cica.selection.select(g.encoding)
             cica.paste()
 
+    for g in nerd.glyphs():
+        if g.encoding < 0xe0a0 or g.encoding > 0xf4ff:
+            continue
+        g = modify_nerd(g)
+        nerd.selection.select(g.encoding)
+        nerd.copy()
+        cica.selection.select(g.encoding)
+        cica.paste()
+
     cica = zenkaku_space(cica)
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
-    cica = add_powerline(cica)
+    cica = add_notoemoji(cica)
+    # cica = add_powerline(cica)
 
 
     cica.ascent = ASCENT
     cica.descent = DESCENT
     cica.upos = 45
-    cica.fontname = 'CicaTest'
+    cica.fontname = _f.get('family')
     cica.familyname = _f.get('family')
     cica.fullname = _f.get('name')
     cica.weight = _f.get('weight_name')
-    cica = set_os2_values(cica, _f.get('weight'))
+    cica = set_os2_values(cica, _f)
     cica.appendSFNTName(0x411,0, COPYRIGHT)
     cica.appendSFNTName(0x411,1, _f.get('family'))
     cica.appendSFNTName(0x411,2, _f.get('style_name'))
@@ -305,15 +387,15 @@ def build_font(_f):
     cica.appendSFNTName(0x411,4, _f.get('name'))
     cica.appendSFNTName(0x411,5, "Version " + VERSION)
     cica.appendSFNTName(0x411,6, _f.get('family') + "-" + _f.get('weight_name'))
-    cica.appendSFNTName(0x411,7, "")
-    cica.appendSFNTName(0x411,8, "")
-    cica.appendSFNTName(0x411,9, "")
-    cica.appendSFNTName(0x411,10, "")
-    cica.appendSFNTName(0x411,11, "")
-    cica.appendSFNTName(0x411,12, "")
-    cica.appendSFNTName(0x411,13, "")
-    cica.appendSFNTName(0x411,14, "")
-    cica.appendSFNTName(0x411,15, "")
+    # cica.appendSFNTName(0x411,7, "")
+    # cica.appendSFNTName(0x411,8, "")
+    # cica.appendSFNTName(0x411,9, "")
+    # cica.appendSFNTName(0x411,10, "")
+    # cica.appendSFNTName(0x411,11, "")
+    # cica.appendSFNTName(0x411,12, "")
+    cica.appendSFNTName(0x411,13, LICENSE)
+    # cica.appendSFNTName(0x411,14, "")
+    # cica.appendSFNTName(0x411,15, "")
     cica.appendSFNTName(0x411,16, _f.get('family'))
     cica.appendSFNTName(0x411,17, _f.get('style_name'))
     cica.appendSFNTName(0x409,0, COPYRIGHT)
@@ -323,67 +405,23 @@ def build_font(_f):
     cica.appendSFNTName(0x409,4, _f.get('name'))
     cica.appendSFNTName(0x409,5, "Version " + VERSION)
     cica.appendSFNTName(0x409,6, _f.get('name'))
-    cica.appendSFNTName(0x409,7, "")
-    cica.appendSFNTName(0x409,8, "")
-    cica.appendSFNTName(0x409,9, "")
-    cica.appendSFNTName(0x409,10, "")
-    cica.appendSFNTName(0x409,11, "")
-    cica.appendSFNTName(0x409,12, "")
+    # cica.appendSFNTName(0x409,7, "")
+    # cica.appendSFNTName(0x409,8, "")
+    # cica.appendSFNTName(0x409,9, "")
+    # cica.appendSFNTName(0x409,10, "")
+    # cica.appendSFNTName(0x409,11, "")
+    # cica.appendSFNTName(0x409,12, "")
     cica.appendSFNTName(0x409,13, LICENSE)
-    cica.appendSFNTName(0x409,14, "")
-    cica.appendSFNTName(0x409,15, "")
+    # cica.appendSFNTName(0x409,14, "")
+    # cica.appendSFNTName(0x409,15, "")
     cica.appendSFNTName(0x409,16, _f.get('family'))
     cica.appendSFNTName(0x409,17, _f.get('style_name'))
     fontpath = './dist/%s' % _f.get('filename')
     cica.generate(fontpath)
 
-
-    # CicaE
-    cicaE = add_notoemoji(cica)
-    cicaE = add_devicons(cicaE)
-    cicaE.fontname = cica.fontname.replace('Cica', 'CicaE')
-    cicaE.familyname = cica.familyname.replace('Cica', 'CicaE')
-    cicaE.fullname = cica.fullname.replace('Cica', 'CicaE')
-    cica.appendSFNTName(0x411,0, COPYRIGHT)
-    cica.appendSFNTName(0x411,1, _f.get('family').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x411,2, _f.get('style_name').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x411,3, "")
-    cica.appendSFNTName(0x411,4, _f.get('name').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x411,5, "Version " + VERSION)
-    cica.appendSFNTName(0x411,6, _f.get('family').replace('Cica', 'CicaE') + "-" + _f.get('weight_name'))
-    cica.appendSFNTName(0x411,7, "")
-    cica.appendSFNTName(0x411,8, "")
-    cica.appendSFNTName(0x411,9, "")
-    cica.appendSFNTName(0x411,10, "")
-    cica.appendSFNTName(0x411,11, "")
-    cica.appendSFNTName(0x411,12, "")
-    cica.appendSFNTName(0x411,13, "")
-    cica.appendSFNTName(0x411,14, "")
-    cica.appendSFNTName(0x411,15, "")
-    cica.appendSFNTName(0x411,16, _f.get('family').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x411,17, _f.get('style_name'))
-    cica.appendSFNTName(0x409,0, COPYRIGHT)
-    cica.appendSFNTName(0x409,1, _f.get('family').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x409,2, _f.get('style_name'))
-    cica.appendSFNTName(0x409,3, VERSION + ";" + _f.get('family').replace('Cica', 'CicaE') + "-" + _f.get('style_name'))
-    cica.appendSFNTName(0x409,4, _f.get('name').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x409,5, "Version " + VERSION)
-    cica.appendSFNTName(0x409,6, _f.get('name').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x409,7, "")
-    cica.appendSFNTName(0x409,8, "")
-    cica.appendSFNTName(0x409,9, "")
-    cica.appendSFNTName(0x409,10, "")
-    cica.appendSFNTName(0x409,11, "")
-    cica.appendSFNTName(0x409,12, "")
-    cica.appendSFNTName(0x409,13, LICENSE)
-    cica.appendSFNTName(0x409,14, "")
-    cica.appendSFNTName(0x409,15, "")
-    cica.appendSFNTName(0x409,16, _f.get('family').replace('Cica', 'CicaE'))
-    cica.appendSFNTName(0x409,17, _f.get('style_name'))
-    fontpath = './dist/%s' % _f.get('filename').replace('Cica', 'CicaE')
-    cicaE.generate(fontpath)
     cica.close()
     ubuntu.close()
+    nerd.close()
 
 
 def add_notoemoji(_f):
