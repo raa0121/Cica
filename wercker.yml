@@ -30,12 +30,10 @@ build:
           curl -LO https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
           unar rounded-mgenplus-20150602.7z
           mv rounded-mgenplus-20150602/rounded-mgenplus-1m* ./sourceFonts/
-          curl -LO https://github.com/konpa/devicon/raw/master/fonts/devicon.ttf
-          mv devicon.ttf sourceFonts/
           curl -LO https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf
           mv NotoEmoji-Regular.ttf sourceFonts/
 
     - script:
         name: build
         code: |
-          ./cica_generator.sh auto
+          fontforge -lang=py -script cica.py
