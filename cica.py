@@ -4,6 +4,7 @@ import fontforge
 import psMat
 import os
 import sys
+import math
 from logging import getLogger, StreamHandler, Formatter, DEBUG
 logger = getLogger(__name__)
 handler = StreamHandler()
@@ -21,7 +22,7 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.0'
+VERSION = '2.0.1'
 
 fonts = [
     {
@@ -307,6 +308,24 @@ def zenkaku_space(_f):
         g = align_to_center(g)
     return _f
 
+def add_smalltriangle(_f):
+    _f.selection.select(0x25bc)
+    _f.copy()
+    _f.selection.select(0x25be)
+    _f.paste()
+    _f.transform(psMat.compose(psMat.scale(0.64), psMat.translate(0, 68)))
+    _f.copy()
+    _f.selection.select(0x25b8)
+    _f.paste()
+    _f.transform(psMat.rotate(math.radians(90)))
+
+    for g in _f.glyphs():
+        if g.encoding == 0x25be or g.encoding == 0x25b8:
+            g.width = 512
+            g = align_to_center(g)
+
+    return _f
+
 def build_font(_f):
     log('Generating %s ...' % _f.get('weight_name'))
     ubuntu = fontforge.open('./sourceFonts/%s' % _f.get('ubuntu_mono'))
@@ -369,6 +388,7 @@ def build_font(_f):
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
     cica = add_notoemoji(cica)
+    cica = add_smalltriangle(cica)
     # cica = add_powerline(cica)
 
 
@@ -383,7 +403,7 @@ def build_font(_f):
     cica.appendSFNTName(0x411,0, COPYRIGHT)
     cica.appendSFNTName(0x411,1, _f.get('family'))
     cica.appendSFNTName(0x411,2, _f.get('style_name'))
-    cica.appendSFNTName(0x411,3, "")
+    # cica.appendSFNTName(0x411,3, "")
     cica.appendSFNTName(0x411,4, _f.get('name'))
     cica.appendSFNTName(0x411,5, "Version " + VERSION)
     cica.appendSFNTName(0x411,6, _f.get('family') + "-" + _f.get('weight_name'))
