@@ -22,7 +22,7 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.1'
+VERSION = '2.0.2'
 
 fonts = [
     {
@@ -186,12 +186,12 @@ def set_os2_values(_font, _info):
     _font.os2_windescent_add = 0
     _font.os2_typoascent = 693
     _font.os2_typoascent_add = 0
-    _font.os2_typodescent = -165
+    _font.os2_typodescent = -141
     _font.os2_typodescent_add = 0
-    _font.os2_typolinegap = 0
+    _font.os2_typolinegap = 49
     _font.hhea_ascent = ASCENT
     _font.hhea_ascent_add = 0
-    _font.hhea_descent = DESCENT
+    _font.hhea_descent = -DESCENT
     _font.hhea_descent_add = 0
     _font.hhea_linegap = 0
     _font.os2_panose = (2, 11, weight / 100, 9, 2, 2, 3, 2, 2, 7)
