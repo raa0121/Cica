@@ -217,20 +217,30 @@ def modify_nerd(_g):
     align_left = [
         0xe0b0, 0xe0b1, 0xe0b4, 0xe0b5, 0xe0b8, 0xe0b9, 0xe0bc,
         0xe0bd, 0xe0c0, 0xe0c1, 0xe0c4, 0xe0c6, 0xe0c8, 0xe0cc, 0xe0cd,
-        0xe0ce, 0xe0d1, 0xe0d2,
+        0xe0d1, 0xe0d2,
     ]
     align_right = [
         0xe0b2, 0xe0b3, 0xe0b6, 0xe0b7, 0xe0b7, 0xe0ba, 0xe0bb, 0xe0be,
-        0xe0bf, 0xe0c2, 0xe0c3, 0xe0c5, 0xe0c7, 0xe0ca, 0xe0d4,
+        0xe0bf, 0xe0c2, 0xe0c3, 0xe0c5, 0xe0c7, 0xe0ca, 0xe0ce, 0xe0d4,
     ]
+    # Powerline
     if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0d4:
         _g.transform(psMat.translate(0, -55))
-        if _g.encoding >= 0xe0b8:
-            _g.width = 1024
-        else:
-            _g.width = 512
+        _g.width = 1024
+
+        if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0b7:
+            _g.transform(psMat.compose(psMat.scale(1.0, 0.982), psMat.translate(0, -1)))
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+
         if _g.encoding >= 0xe0b8 and _g.encoding <= 0xe0bf:
-            _g.transform(psMat.scale(0.8, 1.0))
+            _g.transform(psMat.compose(psMat.scale(0.8, 0.982), psMat.translate(0, -1)))
             if _g.encoding in align_right:
                 bb = _g.boundingBox()
                 left = 1024 - (bb[2] - bb[0])
@@ -261,6 +271,31 @@ def modify_nerd(_g):
                 _g.width = 1024
         if _g.encoding == 0xe0c8 or _g.encoding == 0xe0ca:
             _g.transform(psMat.scale(0.7, 1.0))
+            if _g.encoding in align_right:
+                bb = _g.boundingBox()
+                left = 1024 - (bb[2] - bb[0])
+                _g.left_side_bearing = left
+                _g.width = 1024
+            if _g.encoding in align_left:
+                _g.left_side_bearing = 0
+                _g.width = 1024
+        if _g.encoding == 0xe0ce:
+            _g.transform(psMat.scale(0.8, 1.0))
+            bb = _g.boundingBox()
+            left = 1024 - (bb[2] - bb[0])
+            _g.left_side_bearing = left
+            _g.width = 1024
+        if _g.encoding == 0xe0cf:
+            _g.transform(psMat.scale(0.9, 1.0))
+            _g = align_to_center(_g)
+        if _g.encoding == 0xe0d0:
+            _g = align_to_center(_g)
+        if _g.encoding == 0xe0d1:
+            _g.transform(psMat.compose(psMat.scale(1.0, 0.982), psMat.translate(0, -1)))
+            _g.left_side_bearing = 0
+            _g.width = 1024
+        if _g.encoding == 0xe0d2 or _g.encoding == 0xe0d4:
+            _g.transform(psMat.compose(psMat.scale(1.0, 0.982), psMat.translate(0, -1)))
             if _g.encoding in align_right:
                 bb = _g.boundingBox()
                 left = 1024 - (bb[2] - bb[0])
@@ -391,8 +426,6 @@ def build_font(_f):
     cica = emdash_to_broken_dash(cica)
     cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
-    # cica = add_powerline(cica)
-
 
     cica.ascent = ASCENT
     cica.descent = DESCENT
@@ -485,25 +518,6 @@ def add_devicons(_f):
             _f.paste()
     gopher.close()
     return _f
-
-def add_powerline(_f):
-    powerline = fontforge.open('./fontpatcher/fonts/powerline-symbols.sfd')
-    for g in powerline.glyphs():
-        if g.isWorthOutputting:
-            scale = psMat.scale(0.4, 0.4)
-            translate = psMat.translate(0, 0)
-            if g.unicode >= 0xe0b2:
-                translate = psMat.translate(88, 0)
-            matrix = psMat.compose(scale, translate)
-            g.transform(matrix)
-            g.width = 512
-            powerline.selection.select(g.encoding)
-            powerline.copy()
-            _f.selection.select(int(hex(g.unicode), 0))
-            _f.paste()
-    powerline.close()
-    return _f
-
 
 def main():
     print('')
