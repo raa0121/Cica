@@ -180,10 +180,10 @@ def set_os2_values(_font, _info):
         _font.os2_stylemap = 33
     _font.os2_vendor = 'TMNM'
     _font.os2_version = 1
-    _font.os2_winascent = 0
-    _font.os2_winascent_add = True
-    _font.os2_windescent = 0
-    _font.os2_windescent_add = True
+    _font.os2_winascent = ASCENT
+    _font.os2_winascent_add = False
+    _font.os2_windescent = DESCENT
+    _font.os2_windescent_add = False
 
     _font.os2_typoascent = -150
     _font.os2_typoascent_add = True
