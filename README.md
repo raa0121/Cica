@@ -8,7 +8,7 @@
 
 ## 概要
 
-Ricty生成スクリプトをフォークして生成したプログラミング用の等幅フォントです。
+プログラミング用の等幅フォントです。
 [Ubuntu Mono](http://font.ubuntu.com/) と
 [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/) を合成して少し調整しています。
 [Noto Emoji](https://www.google.com/get/noto/) と
@@ -32,12 +32,13 @@ o Cica
   * M+ OUTLINE FONTS
 ```
 
-## Rictyからの変更点
+## 簡単な特徴
 
-* 英数字に Ubutnu Mono を使用しています
-* それ以外の文字に Rounded Mgen+ ゴシック を使用しています
-* 非HiDPI（非Retina）のWindowsでも文字が欠けません
-* [Powelineパッチ](https://github.com/powerline/fontpatcher)適用済みです
+- 英数字に Ubutnu Mono を使用しています
+- それ以外の文字に Rounded Mgen+ ゴシック を使用しています
+- [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。
+- [Noto Emoji](https://www.google.com/get/noto/) を追加合成しています。(= Powerlineパッチ、その他適用済)
+- 非HiDPI（非Retina）のWindowsでも文字が欠けません
 
 
 ## バリエーション
@@ -49,7 +50,7 @@ o Cica
 | Cica-Bold.ttf          | 太字     |
 | Cica-BoldItalic.ttf    | 太字斜体 |
 
-※CicaEファミリーのPowerlineやDevIconのグリフは [pua.html](pua.html) で一覧が確認出来ます。
+※アイコン類はフォントをインストール後 [pua.html](pua.html) で確認出来ます。
 
 ## ビルド手順
 
