@@ -16,8 +16,8 @@ logger.addHandler(handler)
 
 # ASCENT = 850
 # DESCENT = 174
-ASCENT = 881
-DESCENT = 143
+ASCENT = 820
+DESCENT = 204
 SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
@@ -180,19 +180,21 @@ def set_os2_values(_font, _info):
         _font.os2_stylemap = 33
     _font.os2_vendor = 'TMNM'
     _font.os2_version = 1
-    _font.os2_winascent = ASCENT
-    _font.os2_winascent_add = 0
-    _font.os2_windescent = DESCENT
-    _font.os2_windescent_add = 0
-    _font.os2_typoascent = 693
-    _font.os2_typoascent_add = 0
-    _font.os2_typodescent = -141
-    _font.os2_typodescent_add = 0
-    _font.os2_typolinegap = 49
-    _font.hhea_ascent = ASCENT
-    _font.hhea_ascent_add = 0
-    _font.hhea_descent = -DESCENT
-    _font.hhea_descent_add = 0
+    _font.os2_winascent = 0
+    _font.os2_winascent_add = True
+    _font.os2_windescent = 0
+    _font.os2_windescent_add = True
+
+    _font.os2_typoascent = -150
+    _font.os2_typoascent_add = True
+    _font.os2_typodescent = 100
+    _font.os2_typodescent_add = True
+    _font.os2_typolinegap = 0
+
+    _font.hhea_ascent = -150
+    _font.hhea_ascent_add = True
+    _font.hhea_descent = 100
+    _font.hhea_descent_add = True
     _font.hhea_linegap = 0
     _font.os2_panose = (2, 11, weight / 100, 9, 2, 2, 3, 2, 2, 7)
     return _font
