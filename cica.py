@@ -22,7 +22,7 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.2'
+VERSION = '2.0.3'
 
 fonts = [
     {
