@@ -50,7 +50,7 @@ o Cica
 | Cica-Bold.ttf          | 太字     |
 | Cica-BoldItalic.ttf    | 太字斜体 |
 
-※アイコン類はフォントをインストール後 [pua.html](pua.html) で確認出来ます。
+※アイコン類はフォントをインストール後 [https:\/\/miiton.github.io\/Cica\/](https://miiton.github.io/Cica/) で確認出来ます。
 
 ## ビルド手順
 
