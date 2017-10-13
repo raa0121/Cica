@@ -213,6 +213,19 @@ def align_to_center(_g):
 
     return _g
 
+def align_to_left(_g):
+    width = _g.width
+    _g.left_side_bearing = 0
+    _g.width = width
+
+def align_to_right(_g):
+    width = _g.width
+    bb = _g.boundingBox()
+    left = width - (bb[2] - bb[0])
+    _g.left_side_bearing = left
+    _g.width = width
+
+
 def modify_nerd(_g):
     align_left = [
         0xe0b0, 0xe0b1, 0xe0b4, 0xe0b5, 0xe0b8, 0xe0b9, 0xe0bc,
@@ -363,6 +376,27 @@ def add_smalltriangle(_f):
 
     return _f
 
+def fix_box_drawings(_f):
+    left = [
+        0x2510, 0x2518, 0x2524, 0x2555, 0x2556, 0x2557, 0x255b, 0x255c, 0x255d,
+        0x2561, 0x2562, 0x2563,
+    ]
+    right = [
+        0x250c, 0x2514, 0x251c, 0x2552, 0x2553, 0x2554, 0x2558, 0x2559, 0x255a,
+        0x255e, 0x255f, 0x2560,
+    ]
+
+    for g in _f.glyphs():
+        if g.encoding < 0x2500 or g.encoding > 0x256c:
+            continue
+        if g.encoding in left:
+            align_to_left(g)
+        elif g.encoding in right:
+            align_to_right(g)
+
+    return _f
+
+
 def build_font(_f):
     log('Generating %s ...' % _f.get('weight_name'))
     ubuntu = fontforge.open('./sourceFonts/%s' % _f.get('ubuntu_mono'))
@@ -407,6 +441,9 @@ def build_font(_f):
         if  g.isWorthOutputting:
             if _f.get('italic'):
                 g.transform(psMat.skew(0.25))
+            if g.encoding >= 0x2500 and g.encoding <= 0x25af:
+                g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
+                g = align_to_center(g)
             ubuntu.selection.select(g.encoding)
             ubuntu.copy()
             cica.selection.select(g.encoding)
@@ -421,6 +458,7 @@ def build_font(_f):
         cica.selection.select(g.encoding)
         cica.paste()
 
+    cica = fix_box_drawings(cica)
     cica = zenkaku_space(cica)
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
