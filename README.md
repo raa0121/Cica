@@ -1,4 +1,4 @@
-# プログラミング用フォント Cica
+# プログラミング用日本語フォント Cica
 
 ![on MacVim](screenshots/ss1.png)
 
