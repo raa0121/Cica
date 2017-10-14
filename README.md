@@ -36,8 +36,8 @@ o Cica
 
 - 英数字に Ubutnu Mono を使用しています
 - それ以外の文字に Rounded Mgen+ ゴシック を使用しています
-- [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。
-- [Noto Emoji](https://www.google.com/get/noto/) を追加合成しています。(= Powerlineパッチ、その他適用済)
+- [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。(= Powerlineパッチ、その他適用済)
+- [Noto Emoji](https://www.google.com/get/noto/) を追加合成しています。
 - 非HiDPI（非Retina）のWindowsでも文字が欠けません
 
 
