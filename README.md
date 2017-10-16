@@ -87,3 +87,15 @@ libfontforge 20120731-ML
 # ライセンス
 
 * [LICENSE.txt](LICENSE.txt)
+
+# 謝辞
+
+Cicaフォントの合成にあたり素晴らしいフォントを提供してくださっている製作者の方々に感謝いたします。
+
+- m+ outline fonts : [m\+ fonts](https://mplus-fonts.osdn.jp/)
+- rounded m+ : [自家製フォント工房](http://jikasei.me/)
+- 源の角ゴシック : [adobe\-fonts/source\-han\-sans: source han sans \| 思源黑体 \| 思源黑體 \| 源ノ角ゴシック \| 본고딕](https://github.com/adobe-fonts/source-han-sans)
+- rounded mgen+ : [自家製フォント工房](http://jikasei.me/)
+- ubuntu mono : [ubuntu font family](http://font.ubuntu.com/)
+- noto emoji : [googlei18n/noto\-emoji: noto emoji fonts](https://github.com/googlei18n/noto-emoji)
+- nerdfonts (without pomicons) : [nerd fonts \- iconic font aggregator, collection, and patcher](https://nerdfonts.com/)
