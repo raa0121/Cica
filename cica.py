@@ -22,7 +22,7 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.4'
+VERSION = '2.0.5'
 
 fonts = [
     {
@@ -462,6 +462,7 @@ def build_font(_f):
     cica = zenkaku_space(cica)
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
+    cica = add_gopher(cica)
     cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
 
@@ -530,19 +531,7 @@ def add_notoemoji(_f):
     notoemoji.close()
     return _f
 
-def add_devicons(_f):
-    devicon = fontforge.open('./sourceFonts/devicon.ttf')
-    current = 0xE160
-    for g in devicon.glyphs():
-        if g.isWorthOutputting:
-            g.transform(psMat.compose(psMat.scale(0.8, 0.8), psMat.translate(0, -55)))
-            g = align_to_center(g)
-            devicon.selection.select(g.encoding)
-            devicon.copy()
-            _f.selection.select(current)
-            _f.paste()
-            current = current + 1
-    devicon.close()
+def add_gopher(_f):
     gopher = fontforge.open('./sourceFonts/gopher.sfd')
     for g in gopher.glyphs():
         if g.isWorthOutputting:
