@@ -22,8 +22,8 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.1.0-rc'
-FAMILY = 'CicaIss19A'
+VERSION = '2.1.0'
+FAMILY = 'Cica'
 
 fonts = [
     {
