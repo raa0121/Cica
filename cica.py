@@ -23,7 +23,7 @@ DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '2.1.0-rc'
-FAMILY = 'Cica'
+FAMILY = 'CicaIss19A'
 
 fonts = [
     {
@@ -318,6 +318,10 @@ def modify_nerd(_g):
             if _g.encoding in align_left:
                 _g.left_side_bearing = 0
                 _g.width = 1024
+    elif _g.encoding >= 0xf000 and _g.encoding <= 0xf2e0:
+        _g.transform(psMat.compose(psMat.scale(0.75, 0.75), psMat.translate(0, 55)))
+        _g.width = 1024
+        _g = align_to_center(_g)
     else:
         _g.transform(psMat.translate(0, -55))
         _g.width = 1024
