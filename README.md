@@ -6,18 +6,21 @@
 
 [リリースページ](https://github.com/miiton/Cica/releases/latest)にビルド済みのフォントを配置しています。
 
-## 概要
+## 特徴
 
-プログラミング用の等幅フォントです。
-[Ubuntu Mono](http://font.ubuntu.com/) と
-[Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/) を合成して少し調整しています。
-[Noto Emoji](https://www.google.com/get/noto/) と
-[NERDFonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。
+* 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです
+    - 英数字、記号類に [Ubuntu Mono](http://font.ubuntu.com/)
+    - それ以外の文字に [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/)
+    - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済、Pomiconsを除く※)
+    - [Noto Emoji](https://www.google.com/get/noto/)
+* 各種エディタで迷わずに設定できるフォント名にしました(ex. `Hoge Font`, `Hoge_Font` or `Hoge Font Regular`  ??? ARGGGG!!! )
+* tmuxの画面分割に対応しています
+* 非HiDPI（非Retina）のWindowsでも文字が欠けません
 
 ```
 o Cica
 |\
-* * NERDFonts (without Pomicons)
+* * NERDFonts (without Pomicons※)
 |\
 * * Noto Emoji
 |\
@@ -32,14 +35,7 @@ o Cica
   * M+ OUTLINE FONTS
 ```
 
-## 簡単な特徴
-
-- 英数字に Ubutnu Mono を使用しています
-- それ以外の文字に Rounded Mgen+ ゴシック を使用しています
-- [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) を追加合成しています。(= Powerlineパッチ、その他適用済)
-- [Noto Emoji](https://www.google.com/get/noto/) を追加合成しています。
-- 非HiDPI（非Retina）のWindowsでも文字が欠けません
-
+※Nerd Fontsに含まれるPomiconsのグリフは商用利用が出来ないライセンスなのでCicaフォントからは除外しています。
 
 ## バリエーション
 

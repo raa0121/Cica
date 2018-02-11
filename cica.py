@@ -22,13 +22,14 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.0.5'
+VERSION = '2.1.0-rc'
+FAMILY = 'Cica'
 
 fonts = [
     {
-         'family': 'Cica',
-         'name': 'Cica-Regular',
-         'filename': 'Cica-Regular.ttf',
+         'family': FAMILY,
+         'name': FAMILY + '-Regular',
+         'filename': FAMILY + '-Regular.ttf',
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Regular',
@@ -38,9 +39,9 @@ fonts = [
          'mgen_weight_add': 0,
          'italic': False,
      }, {
-         'family': 'Cica',
-         'name': 'Cica-RegularItalic',
-         'filename': 'Cica-RegularItalic.ttf',
+         'family': FAMILY,
+         'name': FAMILY + '-RegularItalic',
+         'filename': FAMILY + '-RegularItalic.ttf',
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Italic',
@@ -50,9 +51,9 @@ fonts = [
          'mgen_weight_add': 0,
          'italic': True,
     }, {
-        'family': 'Cica',
-        'name': 'Cica-Bold',
-        'filename': 'Cica-Bold.ttf',
+        'family': FAMILY,
+        'name': FAMILY + '-Bold',
+        'filename': FAMILY + '-Bold.ttf',
         'weight': 700,
         'weight_name': 'Bold',
          'style_name': 'Bold',
@@ -62,9 +63,9 @@ fonts = [
         'mgen_weight_add': 0,
         'italic': False,
     }, {
-        'family': 'Cica',
-        'name': 'Cica-BoldItalic',
-        'filename': 'Cica-BoldItalic.ttf',
+        'family': FAMILY,
+        'name': FAMILY + '-BoldItalic',
+        'filename': FAMILY + '-BoldItalic.ttf',
         'weight': 700,
         'weight_name': 'Bold',
         'style_name': 'Bold Italic',
@@ -465,6 +466,7 @@ def build_font(_f):
     cica = add_gopher(cica)
     cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
+    cica = resize_supersub(cica)
 
     cica.ascent = ASCENT
     cica.descent = DESCENT
@@ -545,6 +547,140 @@ def add_gopher(_f):
             _f.paste()
     gopher.close()
     return _f
+
+def resize_supersub(_f):
+    superscripts = [
+            {"src": 0x0031, "dest": 0x00b9}, {"src": 0x0032, "dest": 0x00b2},
+            {"src": 0x0033, "dest": 0x00b3}, {"src": 0x0030, "dest": 0x2070},
+            {"src": 0x0069, "dest": 0x2071}, {"src": 0x0034, "dest": 0x2074},
+            {"src": 0x0035, "dest": 0x2075}, {"src": 0x0036, "dest": 0x2076},
+            {"src": 0x0037, "dest": 0x2077}, {"src": 0x0038, "dest": 0x2078},
+            {"src": 0x0039, "dest": 0x2079}, {"src": 0x002b, "dest": 0x207a},
+            {"src": 0x002d, "dest": 0x207b}, {"src": 0x003d, "dest": 0x207c},
+            {"src": 0x0028, "dest": 0x207d}, {"src": 0x0029, "dest": 0x207e},
+            {"src": 0x006e, "dest": 0x207f},
+            # ↓上付きの大文字
+            {"src": 0x0041, "dest": 0x1d2c}, {"src": 0x00c6, "dest": 0x1d2d},
+            {"src": 0x0042, "dest": 0x1d2e}, {"src": 0x0044, "dest": 0x1d30},
+            {"src": 0x0045, "dest": 0x1d31}, {"src": 0x018e, "dest": 0x1d32},
+            {"src": 0x0047, "dest": 0x1d33}, {"src": 0x0048, "dest": 0x1d34},
+            {"src": 0x0049, "dest": 0x1d35}, {"src": 0x004a, "dest": 0x1d36},
+            {"src": 0x004b, "dest": 0x1d37}, {"src": 0x004c, "dest": 0x1d38},
+            {"src": 0x004d, "dest": 0x1d39}, {"src": 0x004e, "dest": 0x1d3a},
+            ## ↓REVERSED N なのでNを左右反転させる必要あり
+            {"src": 0x004e, "dest": 0x1d3b, "reversed": True},
+            {"src": 0x004f, "dest": 0x1d3c}, {"src": 0x0222, "dest": 0x1d3d},
+            {"src": 0x0050, "dest": 0x1d3e}, {"src": 0x0052, "dest": 0x1d3f},
+            {"src": 0x0054, "dest": 0x1d40}, {"src": 0x0055, "dest": 0x1d41},
+            {"src": 0x0057, "dest": 0x1d42},
+            # ↓上付きの小文字
+            {"src": 0x0061, "dest": 0x1d43}, {"src": 0x0250, "dest": 0x1d44},
+            {"src": 0x0251, "dest": 0x1d45}, {"src": 0x1d02, "dest": 0x1d46},
+            {"src": 0x0062, "dest": 0x1d47}, {"src": 0x0064, "dest": 0x1d48},
+            {"src": 0x0065, "dest": 0x1d49}, {"src": 0x0259, "dest": 0x1d4a},
+            {"src": 0x025b, "dest": 0x1d4b}, {"src": 0x025c, "dest": 0x1d4c},
+            {"src": 0x0067, "dest": 0x1d4d},
+            ## ↓TURNED i なので 180度回す必要あり
+            {"src": 0x0069, "dest": 0x1d4e, "turned": True},
+            {"src": 0x006b, "dest": 0x1d4f}, {"src": 0x006d, "dest": 0x1d50},
+            {"src": 0x014b, "dest": 0x1d51}, {"src": 0x006f, "dest": 0x1d52},
+            {"src": 0x0254, "dest": 0x1d53}, {"src": 0x1d16, "dest": 0x1d54},
+            {"src": 0x1d17, "dest": 0x1d55}, {"src": 0x0070, "dest": 0x1d56},
+            {"src": 0x0074, "dest": 0x1d57}, {"src": 0x0075, "dest": 0x1d58},
+            {"src": 0x1d1d, "dest": 0x1d59}, {"src": 0x026f, "dest": 0x1d5a},
+            {"src": 0x0076, "dest": 0x1d5b}, {"src": 0x1d25, "dest": 0x1d5c},
+            {"src": 0x03b2, "dest": 0x1d5d}, {"src": 0x03b3, "dest": 0x1d5e},
+            {"src": 0x03b4, "dest": 0x1d5f}, {"src": 0x03c6, "dest": 0x1d60},
+            {"src": 0x03c7, "dest": 0x1d61},
+            {"src": 0x0056, "dest": 0x2c7d}, {"src": 0x0068, "dest": 0x02b0},
+            {"src": 0x0266, "dest": 0x02b1}, {"src": 0x006a, "dest": 0x02b2},
+            {"src": 0x006c, "dest": 0x02e1}, {"src": 0x0073, "dest": 0x02e2},
+            {"src": 0x0078, "dest": 0x02e3}, {"src": 0x0072, "dest": 0x02b3},
+            {"src": 0x0077, "dest": 0x02b7}, {"src": 0x0079, "dest": 0x02b8},
+            {"src": 0x0063, "dest": 0x1d9c}, {"src": 0x0066, "dest": 0x1da0},
+            {"src": 0x007a, "dest": 0x1dbb}, {"src": 0x0061, "dest": 0x00aa},
+            {"src": 0x0252, "dest": 0x1d9b}, {"src": 0x0255, "dest": 0x1d9d},
+            {"src": 0x00f0, "dest": 0x1d9e}, {"src": 0x025c, "dest": 0x1d9f},
+            {"src": 0x025f, "dest": 0x1da1}, {"src": 0x0261, "dest": 0x1da2},
+            {"src": 0x0265, "dest": 0x1da3}, {"src": 0x0268, "dest": 0x1da4},
+            {"src": 0x0269, "dest": 0x1da5}, {"src": 0x026a, "dest": 0x1da6},
+            {"src": 0x1d7b, "dest": 0x1da7}, {"src": 0x029d, "dest": 0x1da8},
+            {"src": 0x026d, "dest": 0x1da9}, {"src": 0x1d85, "dest": 0x1daa},
+            {"src": 0x029f, "dest": 0x1dab}, {"src": 0x0271, "dest": 0x1dac},
+            {"src": 0x0270, "dest": 0x1dad}, {"src": 0x0272, "dest": 0x1dae},
+            {"src": 0x0273, "dest": 0x1daf}, {"src": 0x0274, "dest": 0x1db0},
+            {"src": 0x0275, "dest": 0x1db1}, {"src": 0x0278, "dest": 0x1db2},
+            {"src": 0x0282, "dest": 0x1db3}, {"src": 0x0283, "dest": 0x1db4},
+            {"src": 0x01ab, "dest": 0x1db5}, {"src": 0x0289, "dest": 0x1db6},
+            {"src": 0x028a, "dest": 0x1db7}, {"src": 0x1d1c, "dest": 0x1db8},
+            {"src": 0x028b, "dest": 0x1db9}, {"src": 0x028c, "dest": 0x1dba},
+            {"src": 0x0290, "dest": 0x1dbc}, {"src": 0x0291, "dest": 0x1dbd},
+            {"src": 0x0292, "dest": 0x1dbe}, {"src": 0x03b8, "dest": 0x1dbf},
+
+    ]
+    subscripts = [
+            {"src": 0x0069, "dest": 0x1d62}, {"src": 0x0072, "dest": 0x1d63},
+            {"src": 0x0075, "dest": 0x1d64}, {"src": 0x0076, "dest": 0x1d65},
+            {"src": 0x03b2, "dest": 0x1d66}, {"src": 0x03b3, "dest": 0x1d67},
+            {"src": 0x03c1, "dest": 0x1d68}, {"src": 0x03c6, "dest": 0x1d69},
+            {"src": 0x03c7, "dest": 0x1d6a}, {"src": 0x006a, "dest": 0x2c7c},
+            {"src": 0x0030, "dest": 0x2080}, {"src": 0x0031, "dest": 0x2081},
+            {"src": 0x0032, "dest": 0x2082}, {"src": 0x0033, "dest": 0x2083},
+            {"src": 0x0034, "dest": 0x2084}, {"src": 0x0035, "dest": 0x2085},
+            {"src": 0x0036, "dest": 0x2086}, {"src": 0x0037, "dest": 0x2087},
+            {"src": 0x0038, "dest": 0x2088}, {"src": 0x0039, "dest": 0x2089},
+            {"src": 0x002b, "dest": 0x208a}, {"src": 0x002d, "dest": 0x208b},
+            {"src": 0x003d, "dest": 0x208c}, {"src": 0x0028, "dest": 0x208d},
+            {"src": 0x0029, "dest": 0x208e}, {"src": 0x0061, "dest": 0x2090},
+            {"src": 0x0065, "dest": 0x2091}, {"src": 0x006f, "dest": 0x2092},
+            {"src": 0x0078, "dest": 0x2093}, {"src": 0x0259, "dest": 0x2094},
+            {"src": 0x0068, "dest": 0x2095}, {"src": 0x006b, "dest": 0x2096},
+            {"src": 0x006c, "dest": 0x2097}, {"src": 0x006d, "dest": 0x2098},
+            {"src": 0x006e, "dest": 0x2099}, {"src": 0x0070, "dest": 0x209a},
+            {"src": 0x0073, "dest": 0x209b}, {"src": 0x0074, "dest": 0x209c}
+    ]
+
+    for g in superscripts:
+        _f.selection.select(g["src"])
+        _f.copy()
+        _f.selection.select(g["dest"])
+        _f.paste()
+    for g in subscripts:
+        _f.selection.select(g["src"])
+        _f.copy()
+        _f.selection.select(g["dest"])
+        _f.paste()
+
+    for g in _f.glyphs("encoding"):
+        if g.encoding > 0x2c7d:
+            continue
+        elif in_scripts(g.encoding, superscripts):
+            g.transform(psMat.scale(0.75, 0.75))
+            bb = g.boundingBox()
+            g.transform(psMat.translate(0, 244))
+            align_to_center(g)
+        elif in_scripts(g.encoding, subscripts):
+            g.transform(psMat.scale(0.75, 0.75))
+            bb = g.boundingBox()
+            y = -144
+            if bb[1] < -60: # DESCENT - 144
+                y = -60
+            g.transform(psMat.translate(0, y))
+            align_to_center(g)
+    return _f
+
+def in_scripts(encoding, scripts):
+    for s in scripts:
+        if encoding == s["dest"]:
+            return True
+    return False
+
+
+def scripts_from(encoding, scripts):
+    for s in scripts:
+        if encoding == s["dest"]:
+            return s["src"]
+    raise ValueError
 
 def main():
     print('')
