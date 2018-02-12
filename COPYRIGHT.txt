@@ -1,4 +1,4 @@
-Copyright (c) 2017, Takahiro Minami (https://tmnm.tech)
+Copyright (c) 2018, Takahiro Minami (https://tmnm.tech)
 
 This Font Software is licensed and copyrighted under the
 - Ubuntu Font Licence, Version 1.0
