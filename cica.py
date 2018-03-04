@@ -22,8 +22,8 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.1.0'
-FAMILY = 'CicaDejavu'
+VERSION = '3.0.0-rc1'
+FAMILY = 'Cica'
 
 fonts = [
     {
@@ -783,6 +783,13 @@ def resize_supersub(_f):
         elif in_scripts(g.encoding, superscripts):
             if g.encoding == 0x1d5d or g.encoding == 0x1d61:
                 g.transform(psMat.scale(0.70, 0.70))
+            elif g.encoding == 0x1d3b:
+                g.transform(psMat.scale(0.75, 0.75))
+                g.transform(psMat.compose(psMat.scale(-1, 1), psMat.translate(g.width, 0)))
+            elif g.encoding == 0x1d4e:
+                g.transform(psMat.scale(0.75, 0.75))
+                g.transform(psMat.rotate(3.14159))
+                g.transform(psMat.translate(0, 512))
             else:
                 g.transform(psMat.scale(0.75, 0.75))
             bb = g.boundingBox()
