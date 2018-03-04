@@ -22,7 +22,7 @@ SOURCE = './sourceFonts'
 DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '2.1.0'
+VERSION = '3.0.0-rc1'
 FAMILY = 'Cica'
 
 fonts = [
@@ -159,12 +159,6 @@ def check_files():
     if err > 0:
         sys.exit(err)
 
-def modify_usfont():
-    pass
-
-def modify_jpfont():
-    pass
-
 def set_os2_values(_font, _info):
     weight = _info.get('weight')
     style_name = _info.get('style_name')
@@ -226,6 +220,133 @@ def align_to_right(_g):
     _g.left_side_bearing = left
     _g.width = width
 
+def add_dejavu(_f, conf):
+    dejavu = None
+    weight_name = conf.get('weight_name')
+    if weight_name == "Regular":
+        dejavu = fontforge.open('./sourceFonts/DejaVuSansMono.ttf')
+    elif weight_name == "Bold":
+        dejavu = fontforge.open('./sourceFonts/DejaVuSansMono-Bold.ttf')
+
+    for g in dejavu.glyphs():
+        g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
+        g.width = 512
+
+    _f.importLookups(dejavu, dejavu.gpos_lookups)
+
+    # 0x0300 - 0x036f - Combining Diacritical Marks
+    for g in dejavu.glyphs():
+        if g.encoding < 0x0300 or g.encoding > 0x036f:
+            continue
+        else:
+            if len(g.references) > 0:
+                anchorPoints = g.anchorPoints
+                g.anchorPoints = ()
+                g.transform(psMat.scale(2.22, 2.22))
+                g.transform(psMat.translate(50, 0))
+                g.width = 512
+                g.anchorPoints = anchorPoints
+
+            if g.encoding <= 0x0304:
+                anchorPoints = g.anchorPoints
+                g.anchorPoints = ()
+                g.transform(psMat.scale(1.2, 1.2))
+                g.transform(psMat.translate(-100, -60))
+                g.width = 512
+                g.anchorPoints = anchorPoints
+            elif g.encoding == 0x0305:
+                g.transform(psMat.translate(0, -60))
+            elif g.encoding <= 0x0315:
+                g.transform(psMat.translate(0, 0))
+            elif g.encoding <= 0x0317:
+                g.transform(psMat.translate(0, 302))
+            elif g.encoding <= 0x0319:
+                g.transform(psMat.translate(0, 200))
+            elif g.encoding <= 0x031b:
+                g.transform(psMat.translate(0, -60))
+            elif g.encoding <= 0x031c:
+                g.transform(psMat.translate(0, 22))
+            elif g.encoding <= 0x031f:
+                g.transform(psMat.translate(0, 141))
+            elif g.encoding <= 0x0332:
+                g.transform(psMat.translate(0, 90))
+            elif g.encoding == 0x0333:
+                g.transform(psMat.compose(psMat.scale(0.9, 0.9), psMat.translate(-415, 29)))
+                g.width = 512
+            elif g.encoding <= 0x0338:
+                g.transform(psMat.translate(0, 0))
+            elif g.encoding <= 0x033c:
+                g.transform(psMat.translate(0, 138))
+            else:
+                g.transform(psMat.translate(0, 0))
+            dejavu.selection.select(g.encoding)
+            dejavu.copy()
+            _f.selection.select(g.encoding)
+            _f.paste()
+    # 0x0370 - 0x03ff - GREEK
+    for g in dejavu.glyphs():
+        if g.encoding < 0x0370 or g.encoding > 0x03ff:
+            continue
+        else:
+            if len(g.references) == 0:
+                bb = g.boundingBox()
+                g.anchorPoints = (('Anchor-7', 'mark', 256, bb[3] + 20),)
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    # 0x2100 - 0x214f Letterlike Symbols
+    for g in dejavu.glyphs():
+        if g.encoding < 0x2100 or g.encoding > 0x214f or g.encoding == 0x2122:
+            continue
+        else:
+            if len(g.references) == 0:
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    # 0x2150 - 0x218f Number Forms
+    for g in dejavu.glyphs():
+        if g.encoding < 0x2150 or g.encoding > 0x218f:
+            continue
+        else:
+            if len(g.references) == 0:
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    # 0x2190 - 0x21ff Arrows
+    for g in dejavu.glyphs():
+        if g.encoding < 0x2190 or g.encoding > 0x21ff:
+            continue
+        else:
+            if len(g.references) == 0:
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    # 0x2200 - 0x22ff Mathematical Operators
+    for g in dejavu.glyphs():
+        if g.encoding < 0x2200 or g.encoding > 0x22ff:
+            continue
+        else:
+            if len(g.references) == 0:
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    # 0x2300 - 0x23ff Miscellaneous Technical
+    for g in dejavu.glyphs():
+        if g.encoding < 0x2300 or g.encoding > 0x23ff:
+            continue
+        else:
+            if len(g.references) == 0:
+                dejavu.selection.select(g.encoding)
+                dejavu.copy()
+                _f.selection.select(g.encoding)
+                _f.paste()
+    dejavu.close()
+    return _f
 
 def modify_nerd(_g):
     align_left = [
@@ -470,6 +591,7 @@ def build_font(_f):
     cica = add_gopher(cica)
     cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
+    cica = add_dejavu(cica, _f)
     cica = resize_supersub(cica)
 
     cica.ascent = ASCENT
@@ -659,12 +781,25 @@ def resize_supersub(_f):
         if g.encoding > 0x2c7d:
             continue
         elif in_scripts(g.encoding, superscripts):
-            g.transform(psMat.scale(0.75, 0.75))
+            if g.encoding == 0x1d5d or g.encoding == 0x1d61:
+                g.transform(psMat.scale(0.70, 0.70))
+            elif g.encoding == 0x1d3b:
+                g.transform(psMat.scale(0.75, 0.75))
+                g.transform(psMat.compose(psMat.scale(-1, 1), psMat.translate(g.width, 0)))
+            elif g.encoding == 0x1d4e:
+                g.transform(psMat.scale(0.75, 0.75))
+                g.transform(psMat.rotate(3.14159))
+                g.transform(psMat.translate(0, 512))
+            else:
+                g.transform(psMat.scale(0.75, 0.75))
             bb = g.boundingBox()
             g.transform(psMat.translate(0, 244))
             align_to_center(g)
         elif in_scripts(g.encoding, subscripts):
-            g.transform(psMat.scale(0.75, 0.75))
+            if g.encoding == 0x1d66 or g.encoding == 0x1d6a:
+                g.transform(psMat.scale(0.70, 0.70))
+            else:
+                g.transform(psMat.scale(0.75, 0.75))
             bb = g.boundingBox()
             y = -144
             if bb[1] < -60: # DESCENT - 144
