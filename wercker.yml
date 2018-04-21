@@ -24,7 +24,7 @@ build:
     - script:
         name: download fonts
         code: |
-          curl -LO http://font.ubuntu.com/download/ubuntu-font-family-0.83.zip
+          curl -LO https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip
           unar ubuntu-font-family-0.83.zip
           mv ubuntu-font-family-0.83/UbuntuMono* ./sourceFonts/
           curl -LO https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z

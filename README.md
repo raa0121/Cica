@@ -55,7 +55,7 @@ o Cica
 ```sh
 sudo apt-get -y install fontforge unar
 git clone git@github.com:miiton/Cica.git
-wget http://font.ubuntu.com/download/ubuntu-font-family-0.83.zip
+wget https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip
 unar ubuntu-font-family-0.83.zip
 cp ubuntu-font-family-0.83/UbuntuMono-R.ttf ./sourceFonts/
 cp ubuntu-font-family-0.83/UbuntuMono-B.ttf ./sourceFonts/
