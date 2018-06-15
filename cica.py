@@ -191,7 +191,7 @@ def set_os2_values(_font, _info):
     _font.hhea_descent = 100
     _font.hhea_descent_add = True
     _font.hhea_linegap = 0
-    _font.os2_panose = (2, 11, weight / 100, 9, 2, 2, 3, 2, 2, 7)
+    _font.os2_panose = (2, 11, int(weight / 100), 9, 2, 2, 3, 2, 2, 7)
     return _font
 
 def align_to_center(_g):
