@@ -558,6 +558,12 @@ def build_font(_f):
         g.transform((0.91,0,0,0.91,0,0))
         if _f.get('italic'):
             g.transform(psMat.skew(0.25))
+        if g.width > 700:
+            width = 1024
+        else:
+            width = 512
+        g.transform(psMat.translate((width - g.width)/2, 0))
+        g.width = width
         if g.encoding in ignoring_center:
             pass
         else:
