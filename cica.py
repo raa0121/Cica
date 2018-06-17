@@ -556,10 +556,13 @@ def build_font(_f):
     ]
     for g in cica.glyphs():
         g.transform((0.91,0,0,0.91,0,0))
+        full_half_threshold = 700
         if _f.get('italic'):
             g.transform(psMat.skew(0.25))
-            g.width = g.width + g.font.ascent * 0.25
-        if g.width > 700:
+            skew_amount = g.font.ascent * 0.91 * 0.25
+            g.width = g.width + skew_amount
+            full_half_threshold += skew_amount
+        if g.width > full_half_threshold:
             width = 1024
         else:
             width = 512
