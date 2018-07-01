@@ -19,7 +19,8 @@ This Font Software is licensed under the
   - Noto Emoji : https://github.com/googlei18n/noto-emoji
 - SIL Open Font License, Version 1.1
   - Rounded Mgen+ : http://jikasei.me/font/rounded-mgenplus/
-
+- Free license
+  - DejaVu Sans Mono : https://dejavu-fonts.github.io/
 
 These licenses are copied below, and is also available with a FAQ at:
 

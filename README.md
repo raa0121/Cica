@@ -22,7 +22,9 @@ o Cica
 |\
 * * NERDFonts (without Pomicons※)
 |\
-* * Noto Emoji
+* * Noto Emoji (無しバージョンあり)
+|\
+* * DejaVu Sans Mono
 |\
 * * Ubuntu Mono
  \
@@ -50,9 +52,14 @@ o Cica
 
 ## ビルド手順
 
-2017-10-08時点、Ubuntu 16.04 にて
+2018-07-01時点、Ubuntu 16.04 にて
 
 ```sh
+sudo apt-get update
+sudo apt-get -y install apt-file
+sudo apt-file update
+sudo apt-file search add-apt-repository
+sudo apt-get -y install software-properties-common
 sudo apt-get -y install fontforge unar
 git clone git@github.com:miiton/Cica.git
 wget -O ubuntu-font-family-0.83.zip https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip
@@ -64,6 +71,10 @@ unar rounded-mgenplus-20150602.7z
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-bold.ttf ./sourceFonts
 wget https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -O sourceFonts/NotoEmoji-Regular.ttf
+curl -LO http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip
+unar dejavu-fonts-ttf-2.37.zip
+mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf ./sourceFonts/
+mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono-Bold.ttf ./sourceFonts/
 fontforge -lang=py -script cica.py
 ```
 
@@ -95,4 +106,5 @@ Cicaフォントの合成にあたり素晴らしいフォントを提供して�
 - Ubuntu Mono : [Ubuntu Font Family](http://font.ubuntu.com/)
 - Noto Emoji : [googlei18n/noto\-emoji: Noto Emoji fonts](https://github.com/googlei18n/noto-emoji)
 - NERDFonts (without Pomicons) : [Nerd Fonts \- Iconic font aggregator, collection, and patcher](https://nerdfonts.com/)
+- DejaVu Sans Mono : [DejaVu Fonts](https://dejavu-fonts.github.io/)
 
