@@ -19,10 +19,9 @@ logger.addHandler(handler)
 ASCENT = 820
 DESCENT = 204
 SOURCE = './sourceFonts'
-DIST = './dist'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '3.0.0-rc1'
+VERSION = '3.0.0'
 FAMILY = 'Cica'
 
 fonts = [
@@ -74,54 +73,6 @@ fonts = [
         'ubuntu_weight_reduce': 0,
         'mgen_weight_add': 0,
         'italic': True,
-#   }, {
-#       'family': 'Cica',
-#       'name': 'Cica-DemiLight',
-#       'filename': 'Cica-DemiLight.ttf',
-#       'weight': 300,
-#       'weight_name': 'DemiLight',
-#       'style_name': 'DemiLight',
-#       'ubuntu_mono': 'UbuntuMono-R.ttf',
-#       'mgen_plus': 'rounded-mgenplus-1m-light.ttf',
-#       'ubuntu_weight_reduce': 10,
-#       'mgen_weight_add': 20,
-#       'italic': False,
-#   }, {
-#       'family': 'Cica',
-#       'name': 'Cica-DemiLightItalic',
-#       'filename': 'Cica-DemiLightItalic.ttf',
-#       'weight': 300,
-#       'weight_name': 'DemiLight',
-#       'style_name': 'DemiLight Italic',
-#       'ubuntu_mono': 'UbuntuMono-R.ttf',
-#       'mgen_plus': 'rounded-mgenplus-1m-light.ttf',
-#       'ubuntu_weight_reduce': 10,
-#       'mgen_weight_add': 20,
-#       'italic': True,
-#   }, {
-#       'family': 'Cica',
-#       'name': 'Cica-Light',
-#       'filename': 'Cica-Light.ttf',
-#       'weight': 200,
-#       'weight_name': 'Light',
-#       'style_name': 'Light',
-#       'ubuntu_mono': 'UbuntuMono-R.ttf',
-#       'mgen_plus': 'rounded-mgenplus-1m-thin.ttf',
-#       'ubuntu_weight_reduce': 20,
-#       'mgen_weight_add': 10,
-#       'italic': False,
-#   }, {
-#       'family': 'Cica',
-#       'name': 'Cica-LightItalic',
-#       'filename': 'Cica-LightItalic.ttf',
-#       'weight': 200,
-#       'weight_name': 'Light',
-#       'style_name': 'Light Italic',
-#       'ubuntu_mono': 'UbuntuMono-R.ttf',
-#       'mgen_plus': 'rounded-mgenplus-1m-thin.ttf',
-#       'ubuntu_weight_reduce': 20,
-#       'mgen_weight_add': 10,
-#       'italic': True,
     }
 ]
 
@@ -523,7 +474,7 @@ def fix_box_drawings(_f):
     return _f
 
 
-def build_font(_f):
+def build_font(_f, emoji):
     log('Generating %s ...' % _f.get('weight_name'))
     ubuntu = fontforge.open('./sourceFonts/%s' % _f.get('ubuntu_mono'))
     ubuntu = remove_glyph_from_ubuntu(ubuntu)
@@ -599,7 +550,8 @@ def build_font(_f):
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
     cica = add_gopher(cica)
-    cica = add_notoemoji(cica)
+    if emoji:
+        cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
     cica = add_dejavu(cica, _f)
     cica = resize_supersub(cica)
@@ -648,7 +600,11 @@ def build_font(_f):
     # cica.appendSFNTName(0x409,15, "")
     cica.appendSFNTName(0x409,16, _f.get('family'))
     cica.appendSFNTName(0x409,17, _f.get('style_name'))
-    fontpath = './dist/%s' % _f.get('filename')
+    if emoji:
+        fontpath = './dist/%s' % _f.get('filename')
+    else:
+        fontpath = './dist/noemoji/%s' % _f.get('filename')
+
     cica.generate(fontpath)
 
     cica.close()
@@ -837,7 +793,8 @@ def main():
     check_files()
 
     for _f in fonts:
-        build_font(_f)
+        build_font(_f, True)
+        build_font(_f, False)
 
     print('### Succeeded ###')
 
