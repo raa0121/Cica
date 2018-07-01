@@ -191,7 +191,7 @@ def set_os2_values(_font, _info):
     _font.hhea_descent = 100
     _font.hhea_descent_add = True
     _font.hhea_linegap = 0
-    _font.os2_panose = (2, 11, weight / 100, 9, 2, 2, 3, 2, 2, 7)
+    _font.os2_panose = (2, 11, int(weight / 100), 9, 2, 2, 3, 2, 2, 7)
     return _font
 
 def align_to_center(_g):
@@ -556,8 +556,18 @@ def build_font(_f):
     ]
     for g in cica.glyphs():
         g.transform((0.91,0,0,0.91,0,0))
+        full_half_threshold = 700
         if _f.get('italic'):
             g.transform(psMat.skew(0.25))
+            skew_amount = g.font.ascent * 0.91 * 0.25
+            g.width = g.width + skew_amount
+            full_half_threshold += skew_amount
+        if g.width > full_half_threshold:
+            width = 1024
+        else:
+            width = 512
+        g.transform(psMat.translate((width - g.width)/2, 0))
+        g.width = width
         if g.encoding in ignoring_center:
             pass
         else:
