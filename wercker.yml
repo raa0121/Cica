@@ -6,6 +6,12 @@ build:
         name: install packages
         code: |
           apt-get update
+          apt-get install -y apt-file
+          apt-file update
+          apt-file search add-apt-repository
+          apt-get install -y software-properties-common
+          add-apt-repository ppa:fontforge/fontforge
+          apt-get update
           apt-get install -y fontforge unar curl git
 
     - add-ssh-key:
@@ -32,6 +38,10 @@ build:
           mv rounded-mgenplus-20150602/rounded-mgenplus-1m* ./sourceFonts/
           curl -LO https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf
           mv NotoEmoji-Regular.ttf sourceFonts/
+          curl -LO http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip
+          unar dejavu-fonts-ttf-2.37.zip
+          mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf ./sourceFonts/
+          mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono-Bold.ttf ./sourceFonts/
 
     - script:
         name: build
