@@ -41,7 +41,10 @@ o Cica
 ### Dockerを使う場合
 
 ```sh
-docker-compose run cica
+git clone https://github.com/miiton/Cica.git
+cd Cica
+docker-compose up
+docker-compose down
 ```
 
 ### 手動でやる場合
