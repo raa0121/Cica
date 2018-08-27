@@ -4,12 +4,11 @@
 
 ## 特徴
 
-* 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです
+* 以下のフォントを合成後に調整する、プログラミング向けの等幅日本語フォントのCicaを生成するスクリプト群です。
     - 英数字、記号類に [Ubuntu Mono](http://font.ubuntu.com/)
     - それ以外の文字に [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/)
     - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済、Pomiconsを除く※)
     - [Noto Emoji](https://www.google.com/get/noto/)
-* 各種エディタで迷わずに設定できるフォント名にしました(ex. `Hoge Font`, `Hoge_Font` or `Hoge Font Regular`  ??? ARGGGG!!! )
 * tmuxの画面分割に対応しています
 * 非HiDPI（非Retina）のWindowsでも文字が欠けません
 
@@ -33,18 +32,8 @@ o Cica
   * M+ OUTLINE FONTS
 ```
 
-※Nerd Fontsに含まれるPomiconsのグリフは商用利用が出来ないライセンスなのでCicaフォントからは除外しています。
-
-## バリエーション
-
-| ファイル名             | 説明     |
-| ----                   | ----     |
-| Cica-Regular.ttf       | 通常     |
-| Cica-RegularItalic.ttf | 斜体     |
-| Cica-Bold.ttf          | 太字     |
-| Cica-BoldItalic.ttf    | 太字斜体 |
-
-※アイコン類はフォントをインストール後 [https:\/\/miiton.github.io\/Cica\/](https://miiton.github.io/Cica/) で確認出来ます。
+- ※Nerd Fontsに含まれるPomiconsのグリフは商用利用が出来ないライセンスなのでジェネレータからは除外しています。
+- ※アイコン類はフォントをインストール後 [https:\/\/miiton.github.io\/Cica\/](https://miiton.github.io/Cica/) で確認出来ます。
 
 ## ビルド手順
 
@@ -112,4 +101,3 @@ Cicaフォントの合成にあたり素晴らしいフォントを提供して�
 - Noto Emoji : [googlei18n/noto\-emoji: Noto Emoji fonts](https://github.com/googlei18n/noto-emoji)
 - NERDFonts (without Pomicons) : [Nerd Fonts \- Iconic font aggregator, collection, and patcher](https://nerdfonts.com/)
 - DejaVu Sans Mono : [DejaVu Fonts](https://dejavu-fonts.github.io/)
-
