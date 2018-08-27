@@ -2,10 +2,6 @@
 
 ![on MacVim](screenshots/ss1.png)
 
-## ダウンロード
-
-[リリースページ](https://github.com/miiton/Cica/releases/latest)にビルド済みのフォントを配置しています。
-
 ## 特徴
 
 * 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです
@@ -52,7 +48,16 @@ o Cica
 
 ## ビルド手順
 
-2018-07-01時点、Ubuntu 16.04 にて
+
+### Dockerを使う場合
+
+```sh
+docker-compose run cica
+```
+
+### 手動でやる場合
+
+2018-08-27時点、Ubuntu 16.04 にて
 
 ```sh
 sudo apt-get update
@@ -62,15 +67,16 @@ sudo apt-file search add-apt-repository
 sudo apt-get -y install software-properties-common
 sudo apt-get -y install fontforge unar
 git clone git@github.com:miiton/Cica.git
-wget -O ubuntu-font-family-0.83.zip https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip
+cd Cica
+curl -L https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip -o ubuntu-font-family-0.83.zip
 unar ubuntu-font-family-0.83.zip
 cp ubuntu-font-family-0.83/UbuntuMono-R.ttf ./sourceFonts/
 cp ubuntu-font-family-0.83/UbuntuMono-B.ttf ./sourceFonts/
-wget https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
+curl -LO https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
 unar rounded-mgenplus-20150602.7z
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-bold.ttf ./sourceFonts
-wget https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -O sourceFonts/NotoEmoji-Regular.ttf
+curl -L https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -o sourceFonts/NotoEmoji-Regular.ttf
 curl -LO http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip
 unar dejavu-fonts-ttf-2.37.zip
 mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf ./sourceFonts/
@@ -89,7 +95,6 @@ Copyright (c) 2000-2012 by George Williams.
 fontforge 20120731
 libfontforge 20120731-ML
 ```
-
 
 # ライセンス
 
