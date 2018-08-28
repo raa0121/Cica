@@ -43,7 +43,7 @@ o Cica
 ```sh
 git clone https://github.com/miiton/Cica.git
 cd Cica
-docker-compose up
+docker-compose up     # ./dist/ に出力される
 docker-compose down
 ```
 
