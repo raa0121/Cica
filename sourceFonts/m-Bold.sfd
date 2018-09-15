@@ -1,0 +1,869 @@
+SplineFontDB: 3.0
+FontName: CicaDev-Regular
+FullName: CicaDev-Regular
+FamilyName: CicaDev
+Weight: Book
+Copyright: Copyright (c) 2018, Takahiro Minami (https://tmnm.tech)\n\nSource Font Softwares are licensed and copyrighted under the\n- Ubuntu Font Licence, Version 1.0\n  - Ubuntu Mono : http://font.ubuntu.com/\n- CC BY 4.0\n  - Seti-UI + Custom : https://github.com/jesseweed/seti-ui\n- MIT Licenses\n  - DevIcons : https://github.com/vorillaz/devicons\n  - Powerline Extra Symbols : https://github.com/ryanoasis/powerline-extra-symbols\n  - Font Awesome : https://github.com/FortAwesome/Font-Awesome\n  - Font Awesome Extension : https://github.com/AndreLZGava/font-awesome-extension\n  - Octicons : https://github.com/primer/octicons\n  - IEC Power Symbols : https://unicodepowersymbol.com/\n  - Powerline Symbols : https://github.com/powerline/powerline\n- Apache License 2.0\n  - Noto Emoji : https://github.com/googlei18n/noto-emoji\n- SIL Open Font License, Version 1.1\n  - Rounded Mgen+ : http://jikasei.me/font/rounded-mgenplus/\n- Free license\n  - DejaVu Sans Mono : https://dejavu-fonts.github.io/\n
+Version: 4.0.0
+ItalicAngle: 0
+UnderlinePosition: -6
+UnderlineWidth: 51
+Ascent: 819
+Descent: 205
+InvalidEm: 0
+sfntRevision: 0x00010f1a
+LayerCount: 2
+Layer: 0 1 "Back" 1
+Layer: 1 1 "Fore" 0
+HasVMetrics: 1
+XUID: [1021 842 -796345161 12618039]
+StyleMap: 0x0040
+FSType: 0
+OS2Version: 1
+OS2_WeightWidthSlopeOnly: 0
+OS2_UseTypoMetrics: 0
+CreationTime: 1433194288
+ModificationTime: 1536990248
+PfmFamily: 17
+TTFWeight: 400
+TTFWidth: 5
+LineGap: 0
+VLineGap: 0
+Panose: 2 11 4 9 2 2 3 2 2 7
+OS2TypoAscent: 670
+OS2TypoAOffset: 0
+OS2TypoDescent: -104
+OS2TypoDOffset: 0
+OS2TypoLinegap: 0
+OS2WinAscent: 820
+OS2WinAOffset: 0
+OS2WinDescent: 204
+OS2WinDOffset: 0
+HheadAscent: 862
+HheadAOffset: 0
+HheadDescent: -199
+HheadDOffset: 0
+OS2SubXSize: 666
+OS2SubYSize: 716
+OS2SubXOff: 0
+OS2SubYOff: 143
+OS2SupXSize: 666
+OS2SupYSize: 716
+OS2SupXOff: 0
+OS2SupYOff: 490
+OS2StrikeYSize: 50
+OS2StrikeYPos: 264
+OS2FamilyClass: 2057
+OS2Vendor: 'TMNM'
+OS2CodePages: 4012019f.dfd70000
+OS2UnicodeRanges: e00002ff.6a47fdeb.00000012.00000000
+Lookup: 1 0 0 "'vert' Vertical Alternates (obs) lookup 0" { "'vert' Vertical Alternates (obs) lookup 0 subtable"  } ['vert' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 1 0 0 "'aalt' Access All Alternates lookup 1" { "'aalt' Access All Alternates lookup 1 subtable"  } ['aalt' ('cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 1 0 0 "'jp90' JIS90 Forms lookup 2" { "'jp90' JIS90 Forms lookup 2 subtable"  } ['jp90' ('cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 4 0 1 "'liga' Standard Ligatures in Hiragana & Katakana lookup 3" { "'liga' Standard Ligatures in Hiragana & Katakana lookup 3 subtable"  } ['ccmp' ('DFLT' <'dflt' > 'kana' <'JAN ' 'dflt' > ) 'liga' ('DFLT' <'dflt' > 'kana' <'JAN ' 'dflt' > ) ]
+Lookup: 4 0 0 "'ccmp' Glyph Composition/Decomposition lookup 4" { "'ccmp' Glyph Composition/Decomposition lookup 4 subtable"  } ['ccmp' ('hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 4 0 0 "'ccmp' Glyph Composition/Decomposition lookup 5" { "'ccmp' Glyph Composition/Decomposition lookup 5 subtable"  } ['ccmp' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 1 0 0 "Single Substitution lookup 6" { "Single Substitution lookup 6 subtable"  } []
+Lookup: 6 0 0 "'ccmp' Glyph Composition/Decomposition lookup 7" { "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 0"  "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 1"  "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 2"  } ['ccmp' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 1 0 0 "'aalt' Access All Alternates lookup 8" { "'aalt' Access All Alternates lookup 8 subtable"  } ['aalt' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 4 0 0 "'ccmp' Glyph Composition/Decomposition lookup 9" { "'ccmp' Glyph Composition/Decomposition lookup 9 subtable"  } ['ccmp' ('hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 6 0 0 "'ccmp' Glyph Composition/Decomposition lookup 10" { "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 0"  "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 1"  "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 2"  } ['ccmp' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 1 0 0 "'vrt2' Vertical Rotation & Alternates lookup 11" { "'vrt2' Vertical Rotation & Alternates lookup 11 subtable" ("vert") } ['vrt2' ('cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 3 0 0 "'aalt' Access All Alternates lookup 12" { "'aalt' Access All Alternates lookup 12 subtable"  } ['aalt' ('DFLT' <'dflt' > 'cyrl' <'dflt' > 'grek' <'dflt' > 'hani' <'dflt' > 'kana' <'JAN ' 'dflt' > 'latn' <'dflt' > ) ]
+Lookup: 262 1 0 "'mkmk' Mark to Mark in Arabic lookup 0" { "'mkmk' Mark to Mark in Arabic lookup 0 subtable"  } ['mkmk' ('arab' <'dflt' > ) ]
+Lookup: 262 1 0 "'mkmk' Mark to Mark in Arabic lookup 1" { "'mkmk' Mark to Mark in Arabic lookup 1 subtable"  } ['mkmk' ('arab' <'dflt' > ) ]
+Lookup: 261 1 0 "'mark' Mark Positioning in Arabic lookup 2" { "'mark' Mark Positioning in Arabic lookup 2 subtable"  } ['mark' ('arab' <'dflt' > ) ]
+Lookup: 260 1 0 "'mark' Mark Positioning in Arabic lookup 3" { "'mark' Mark Positioning in Arabic lookup 3 subtable"  } ['mark' ('arab' <'dflt' > ) ]
+Lookup: 261 1 0 "'mark' Mark Positioning in Arabic lookup 4" { "'mark' Mark Positioning in Arabic lookup 4 subtable"  } ['mark' ('arab' <'dflt' > ) ]
+Lookup: 260 1 0 "'mark' Mark Positioning in Arabic lookup 5" { "'mark' Mark Positioning in Arabic lookup 5 subtable"  } ['mark' ('arab' <'dflt' > ) ]
+Lookup: 260 0 0 "'mark' Mark Positioning lookup 6" { "'mark' Mark Positioning lookup 6 anchor 0"  "'mark' Mark Positioning lookup 6 anchor 1"  } ['mark' ('cyrl' <'SRB ' 'dflt' > 'grek' <'dflt' > 'latn' <'ISM ' 'KSM ' 'LSM ' 'MOL ' 'NSM ' 'ROM ' 'SKS ' 'SSM ' 'dflt' > ) ]
+Lookup: 257 0 0 "'mark' Mark Positioning lookup 7" { "'mark' Mark Positioning lookup 7 subtable"  } ['mark' ('cyrl' <'SRB ' 'dflt' > 'grek' <'dflt' > 'latn' <'ISM ' 'KSM ' 'LSM ' 'MOL ' 'NSM ' 'ROM ' 'SKS ' 'SSM ' 'dflt' > ) ]
+Lookup: 260 0 0 "'mark' Mark Positioning in Lao lookup 8" { "'mark' Mark Positioning in Lao lookup 8 subtable"  } ['mark' ('lao ' <'dflt' > ) ]
+Lookup: 257 8 0 "'rtbd' Right Bounds in Lao lookup 9" { "'rtbd' Right Bounds in Lao lookup 9 subtable"  } ['rtbd' ('lao ' <'dflt' > ) ]
+DEI: 91125
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 2" 0 0 0 1
+ 1 0 3
+  Coverage: 15 uni0456 uni0458
+  FCoverage: 0 
+  FCoverage: 0 
+  FCoverage: 0 
+ 0
+EndFPST
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 1" 0 0 0 1
+ 1 0 2
+  Coverage: 15 uni0456 uni0458
+  FCoverage: 0 
+  FCoverage: 0 
+ 0
+EndFPST
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 10 contextual 0" 0 0 0 1
+ 1 0 1
+  Coverage: 15 uni0456 uni0458
+  FCoverage: 0 
+ 0
+EndFPST
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 2" 0 0 0 1
+ 1 0 3
+  Coverage: 19 i j uni0456 uni0458
+  FCoverage: 0 
+  FCoverage: 0 
+  FCoverage: 0 
+ 1
+  SeqLookup: 0 "Single Substitution lookup 6"
+EndFPST
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 1" 0 0 0 1
+ 1 0 2
+  Coverage: 19 i j uni0456 uni0458
+  FCoverage: 0 
+  FCoverage: 0 
+ 1
+  SeqLookup: 0 "Single Substitution lookup 6"
+EndFPST
+ChainSub2: coverage "'ccmp' Glyph Composition/Decomposition lookup 7 contextual 0" 0 0 0 1
+ 1 0 1
+  Coverage: 19 i j uni0456 uni0458
+  FCoverage: 0 
+ 1
+  SeqLookup: 0 "Single Substitution lookup 6"
+EndFPST
+TtTable: prep
+PUSHW_1
+ 511
+SCANCTRL
+PUSHB_1
+ 1
+SCANTYPE
+SVTCA[y-axis]
+MPPEM
+PUSHB_1
+ 8
+LT
+IF
+PUSHB_2
+ 1
+ 1
+INSTCTRL
+EIF
+PUSHB_2
+ 70
+ 6
+CALL
+IF
+POP
+PUSHB_1
+ 16
+EIF
+MPPEM
+PUSHB_1
+ 20
+GT
+IF
+POP
+PUSHB_1
+ 128
+EIF
+SCVTCI
+PUSHB_1
+ 6
+CALL
+NOT
+IF
+EIF
+PUSHB_1
+ 20
+CALL
+EndTTInstrs
+TtTable: fpgm
+PUSHB_1
+ 0
+FDEF
+PUSHB_1
+ 0
+SZP0
+MPPEM
+PUSHB_1
+ 42
+LT
+IF
+PUSHB_1
+ 74
+SROUND
+EIF
+PUSHB_1
+ 0
+SWAP
+MIAP[rnd]
+RTG
+PUSHB_1
+ 6
+CALL
+IF
+RTDG
+EIF
+MPPEM
+PUSHB_1
+ 42
+LT
+IF
+RDTG
+EIF
+DUP
+MDRP[rp0,rnd,grey]
+PUSHB_1
+ 1
+SZP0
+MDAP[no-rnd]
+RTG
+ENDF
+PUSHB_1
+ 1
+FDEF
+DUP
+MDRP[rp0,min,white]
+PUSHB_1
+ 12
+CALL
+ENDF
+PUSHB_1
+ 2
+FDEF
+MPPEM
+GT
+IF
+RCVT
+SWAP
+EIF
+POP
+ENDF
+PUSHB_1
+ 3
+FDEF
+ROUND[Black]
+RTG
+DUP
+PUSHB_1
+ 64
+LT
+IF
+POP
+PUSHB_1
+ 64
+EIF
+ENDF
+PUSHB_1
+ 4
+FDEF
+PUSHB_1
+ 6
+CALL
+IF
+POP
+SWAP
+POP
+ROFF
+IF
+MDRP[rp0,min,rnd,black]
+ELSE
+MDRP[min,rnd,black]
+EIF
+ELSE
+MPPEM
+GT
+IF
+IF
+MIRP[rp0,min,rnd,black]
+ELSE
+MIRP[min,rnd,black]
+EIF
+ELSE
+SWAP
+POP
+PUSHB_1
+ 5
+CALL
+IF
+PUSHB_1
+ 70
+SROUND
+EIF
+IF
+MDRP[rp0,min,rnd,black]
+ELSE
+MDRP[min,rnd,black]
+EIF
+EIF
+EIF
+RTG
+ENDF
+PUSHB_1
+ 5
+FDEF
+GFV
+NOT
+AND
+ENDF
+PUSHB_1
+ 6
+FDEF
+PUSHB_2
+ 34
+ 1
+GETINFO
+LT
+IF
+PUSHB_1
+ 32
+GETINFO
+NOT
+NOT
+ELSE
+PUSHB_1
+ 0
+EIF
+ENDF
+PUSHB_1
+ 7
+FDEF
+PUSHB_2
+ 36
+ 1
+GETINFO
+LT
+IF
+PUSHB_1
+ 64
+GETINFO
+NOT
+NOT
+ELSE
+PUSHB_1
+ 0
+EIF
+ENDF
+PUSHB_1
+ 8
+FDEF
+SRP2
+SRP1
+DUP
+IP
+MDAP[rnd]
+ENDF
+PUSHB_1
+ 9
+FDEF
+DUP
+RDTG
+PUSHB_1
+ 6
+CALL
+IF
+MDRP[rnd,grey]
+ELSE
+MDRP[min,rnd,black]
+EIF
+DUP
+PUSHB_1
+ 3
+CINDEX
+MD[grid]
+SWAP
+DUP
+PUSHB_1
+ 4
+MINDEX
+MD[orig]
+PUSHB_1
+ 0
+LT
+IF
+ROLL
+NEG
+ROLL
+SUB
+DUP
+PUSHB_1
+ 0
+LT
+IF
+SHPIX
+ELSE
+POP
+POP
+EIF
+ELSE
+ROLL
+ROLL
+SUB
+DUP
+PUSHB_1
+ 0
+GT
+IF
+SHPIX
+ELSE
+POP
+POP
+EIF
+EIF
+RTG
+ENDF
+PUSHB_1
+ 10
+FDEF
+PUSHB_1
+ 6
+CALL
+IF
+POP
+SRP0
+ELSE
+SRP0
+POP
+EIF
+ENDF
+PUSHB_1
+ 11
+FDEF
+DUP
+MDRP[rp0,white]
+PUSHB_1
+ 12
+CALL
+ENDF
+PUSHB_1
+ 12
+FDEF
+DUP
+MDAP[rnd]
+PUSHB_1
+ 7
+CALL
+NOT
+IF
+DUP
+DUP
+GC[orig]
+SWAP
+GC[cur]
+SUB
+ROUND[White]
+DUP
+IF
+DUP
+ABS
+DIV
+SHPIX
+ELSE
+POP
+POP
+EIF
+ELSE
+POP
+EIF
+ENDF
+PUSHB_1
+ 13
+FDEF
+SRP2
+SRP1
+DUP
+DUP
+IP
+MDAP[rnd]
+DUP
+ROLL
+DUP
+GC[orig]
+ROLL
+GC[cur]
+SUB
+SWAP
+ROLL
+DUP
+ROLL
+SWAP
+MD[orig]
+PUSHB_1
+ 0
+LT
+IF
+SWAP
+PUSHB_1
+ 0
+GT
+IF
+PUSHB_1
+ 64
+SHPIX
+ELSE
+POP
+EIF
+ELSE
+SWAP
+PUSHB_1
+ 0
+LT
+IF
+PUSHB_1
+ 64
+NEG
+SHPIX
+ELSE
+POP
+EIF
+EIF
+ENDF
+PUSHB_1
+ 14
+FDEF
+PUSHB_1
+ 6
+CALL
+IF
+RTDG
+MDRP[rp0,rnd,white]
+RTG
+POP
+POP
+ELSE
+DUP
+MDRP[rp0,rnd,white]
+ROLL
+MPPEM
+GT
+IF
+DUP
+ROLL
+SWAP
+MD[grid]
+DUP
+PUSHB_1
+ 0
+NEQ
+IF
+SHPIX
+ELSE
+POP
+POP
+EIF
+ELSE
+POP
+POP
+EIF
+EIF
+ENDF
+PUSHB_1
+ 15
+FDEF
+SWAP
+DUP
+MDRP[rp0,rnd,white]
+DUP
+MDAP[rnd]
+PUSHB_1
+ 7
+CALL
+NOT
+IF
+SWAP
+DUP
+IF
+MPPEM
+GTEQ
+ELSE
+POP
+PUSHB_1
+ 1
+EIF
+IF
+ROLL
+PUSHB_1
+ 4
+MINDEX
+MD[grid]
+SWAP
+ROLL
+SWAP
+DUP
+ROLL
+MD[grid]
+ROLL
+SWAP
+SUB
+SHPIX
+ELSE
+POP
+POP
+POP
+POP
+EIF
+ELSE
+POP
+POP
+POP
+POP
+POP
+EIF
+ENDF
+PUSHB_1
+ 16
+FDEF
+DUP
+MDRP[rp0,min,white]
+PUSHB_1
+ 18
+CALL
+ENDF
+PUSHB_1
+ 17
+FDEF
+DUP
+MDRP[rp0,white]
+PUSHB_1
+ 18
+CALL
+ENDF
+PUSHB_1
+ 18
+FDEF
+DUP
+MDAP[rnd]
+PUSHB_1
+ 7
+CALL
+NOT
+IF
+DUP
+DUP
+GC[orig]
+SWAP
+GC[cur]
+SUB
+ROUND[White]
+ROLL
+DUP
+GC[orig]
+SWAP
+GC[cur]
+SWAP
+SUB
+ROUND[White]
+ADD
+DUP
+IF
+DUP
+ABS
+DIV
+SHPIX
+ELSE
+POP
+POP
+EIF
+ELSE
+POP
+POP
+EIF
+ENDF
+PUSHB_1
+ 19
+FDEF
+DUP
+ROLL
+DUP
+ROLL
+SDPVTL[orthog]
+DUP
+PUSHB_1
+ 3
+CINDEX
+MD[orig]
+ABS
+SWAP
+ROLL
+SPVTL[orthog]
+PUSHB_1
+ 32
+LT
+IF
+ALIGNRP
+ELSE
+MDRP[grey]
+EIF
+ENDF
+PUSHB_1
+ 20
+FDEF
+PUSHB_4
+ 0
+ 64
+ 1
+ 64
+WS
+WS
+SVTCA[x-axis]
+MPPEM
+PUSHW_1
+ 4096
+MUL
+SVTCA[y-axis]
+MPPEM
+PUSHW_1
+ 4096
+MUL
+DUP
+ROLL
+DUP
+ROLL
+NEQ
+IF
+DUP
+ROLL
+DUP
+ROLL
+GT
+IF
+SWAP
+DIV
+DUP
+PUSHB_1
+ 0
+SWAP
+WS
+ELSE
+DIV
+DUP
+PUSHB_1
+ 1
+SWAP
+WS
+EIF
+DUP
+PUSHB_1
+ 64
+GT
+IF
+PUSHB_3
+ 0
+ 32
+ 0
+RS
+MUL
+WS
+PUSHB_3
+ 1
+ 32
+ 1
+RS
+MUL
+WS
+PUSHB_1
+ 32
+MUL
+PUSHB_1
+ 25
+NEG
+JMPR
+POP
+EIF
+ELSE
+POP
+POP
+EIF
+ENDF
+PUSHB_1
+ 21
+FDEF
+PUSHB_1
+ 1
+RS
+MUL
+SWAP
+PUSHB_1
+ 0
+RS
+MUL
+SWAP
+ENDF
+EndTTInstrs
+ShortTable: cvt  6
+  -220
+  0
+  520
+  730
+  33
+  633
+EndShort
+ShortTable: maxp 16
+  1
+  0
+  21272
+  2108
+  92
+  330
+  12
+  2
+  1
+  2
+  22
+  0
+  256
+  0
+  3
+  1
+EndShort
+LangName: 1033 "" "" "" "4.0.0;CicaDev-Regular" "" "Version 4.0.0" "" "Source is a trademark of Adobe Systems Incorporated in the United States and/or other countries." "" "[Source Han Sans]+AAoA-Ryoko NISHIZUKA +iX9YWm28W1AA (kana & ideographs); Paul D. Hunt (Latin, Greek & Cyrillic); Wenlong ZHANG +XyBlh5+Z (bopomofo); Sandoll Communication +wLCzzM7ku6SyyM8Ax3TBWAAA, Soo-young JANG +x6XCGMYB & Joo-yeon KANG +rBXI/MXw (hangul elements, letters & syllables)+AAoACgAA[M+- OUTLINE FONTS]+AAoA-Coji Morishita +aO5OC21pU/gA (coz)" "Dr. Ken Lunde (project architect, glyph set definition & overall production); Masataka HATTORI +Zw2Q6GtjjLQA (production & ideograph elements)" "http://jikasei.me/" "" "Copyright (c) 2018, Takahiro Minami (https://tmnm.tech),+AAoA-with Reserved Font Name Cica+AAoACgAA-The Cica generate script is licensed under the MIT License+AAoACgAA-Source font softwares are licensed under the+AAoACgAA-- Ubuntu Font Licence, Version 1.0+AAoA  - Ubuntu Mono : http://font.ubuntu.com/+AAoA-- CC BY 4.0+AAoA  - Seti-UI +- Custom : https://github.com/jesseweed/seti-ui+AAoA-- MIT Licenses+AAoA  - Cica Generate Script : https://github.com/miiton/Cica+AAoA  - DevIcons : https://github.com/vorillaz/devicons+AAoA  - Powerline Extra Symbols : https://github.com/ryanoasis/powerline-extra-symbols+AAoA  - Font Awesome : https://github.com/FortAwesome/Font-Awesome+AAoA  - Font Awesome Extension : https://github.com/AndreLZGava/font-awesome-extension+AAoA  - Octicons : https://github.com/primer/octicons+AAoA  - IEC Power Symbols : https://unicodepowersymbol.com/+AAoA  - Powerline Symbols : https://github.com/powerline/powerline+AAoA-- Apache License 2.0+AAoA  - Noto Emoji : https://github.com/googlei18n/noto-emoji+AAoA-- SIL Open Font License, Version 1.1+AAoA  - Rounded Mgen+- : http://jikasei.me/font/rounded-mgenplus/+AAoA-- Free license+AAoA  - DejaVu Sans Mono : https://dejavu-fonts.github.io/+AAoACgAA-These licenses are copied below, and is also available with a FAQ at:+AAoACgAA-- http://font.ubuntu.com/licence/+AAoA-- http://scripts.sil.org/OFL+AAoA" "http://scripts.sil.org/OFL" "" "CicaDev" "Regular"
+LangName: 1041 "Copyright (c) 2018, Takahiro Minami (https://tmnm.tech)+AAoACgAA-Source Font Softwares are licensed and copyrighted under the+AAoA-- Ubuntu Font Licence, Version 1.0+AAoA  - Ubuntu Mono : http://font.ubuntu.com/+AAoA-- CC BY 4.0+AAoA  - Seti-UI +- Custom : https://github.com/jesseweed/seti-ui+AAoA-- MIT Licenses+AAoA  - DevIcons : https://github.com/vorillaz/devicons+AAoA  - Powerline Extra Symbols : https://github.com/ryanoasis/powerline-extra-symbols+AAoA  - Font Awesome : https://github.com/FortAwesome/Font-Awesome+AAoA  - Font Awesome Extension : https://github.com/AndreLZGava/font-awesome-extension+AAoA  - Octicons : https://github.com/primer/octicons+AAoA  - IEC Power Symbols : https://unicodepowersymbol.com/+AAoA  - Powerline Symbols : https://github.com/powerline/powerline+AAoA-- Apache License 2.0+AAoA  - Noto Emoji : https://github.com/googlei18n/noto-emoji+AAoA-- SIL Open Font License, Version 1.1+AAoA  - Rounded Mgen+- : http://jikasei.me/font/rounded-mgenplus/+AAoA-- Free license+AAoA  - DejaVu Sans Mono : https://dejavu-fonts.github.io/+AAoA" "CicaDev" "Regular" "" "CicaDev-Regular" "Version 4.0.0" "" "" "" "" "" "" "" "Copyright (c) 2018, Takahiro Minami (https://tmnm.tech),+AAoA-with Reserved Font Name Cica+AAoACgAA-The Cica generate script is licensed under the MIT License+AAoACgAA-Source font softwares are licensed under the+AAoACgAA-- Ubuntu Font Licence, Version 1.0+AAoA  - Ubuntu Mono : http://font.ubuntu.com/+AAoA-- CC BY 4.0+AAoA  - Seti-UI +- Custom : https://github.com/jesseweed/seti-ui+AAoA-- MIT Licenses+AAoA  - Cica Generate Script : https://github.com/miiton/Cica+AAoA  - DevIcons : https://github.com/vorillaz/devicons+AAoA  - Powerline Extra Symbols : https://github.com/ryanoasis/powerline-extra-symbols+AAoA  - Font Awesome : https://github.com/FortAwesome/Font-Awesome+AAoA  - Font Awesome Extension : https://github.com/AndreLZGava/font-awesome-extension+AAoA  - Octicons : https://github.com/primer/octicons+AAoA  - IEC Power Symbols : https://unicodepowersymbol.com/+AAoA  - Powerline Symbols : https://github.com/powerline/powerline+AAoA-- Apache License 2.0+AAoA  - Noto Emoji : https://github.com/googlei18n/noto-emoji+AAoA-- SIL Open Font License, Version 1.1+AAoA  - Rounded Mgen+- : http://jikasei.me/font/rounded-mgenplus/+AAoA-- Free license+AAoA  - DejaVu Sans Mono : https://dejavu-fonts.github.io/+AAoACgAA-These licenses are copied below, and is also available with a FAQ at:+AAoACgAA-- http://font.ubuntu.com/licence/+AAoA-- http://scripts.sil.org/OFL+AAoA" "" "" "CicaDev" "Regular"
+GaspTable: 1 65535 2 0
+Encoding: UnicodeFull
+UnicodeInterp: none
+NameList: AGL For New Fonts
+DisplaySize: -48
+AntiAlias: 1
+FitToEm: 0
+WinInfo: 60 20 11
+AnchorClass2: "Anchor-0" "'mkmk' Mark to Mark in Arabic lookup 0 subtable" "Anchor-1" "'mkmk' Mark to Mark in Arabic lookup 1 subtable" "Anchor-2" "'mark' Mark Positioning in Arabic lookup 2 subtable" "Anchor-3" "'mark' Mark Positioning in Arabic lookup 3 subtable" "Anchor-4" "'mark' Mark Positioning in Arabic lookup 4 subtable" "Anchor-5" "'mark' Mark Positioning in Arabic lookup 5 subtable" "Anchor-6" "'mark' Mark Positioning lookup 6 anchor 0" "Anchor-7" "'mark' Mark Positioning lookup 6 anchor 1" "Anchor-8" "'mark' Mark Positioning lookup 6 anchor 1" "Anchor-9" "'mark' Mark Positioning in Lao lookup 8 subtable" "Anchor-10" "'mark' Mark Positioning in Lao lookup 8 subtable"
+BeginChars: 1114709 1
+
+StartChar: m
+Encoding: 109 109 0
+Width: 512
+VWidth: 880
+GlyphClass: 2
+Flags: W
+AnchorPoint: "Anchor-6" 256 504 basechar 0
+LayerCount: 2
+Fore
+SplineSet
+25 482 m 1,0,-1
+ 104 482 l 1,1,-1
+ 117 432 l 1,2,3
+ 127 461 127 461 150.5 477 c 128,-1,4
+ 174 493 174 493 203 493 c 0,5,6
+ 233 493 233 493 257 475.5 c 128,-1,7
+ 281 458 281 458 286 433 c 1,8,9
+ 314 493 314 493 378 493 c 0,10,11
+ 441 493 441 493 463 451 c 0,12,13
+ 486 408 486 408 486 271 c 2,14,-1
+ 486 0 l 1,15,-1
+ 383 0 l 1,16,-1
+ 383 309 l 2,17,18
+ 383 362 383 362 375 381 c 0,19,20
+ 367 399 367 399 345 399 c 0,21,22
+ 324 399 324 399 316 381 c 0,23,24
+ 307 363 307 363 307 309 c 2,25,-1
+ 307 191.98046875 l 6,26,27
+ 307 192 307 192 306 192 c 6,28,-1
+ 205 192 l 5,29,-1
+ 205 309 l 2,30,31
+ 205 359 205 359 196 381 c 0,32,33
+ 188 399 188 399 166 399 c 0,34,35
+ 145 399 145 399 137 382 c 0,36,37
+ 128 365 128 365 128 309 c 2,38,-1
+ 128 0 l 1,39,-1
+ 25 0 l 1,40,-1
+ 25 482 l 1,0,-1
+EndSplineSet
+EndChar
+EndChars
+EndSplineFont

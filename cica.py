@@ -21,8 +21,8 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '3.0.0'
-FAMILY = 'Cica'
+VERSION = '4.0.0'
+FAMILY = 'CicaDev'
 
 fonts = [
     {
@@ -32,9 +32,9 @@ fonts = [
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Regular',
-         'ubuntu_mono': 'UbuntuMono-R.ttf',
+         'hack': 'Hack-Regular.ttf',
          'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
-         'ubuntu_weight_reduce': 0,
+         'hack_weight_reduce': 0,
          'mgen_weight_add': 0,
          'italic': False,
      }, {
@@ -44,9 +44,9 @@ fonts = [
          'weight': 400,
          'weight_name': 'Regular',
          'style_name': 'Italic',
-         'ubuntu_mono': 'UbuntuMono-R.ttf',
+         'hack': 'Hack-Regular.ttf',
          'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
-         'ubuntu_weight_reduce': 0,
+         'hack_weight_reduce': 0,
          'mgen_weight_add': 0,
          'italic': True,
     }, {
@@ -56,9 +56,9 @@ fonts = [
         'weight': 700,
         'weight_name': 'Bold',
          'style_name': 'Bold',
-        'ubuntu_mono': 'UbuntuMono-B.ttf',
+        'hack': 'Hack-Bold.ttf',
         'mgen_plus': 'rounded-mgenplus-1m-bold.ttf',
-        'ubuntu_weight_reduce': 0,
+        'hack_weight_reduce': 0,
         'mgen_weight_add': 0,
         'italic': False,
     }, {
@@ -68,9 +68,9 @@ fonts = [
         'weight': 700,
         'weight_name': 'Bold',
         'style_name': 'Bold Italic',
-        'ubuntu_mono': 'UbuntuMono-B.ttf',
+        'hack': 'Hack-Bold.ttf',
         'mgen_plus': 'rounded-mgenplus-1m-bold.ttf',
-        'ubuntu_weight_reduce': 0,
+        'hack_weight_reduce': 0,
         'mgen_weight_add': 0,
         'italic': True,
     }
@@ -79,8 +79,8 @@ fonts = [
 def log(str):
     logger.debug(str)
 
-def remove_glyph_from_ubuntu(_font):
-    u"""Rounded Mgen+を採用したいグリフをUbuntuMonoから削除
+def remove_glyph_from_hack(_font):
+    u"""Rounded Mgen+を採用したいグリフをHackから削除
     """
     log('remove_ambiguous() : %s' % _font.fontname)
 
@@ -98,7 +98,7 @@ def remove_glyph_from_ubuntu(_font):
 def check_files():
     err = 0
     for f in fonts:
-        if not os.path.isfile('./sourceFonts/%s' % f.get('ubuntu_mono')):
+        if not os.path.isfile('./sourceFonts/%s' % f.get('hack')):
             logger.error('%s not exists.' % f)
             err = 1
 
@@ -435,6 +435,49 @@ def zenkaku_space(_f):
         g = align_to_center(g)
     return _f
 
+def zero(_f):
+    _f.selection.select(0x4f)
+    _f.copy()
+    _f.selection.select(0x30)
+    _f.paste()
+    _f.selection.select(0xb7)
+    _f.copy()
+    _f.selection.select(0x30)
+    _f.pasteInto()
+    for g in _f.selection.byGlyphs:
+        g = align_to_center(g)
+    return _f
+
+def modify_WM(_f):
+    _f.selection.select(0x57)
+    _f.transform(psMat.scale(0.95, 1.0))
+    _f.copy()
+    _f.selection.select(0x4d)
+    _f.paste()
+    _f.transform(psMat.compose(psMat.rotate(math.radians(180)), psMat.translate(0, 627)))
+    for g in _f.selection.byGlyphs:
+        g = align_to_center(g)
+    return _f
+
+def modify_m(_f, _weight):
+    m = fontforge.open('./sourceFonts/m-Regular.sfd')
+    if _weight == 'Bold':
+        m.close()
+        m = fontforge.open('./sourceFonts/m-Bold.sfd')
+    m.selection.select(0x6d)
+    m.copy()
+    _f.selection.select(0x6d)
+    _f.paste()
+    for g in m.glyphs():
+        if g.encoding == 0x6d:
+            anchorPoints = g.anchorPoints
+    for g in _f.glyphs():
+        if g.encoding == 0x6d:
+            g.anchorPoints = anchorPoints
+
+    return _f
+
+
 def add_smalltriangle(_f):
     _f.selection.select(0x25bc)
     _f.copy()
@@ -476,16 +519,18 @@ def fix_box_drawings(_f):
 
 def build_font(_f, emoji):
     log('Generating %s ...' % _f.get('weight_name'))
-    ubuntu = fontforge.open('./sourceFonts/%s' % _f.get('ubuntu_mono'))
-    ubuntu = remove_glyph_from_ubuntu(ubuntu)
+    hack = fontforge.open('./sourceFonts/%s' % _f.get('hack'))
+    hack = remove_glyph_from_hack(hack)
     cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
     nerd = fontforge.open('./sourceFonts/nerd.ttf')
 
-    for g in ubuntu.glyphs():
-        if _f.get('ubuntu_weight_reduce') != 0:
-            # g.changeWeight(_f.get('ubuntu_weight_reduce'), 'auto', 0, 0, 'auto')
-            g.stroke("circular", _f.get('ubuntu_weight_reduce'), 'butt', 'round', 'removeexternal')
+    for g in hack.glyphs():
+        g.transform((0.42,0,0,0.42,0,0))
+        if _f.get('hack_weight_reduce') != 0:
+            # g.changeWeight(_f.get('hack_weight_reduce'), 'auto', 0, 0, 'auto')
+            g.stroke("circular", _f.get('hack_weight_reduce'), 'butt', 'round', 'removeexternal')
         g = align_to_center(g)
+    hack = modify_m(hack, _f.get('weight_name'))
 
 
     alternate_expands = [
@@ -524,15 +569,15 @@ def build_font(_f, emoji):
         else:
             g = align_to_center(g)
 
-    for g in ubuntu.glyphs():
+    for g in hack.glyphs():
         if  g.isWorthOutputting:
             if _f.get('italic'):
                 g.transform(psMat.skew(0.25))
             if g.encoding >= 0x2500 and g.encoding <= 0x25af:
                 g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
                 g = align_to_center(g)
-            ubuntu.selection.select(g.encoding)
-            ubuntu.copy()
+            hack.selection.select(g.encoding)
+            hack.copy()
             cica.selection.select(g.encoding)
             cica.paste()
 
@@ -547,6 +592,8 @@ def build_font(_f, emoji):
 
     cica = fix_box_drawings(cica)
     cica = zenkaku_space(cica)
+    cica = zero(cica)
+    cica = modify_WM(cica)
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
     cica = add_gopher(cica)
@@ -608,7 +655,7 @@ def build_font(_f, emoji):
     cica.generate(fontpath)
 
     cica.close()
-    ubuntu.close()
+    hack.close()
     nerd.close()
 
 
@@ -645,7 +692,6 @@ def resize_supersub(_f):
             {"src": 0x0031, "dest": 0x00b9}, {"src": 0x0032, "dest": 0x00b2},
             {"src": 0x0033, "dest": 0x00b3}, {"src": 0x0030, "dest": 0x2070},
             {"src": 0x0069, "dest": 0x2071}, {"src": 0x0034, "dest": 0x2074},
-            {"src": 0x0035, "dest": 0x2075}, {"src": 0x0036, "dest": 0x2076},
             {"src": 0x0037, "dest": 0x2077}, {"src": 0x0038, "dest": 0x2078},
             {"src": 0x0039, "dest": 0x2079}, {"src": 0x002b, "dest": 0x207a},
             {"src": 0x002d, "dest": 0x207b}, {"src": 0x003d, "dest": 0x207c},
@@ -791,7 +837,6 @@ def main():
     print('')
     print('### Generating Cica started. ###')
     check_files()
-
     for _f in fonts:
         build_font(_f, True)
         build_font(_f, False)
