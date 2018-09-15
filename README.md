@@ -9,13 +9,17 @@
 
 ## 特徴
 
-* 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです。
+* 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです
     - 英数字、記号類に [Hack](https://sourcefoundry.org/hack/)
     - それ以外の文字に [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/)
-    - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済、Pomiconsを除く※)
+    - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済。Pomiconsは除外※)
     - [Noto Emoji](https://www.google.com/get/noto/)
 * tmuxの画面分割に対応しています
 * 非HiDPI（非Retina）のWindowsでも文字が欠けません
+* 下付き文字や上付き文字など、特殊な文字の判読性を考慮（[JuliaLang](https://julialang.org/) を想定しています）
+* ライセンス
+    - フォントファイルは SIL Open Font License 1.1 です
+    - 合成スクリプト等のソースコードは MIT です
 
 ```
 o Cica
@@ -39,6 +43,10 @@ o Cica
 
 - ※Nerd Fontsに含まれるPomiconsのグリフは商用利用が出来ないライセンスなのでジェネレータからは除外しています。
 - ※アイコン類はフォントをインストール後 [https:\/\/miiton.github.io\/Cica\/](https://miiton.github.io/Cica/) で確認出来ます。
+
+## 既知の問題
+
+* [Ubuntu 上の gVim で powerline 用フォントが少しずれます。 · Issue \#33 · miiton/Cica](https://github.com/miiton/Cica/issues/33)
 
 ## ビルド手順
 
@@ -94,11 +102,11 @@ fontforge 20120731
 libfontforge 20120731-ML
 ```
 
-# ライセンス
+## ライセンス
 
 * [LICENSE.txt](LICENSE.txt)
 
-# 謝辞
+## 謝辞
 
 Cicaフォントの合成にあたり素晴らしいフォントを提供してくださっている製作者の方々に感謝いたします。
 
