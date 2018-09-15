@@ -1,11 +1,15 @@
 # プログラミング用日本語等幅フォント Cica
 
+## [ダウンロード](https://github.com/miiton/Cica/releases/latest)
+
 |                                                                     |                                                                        |
 | :----:                                                              | :----:                                                                 |
 | **MacVim + NERDTree + CtrlP + LightLine**                           | **Cica v3との違い**                                                    |
 | [![MacVim](screenshots/macvim.png)](screenshots/macvim.png)         | [![v3 and v4](screenshots/cicachange.gif)](screenshots/cicachange.gif) |
 | **Julia Ready**                                                     | **GVim on Windows**                                                    |
 | [![Julia on Jupyter](screenshots/julia.png)](screenshots/julia.png) | [![GVim on Windows](screenshots/gvim.png)](screenshots/gvim.png)       |
+
+
 
 ## 特徴
 
