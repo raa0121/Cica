@@ -22,7 +22,7 @@ SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '4.0.0'
-FAMILY = 'CicaDev'
+FAMILY = 'Cica'
 
 fonts = [
     {
