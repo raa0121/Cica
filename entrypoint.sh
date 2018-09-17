@@ -3,10 +3,9 @@ git clone https://github.com/miiton/Cica.git tmp
 cp -a tmp/.git Cica/
 cd Cica
 git checkout -- .
-curl -L https://assets.ubuntu.com/v1/fad7939b-ubuntu-font-family-0.83.zip -o ubuntu-font-family-0.83.zip
-unar ubuntu-font-family-0.83.zip
-cp ubuntu-font-family-0.83/UbuntuMono-R.ttf ./sourceFonts/
-cp ubuntu-font-family-0.83/UbuntuMono-B.ttf ./sourceFonts/
+curl -L https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -o hack.zip
+unar hack.zip
+cp ttf/* ./sourceFonts/
 curl -LO https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
 unar rounded-mgenplus-20150602.7z
 cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
