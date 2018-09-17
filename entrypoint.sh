@@ -15,4 +15,5 @@ curl -LO http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-t
 unar dejavu-fonts-ttf-2.37.zip
 mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf ./sourceFonts/
 mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono-Bold.ttf ./sourceFonts/
+curl -L https://github.com/mirmat/iconsfordevs/raw/master/fonts/iconsfordevs.ttf -o sourceFonts/iconsfordevs.ttf
 fontforge -lang=py -script cica.py

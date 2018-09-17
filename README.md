@@ -83,56 +83,12 @@ let g:NERDTreeExtensionHighlightColor['vue'] = '42B983'
 
 ## ビルド手順
 
-
-### Dockerを使う場合
+Dockerを使います
 
 ```sh
 git clone https://github.com/miiton/Cica.git
 cd Cica
-docker-compose up     # ./dist/ に出力される
-docker-compose down
-```
-
-### 手動でやる場合
-
-2018-08-27時点、Ubuntu 16.04 にて
-
-```sh
-sudo apt-get update
-sudo apt-get -y install apt-file
-sudo apt-file update
-sudo apt-file search add-apt-repository
-sudo apt-get -y install software-properties-common
-sudo apt-get -y install fontforge unar
-git clone git@github.com:miiton/Cica.git
-cd Cica
-curl -L https://github.com/source-foundry/Hack/releases/download/v3.003/Hack-v3.003-ttf.zip -o hack.zip
-unar hack.zip
-cp ttf/* sourceFonts/
-rm hack.zip
-rm -r ttf
-curl -LO https://osdn.jp/downloads/users/8/8598/rounded-mgenplus-20150602.7z
-unar rounded-mgenplus-20150602.7z
-cp rounded-mgenplus-20150602/rounded-mgenplus-1m-regular.ttf ./sourceFonts
-cp rounded-mgenplus-20150602/rounded-mgenplus-1m-bold.ttf ./sourceFonts
-curl -L https://github.com/googlei18n/noto-emoji/raw/master/fonts/NotoEmoji-Regular.ttf -o sourceFonts/NotoEmoji-Regular.ttf
-curl -LO http://sourceforge.net/projects/dejavu/files/dejavu/2.37/dejavu-fonts-ttf-2.37.zip
-unar dejavu-fonts-ttf-2.37.zip
-mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono.ttf ./sourceFonts/
-mv dejavu-fonts-ttf-2.37/ttf/DejaVuSansMono-Bold.ttf ./sourceFonts/
-fontforge -lang=py -script cica.py
-```
-
-[fontforge のバージョンが古いと正常に動作しません #6](https://github.com/miiton/Cica/issues/6)
-
-```
-% fontforge --version
-
-Copyright (c) 2000-2012 by George Williams.
- Executable based on sources from 14:57 GMT 31-Jul-2012-ML.
- Library based on sources from 14:57 GMT 31-Jul-2012.
-fontforge 20120731
-libfontforge 20120731-ML
+docker-compose build ; docker-compose run --rm cica  # ./dist/ に出力される
 ```
 
 ## ライセンス
