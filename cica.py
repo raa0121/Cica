@@ -21,7 +21,7 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.0.0'
+VERSION = '4.1.0'
 FAMILY = 'Cica'
 
 fonts = [
@@ -402,6 +402,11 @@ def modify_nerd(_g):
     return _g
 
 
+def modify_iconsfordevs(_g):
+    _g.transform(psMat.compose(psMat.scale(2), psMat.translate(0, -126)))
+    _g.width = 1024
+    _g = align_to_center(_g)
+    return _g
 
 def vertical_line_to_broken_bar(_f):
     _f.selection.select(0x00a6)
@@ -523,6 +528,7 @@ def build_font(_f, emoji):
     hack = remove_glyph_from_hack(hack)
     cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
     nerd = fontforge.open('./sourceFonts/nerd.ttf')
+    icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
 
     for g in hack.glyphs():
         g.transform((0.42,0,0,0.42,0,0))
@@ -587,6 +593,15 @@ def build_font(_f, emoji):
         g = modify_nerd(g)
         nerd.selection.select(g.encoding)
         nerd.copy()
+        cica.selection.select(g.encoding)
+        cica.paste()
+
+    for g in icons_for_devs.glyphs():
+        if g.encoding < 0xe900 or g.encoding > 0xe950:
+            continue
+        g = modify_iconsfordevs(g)
+        icons_for_devs.selection.select(g.encoding)
+        icons_for_devs.copy()
         cica.selection.select(g.encoding)
         cica.paste()
 
