@@ -18,6 +18,7 @@
     - それ以外の文字に [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/)
     - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済。Pomiconsは除外※)
     - [Noto Emoji](https://www.google.com/get/noto/)
+    - [Icons for Devs](https://github.com/mirmat/iconsfordevs)
 * tmuxの画面分割に対応しています
 * 非HiDPI（非Retina）のWindowsでも文字が欠けません
 * 下付き文字や上付き文字など、特殊な文字の判読性を考慮（[JuliaLang](https://julialang.org/) を想定しています）
@@ -27,6 +28,8 @@
 
 ```
 o Cica
+|\
+* * Icons for Devs
 |\
 * * NERDFonts (without Pomicons※)
 |\
@@ -47,6 +50,32 @@ o Cica
 
 - ※Nerd Fontsに含まれるPomiconsのグリフは商用利用が出来ないライセンスなのでジェネレータからは除外しています。
 - ※アイコン類はフォントをインストール後 [https:\/\/miiton.github.io\/Cica\/](https://miiton.github.io/Cica/) で確認出来ます。
+
+## Q&A
+
+### 矢印記号、半角なの...？  
+
+ソースコード中で矢印記号はそう使わないと判断して半角幅にしました。
+とはいえMarkdown中では使うこともあると思うのですが、その場合
+あいまい文字が半角の環境で見切れてしまうので、それであれば
+多少不格好でも判読できたほうが良いという判断です。
+
+尚、絵文字の矢印を使うという手もあります（`U+F060 - U+F063 `）
+
+### NerdTree、CtrlPでVueのアイコンが出ない
+
+Vueのアイコンを追加しました（v4.1.0）
+
+.vimrcで以下を追加すると表示できます。（要 [ryanoasis/vim\-devicons: Adds file type glyphs/icons to popular Vim plugins: NERDTree, vim\-airline, Powerline, Unite, vim\-startify and more](https://github.com/ryanoasis/vim-devicons)）
+
+```vim
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols = {}
+let g:WebDevIconsUnicodeDecorateFileNodesExtensionSymbols['vue'] = ''
+" アイコン入力方法 : `[Ctrl+V]` > `[u]` > `e905`
+let g:NERDTreeExtensionHighlightColor = {}
+let g:NERDTreeExtensionHighlightColor['vue'] = '42B983'
+```
+
 
 ## 既知の問題
 
@@ -122,3 +151,4 @@ Cicaフォントの合成にあたり素晴らしいフォントを提供して�
 - Noto Emoji : [googlei18n/noto\-emoji: Noto Emoji fonts](https://github.com/googlei18n/noto-emoji)
 - NERDFonts (without Pomicons) : [Nerd Fonts \- Iconic font aggregator, collection, and patcher](https://nerdfonts.com/)
 - DejaVu Sans Mono : [DejaVu Fonts](https://dejavu-fonts.github.io/)
+- Icons for Devs : [mirmat/iconsfordevs: Icons for Devs \- An iconic font made for developers](https://github.com/mirmat/iconsfordevs)

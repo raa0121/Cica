@@ -17,6 +17,7 @@ with Reserved Font Name Cica
         - IEC Power Symbols : https://unicodepowersymbol.com/
         - Powerline Symbols : https://github.com/powerline/powerline
         - Seti-UI + Custom : https://github.com/jesseweed/seti-ui
+        - Icons for Devs : https://github.com/mirmat/iconsfordevs
     - Apache License 2.0 - https://www.apache.org/licenses/LICENSE-2.0.html
         - Noto Emoji : https://github.com/googlei18n/noto-emoji
     - Free license
