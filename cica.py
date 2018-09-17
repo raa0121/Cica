@@ -21,7 +21,7 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.1.0'
+VERSION = '4.1.1'
 FAMILY = 'Cica'
 
 fonts = [
@@ -672,6 +672,7 @@ def build_font(_f, emoji):
     cica.close()
     hack.close()
     nerd.close()
+    icons_for_devs.close()
 
 
 def add_notoemoji(_f):
