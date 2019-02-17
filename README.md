@@ -14,11 +14,13 @@
 ## 特徴
 
 * 以下のフォントを合成後に調整した、プログラミング向けの等幅日本語フォントです
-    - 英数字、記号類に [Hack](https://sourcefoundry.org/hack/)
+    - 英数字、記号類に [Hack](https://sourcefoundry.org/hack/) + [DejaVu Sans Mono](https://dejavu-fonts.github.io/)
     - それ以外の文字に [Rounded Mgen+](http://jikasei.me/font/rounded-mgenplus/)
     - [Nerd Fonts](https://github.com/ryanoasis/nerd-fonts) (= Powerlineパッチ、その他適用済。Pomiconsは除外※)
     - [Noto Emoji](https://www.google.com/get/noto/)
     - [Icons for Devs](https://github.com/mirmat/iconsfordevs)
+    - RictyジェネレータからForkした各種調整
+    - 独自の調整として `m` の真ん中の棒を短く（ `rn` と `m` を区別しやすく＆ちょっと可愛らしく）
 * tmuxの画面分割に対応しています
 * 非HiDPI（非Retina）のWindowsでも文字が欠けません
 * 下付き文字や上付き文字など、特殊な文字の判読性を考慮（[JuliaLang](https://julialang.org/) を想定しています）
