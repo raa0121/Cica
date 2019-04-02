@@ -21,7 +21,7 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.1.1'
+VERSION = '4.1.2'
 FAMILY = 'Cica'
 
 fonts = [
@@ -521,6 +521,19 @@ def fix_box_drawings(_f):
 
     return _f
 
+def reiwa(_f, _weight):
+    reiwa = fontforge.open('./sourceFonts/reiwa.sfd')
+    if _weight == 'Bold':
+        reiwa.close()
+        reiwa = fontforge.open('./sourceFonts/reiwa-Bold.sfd')
+    for g in reiwa.glyphs():
+        if g.isWorthOutputting:
+            reiwa.selection.select(0x00)
+            reiwa.copy()
+            _f.selection.select(0x32ff)
+            _f.paste()
+    reiwa.close()
+    return _f
 
 def build_font(_f, emoji):
     log('Generating %s ...' % _f.get('weight_name'))
@@ -611,6 +624,7 @@ def build_font(_f, emoji):
     cica = modify_WM(cica)
     cica = vertical_line_to_broken_bar(cica)
     cica = emdash_to_broken_dash(cica)
+    cica = reiwa(cica, _f.get('weight_name'))
     cica = add_gopher(cica)
     if emoji:
         cica = add_notoemoji(cica)
