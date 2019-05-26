@@ -80,7 +80,7 @@ def log(str):
     logger.debug(str)
 
 def remove_glyph_from_hack(_font):
-    u"""Rounded Mgen+を採用したいグリフをHackから削除
+    """Rounded Mgen+を採用したいグリフをHackから削除
     """
     log('remove_ambiguous() : %s' % _font.fontname)
 
@@ -267,6 +267,7 @@ def add_dejavu(_f, conf):
                 _f.selection.select(g.encoding)
                 _f.paste()
     # 0x2190 - 0x21ff Arrows
+    # TODO: 矢印を全角のままにしたパターンも生成したい
     for g in dejavu.glyphs():
         if g.encoding < 0x2190 or g.encoding > 0x21ff:
             continue
@@ -626,6 +627,7 @@ def build_font(_f, emoji):
     cica = emdash_to_broken_dash(cica)
     cica = reiwa(cica, _f.get('weight_name'))
     cica = add_gopher(cica)
+    cica = modify_ellipsis(cica)
     if emoji:
         cica = add_notoemoji(cica)
     cica = add_smalltriangle(cica)
@@ -862,6 +864,53 @@ def scripts_from(encoding, scripts):
         if encoding == s["dest"]:
             return s["src"]
     raise ValueError
+
+def modify_ellipsis(_f):
+    """3点リーダーを半角にする
+    DejaVuSansMono の U+22EF(⋯) をU+2026(…)、U+22EE(⋮)、U+22F0(⋰)、U+22F1(⋱)
+    にコピーした上で回転させて生成
+
+    三点リーダの文字幅について · Issue #41 · miiton/Cica https://github.com/miiton/Cica/issues/41
+    """
+    _f.selection.select(0x22ef)
+    _f.copy()
+    _f.selection.select(0x2026)
+    _f.paste()
+    _f.selection.select(0x22ee)
+    _f.paste()
+    _f.selection.select(0x22f0)
+    _f.paste()
+    _f.selection.select(0x22f1)
+    _f.paste()
+    for g in _f.glyphs("encoding"):
+        if g.encoding < 0x22ee:
+            continue
+        elif g.encoding > 0x22f1:
+            break
+        elif g.encoding == 0x22ee:
+            bb = g.boundingBox()
+            cx = (bb[2] + bb[0]) / 2
+            cy = (bb[3] + bb[1]) / 2
+            trcen = psMat.translate(-cx, -cy)
+            rotcen = psMat.compose(trcen, psMat.compose(psMat.rotate(math.radians(90)), psMat.inverse(trcen)))
+            g.transform(rotcen)
+        elif g.encoding == 0x22f0:
+            bb = g.boundingBox()
+            cx = (bb[2] + bb[0]) / 2
+            cy = (bb[3] + bb[1]) / 2
+            trcen = psMat.translate(-cx, -cy)
+            rotcen = psMat.compose(trcen, psMat.compose(psMat.rotate(math.radians(45)), psMat.inverse(trcen)))
+            g.transform(rotcen)
+        elif g.encoding == 0x22f1:
+            bb = g.boundingBox()
+            cx = (bb[2] + bb[0]) / 2
+            cy = (bb[3] + bb[1]) / 2
+            trcen = psMat.translate(-cx, -cy)
+            rotcen = psMat.compose(trcen, psMat.compose(psMat.rotate(math.radians(-45)), psMat.inverse(trcen)))
+            g.transform(rotcen)
+    return _f
+
+
 
 def main():
     print('')
