@@ -21,7 +21,7 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.1.2'
+VERSION = '4.1.3'
 FAMILY = 'Cica'
 
 fonts = [
