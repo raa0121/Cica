@@ -4,4 +4,4 @@ services:
   cica:
     build: .
     volumes:
-      - ./dist:/work/Cica/dist
+      - ./dist:/work/dist
