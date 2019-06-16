@@ -5,14 +5,8 @@ import psMat
 import os
 import sys
 import math
-from logging import getLogger, StreamHandler, Formatter, DEBUG
-logger = getLogger(__name__)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-formatter = Formatter('%(asctime)s [%(levelname)s] : %(message)s')
-handler.setFormatter(formatter)
-logger.setLevel(DEBUG)
-logger.addHandler(handler)
+import glob
+from datetime import datetime
 
 # ASCENT = 850
 # DESCENT = 174
@@ -76,14 +70,13 @@ fonts = [
     }
 ]
 
-def log(str):
-    logger.debug(str)
+def log(_str):
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(now + " " + _str)
 
 def remove_glyph_from_hack(_font):
     """Rounded Mgen+を採用したいグリフをHackから削除
     """
-    log('remove_ambiguous() : %s' % _font.fontname)
-
     glyphs = [
             0x2026, # …
             ]
@@ -536,14 +529,54 @@ def reiwa(_f, _weight):
     reiwa.close()
     return _f
 
+def fix_overflow(glyph):
+    """上が820を超えている、または下が-204を超えているグリフを
+    1024x1024の枠にはまるように修正する
+    ※全角のグリフのみに実施する
+    """
+    if glyph.width < 1024:
+        return glyph
+    if glyph.isWorthOutputting:
+        bb = glyph.boundingBox()
+        height = bb[3] - bb[1]
+        if height > 1024:
+            # resize
+            scale = 1024 / height
+            glyph.transform(psMat.scale(scale, scale))
+        bb = glyph.boundingBox()
+        bottom = bb[1]
+        top = bb[3]
+        if bottom < -204:
+            glyph.transform(psMat.translate(0, -204 - bottom))
+        elif top > 820:
+            glyph.transform(psMat.translate(0, 820 - top))
+    return glyph
+
+def import_svg(font):
+    """オリジナルのsvgグリフをインポートする
+    """
+    files = glob.glob('sourceFonts/svg/*.svg')
+    for f in files:
+        filename, _ = os.path.splitext(os.path.basename(f))
+        g = font.createChar(int(filename, 16))
+        g.width = 1024
+        g.vwidth = 1024
+        g.clear()
+        g.importOutlines(f)
+        g = fix_overflow(g)
+    return font
+
+
 def build_font(_f, emoji):
-    log('Generating %s ...' % _f.get('weight_name'))
     hack = fontforge.open('./sourceFonts/%s' % _f.get('hack'))
+    log('remove_glyph_from_hack()')
     hack = remove_glyph_from_hack(hack)
     cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
-    nerd = fontforge.open('./sourceFonts/nerd.ttf')
+    nerd = fontforge.open('./sourceFonts/nerd.sfd')
     icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
 
+
+    log('transform Hack')
     for g in hack.glyphs():
         g.transform((0.42,0,0,0.42,0,0))
         if _f.get('hack_weight_reduce') != 0:
@@ -570,6 +603,7 @@ def build_font(_f, emoji):
         0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
         0x309b, 0x309c,
     ]
+    log('transform Mgen+')
     for g in cica.glyphs():
         g.transform((0.91,0,0,0.91,0,0))
         full_half_threshold = 700
@@ -913,14 +947,16 @@ def modify_ellipsis(_f):
 
 
 def main():
-    print('')
-    print('### Generating Cica started. ###')
     check_files()
     for _f in fonts:
+        log("Started: dist/" + _f["filename"])
         build_font(_f, True)
+        log("Finished: dist/" + _f["filename"])
+        log("")
+        log("Started: dist/noemoji/" + _f["filename"])
         build_font(_f, False)
-
-    print('### Succeeded ###')
+        log("Finished: dist/noemoji/" + _f["filename"])
+        log("")
 
 
 if __name__ == '__main__':
