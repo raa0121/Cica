@@ -690,6 +690,11 @@ def build_font(_f, emoji):
     cica = add_dejavu(cica, _f)
     cica = resize_supersub(cica)
 
+    log("fix_overflow()")
+    for g in cica.glyphs():
+        g = fix_overflow(g)
+    log("import_svg()")
+    cica = import_svg(cica)
     cica.ascent = ASCENT
     cica.descent = DESCENT
     cica.upos = 45
