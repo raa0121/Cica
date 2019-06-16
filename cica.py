@@ -15,8 +15,8 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.1.3'
-FAMILY = 'Cica'
+VERSION = '5.0.0'
+FAMILY = 'Cica5'
 
 fonts = [
     {
@@ -180,7 +180,7 @@ def add_dejavu(_f, conf):
 
     # 0x0300 - 0x036f - Combining Diacritical Marks
     for g in dejavu.glyphs():
-        if g.encoding < 0x0300 or g.encoding > 0x036f:
+        if g.encoding < 0x0300 or g.encoding > 0x036f or g.encoding == 0x0398:
             continue
         else:
             if len(g.references) > 0:
@@ -229,7 +229,7 @@ def add_dejavu(_f, conf):
             _f.paste()
     # 0x0370 - 0x03ff - GREEK
     for g in dejavu.glyphs():
-        if g.encoding < 0x0370 or g.encoding > 0x03ff:
+        if g.encoding < 0x0370 or g.encoding > 0x03ff or g.encoding == 0x0398:
             continue
         else:
             if len(g.references) == 0:
