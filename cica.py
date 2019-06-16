@@ -305,7 +305,7 @@ def modify_nerd(_g):
     ]
     # Powerline
     if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0d4:
-        _g.transform(psMat.translate(0, -55))
+        _g.transform(psMat.translate(0, 5))
         _g.width = 1024
 
         if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0b7:
@@ -487,6 +487,7 @@ def add_smalltriangle(_f):
     _f.selection.select(0x25b8)
     _f.paste()
     _f.transform(psMat.rotate(math.radians(90)))
+    _f.transform(psMat.translate(0, 212))
 
     for g in _f.glyphs():
         if g.encoding == 0x25be or g.encoding == 0x25b8:
@@ -498,15 +499,21 @@ def add_smalltriangle(_f):
 def fix_box_drawings(_f):
     left = [
         0x2510, 0x2518, 0x2524, 0x2555, 0x2556, 0x2557, 0x255b, 0x255c, 0x255d,
-        0x2561, 0x2562, 0x2563,
+        0x2561, 0x2562, 0x2563, 0x256e, 0x256f, 0x2574, 0x2578,
+        0xf2510, 0xf2518, 0xf2524, 0xf2555, 0xf2556, 0xf2557, 0xf255b, 0xf255c, 0xf255d,
+        0xff2561, 0xf2562, 0xf2563, 0xf256e, 0xf256f, 0xf2574, 0xf2578
     ]
     right = [
         0x250c, 0x2514, 0x251c, 0x2552, 0x2553, 0x2554, 0x2558, 0x2559, 0x255a,
-        0x255e, 0x255f, 0x2560,
+        0x255e, 0x255f, 0x2560, 0x256d, 0x2570, 0x2576, 0x257a,
+        0xf250c, 0xf2514, 0xf251c, 0xf2552, 0xf2553, 0xf2554, 0xf2558, 0xf2559, 0xf255a,
+        0xf255e, 0xf255f, 0xf2560, 0xf256d, 0xf2570, 0xf2576, 0xf257a
     ]
 
     for g in _f.glyphs():
-        if g.encoding < 0x2500 or g.encoding > 0x256c:
+        if g.encoding < 0x2500:
+            continue
+        if g.encoding > 0x256c and g.encoding < 0xf2500:
             continue
         if g.encoding in left:
             align_to_left(g)
@@ -623,10 +630,17 @@ def build_font(_f, emoji):
         else:
             g = align_to_center(g)
 
+    log('modify border glyphs')
     for g in hack.glyphs():
         if  g.isWorthOutputting:
             if _f.get('italic'):
                 g.transform(psMat.skew(0.25))
+            if g.encoding >= 0x2500 and g.encoding <= 0x257f:
+                # 全角の罫線を0xf0000以降に退避
+                cica.selection.select(g.encoding)
+                cica.copy()
+                cica.selection.select(g.encoding + 0xf0000)
+                cica.paste()
             if g.encoding >= 0x2500 and g.encoding <= 0x25af:
                 g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
                 g = align_to_center(g)
@@ -635,15 +649,23 @@ def build_font(_f, emoji):
             cica.selection.select(g.encoding)
             cica.paste()
 
+    log('modify nerd glyphs')
     for g in nerd.glyphs():
-        if g.encoding < 0xe0a0 or g.encoding > 0xf4ff:
+        if g.encoding < 0xe0a0 or g.encoding > 0xfd46:
             continue
         g = modify_nerd(g)
         nerd.selection.select(g.encoding)
         nerd.copy()
-        cica.selection.select(g.encoding)
-        cica.paste()
+        if g.encoding >= 0xf500:
+            # Material Design IconsはNerd Fontsに従うとアラビア文字等を壊して
+            # しまうので、0xf0000〜に配置する
+            cica.selection.select(g.encoding + 0xf0000)
+            cica.paste()
+        else:
+            cica.selection.select(g.encoding)
+            cica.paste()
 
+    log('modify icons_for_devs glyphs')
     for g in icons_for_devs.glyphs():
         if g.encoding < 0xe900 or g.encoding > 0xe950:
             continue
