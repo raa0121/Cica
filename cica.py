@@ -5,14 +5,8 @@ import psMat
 import os
 import sys
 import math
-from logging import getLogger, StreamHandler, Formatter, DEBUG
-logger = getLogger(__name__)
-handler = StreamHandler()
-handler.setLevel(DEBUG)
-formatter = Formatter('%(asctime)s [%(levelname)s] : %(message)s')
-handler.setFormatter(formatter)
-logger.setLevel(DEBUG)
-logger.addHandler(handler)
+import glob
+from datetime import datetime
 
 # ASCENT = 850
 # DESCENT = 174
@@ -21,8 +15,8 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '4.1.3'
-FAMILY = 'Cica'
+VERSION = '5.0.0'
+FAMILY = 'Cica5'
 
 fonts = [
     {
@@ -76,14 +70,13 @@ fonts = [
     }
 ]
 
-def log(str):
-    logger.debug(str)
+def log(_str):
+    now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    print(now + " " + _str)
 
 def remove_glyph_from_hack(_font):
     """Rounded Mgen+を採用したいグリフをHackから削除
     """
-    log('remove_ambiguous() : %s' % _font.fontname)
-
     glyphs = [
             0x2026, # …
             ]
@@ -187,7 +180,7 @@ def add_dejavu(_f, conf):
 
     # 0x0300 - 0x036f - Combining Diacritical Marks
     for g in dejavu.glyphs():
-        if g.encoding < 0x0300 or g.encoding > 0x036f:
+        if g.encoding < 0x0300 or g.encoding > 0x036f or g.encoding == 0x0398:
             continue
         else:
             if len(g.references) > 0:
@@ -236,7 +229,7 @@ def add_dejavu(_f, conf):
             _f.paste()
     # 0x0370 - 0x03ff - GREEK
     for g in dejavu.glyphs():
-        if g.encoding < 0x0370 or g.encoding > 0x03ff:
+        if g.encoding < 0x0370 or g.encoding > 0x03ff or g.encoding == 0x0398:
             continue
         else:
             if len(g.references) == 0:
@@ -312,7 +305,7 @@ def modify_nerd(_g):
     ]
     # Powerline
     if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0d4:
-        _g.transform(psMat.translate(0, -55))
+        _g.transform(psMat.translate(0, 5))
         _g.width = 1024
 
         if _g.encoding >= 0xe0b0 and _g.encoding <= 0xe0b7:
@@ -494,6 +487,7 @@ def add_smalltriangle(_f):
     _f.selection.select(0x25b8)
     _f.paste()
     _f.transform(psMat.rotate(math.radians(90)))
+    _f.transform(psMat.translate(0, 212))
 
     for g in _f.glyphs():
         if g.encoding == 0x25be or g.encoding == 0x25b8:
@@ -505,15 +499,21 @@ def add_smalltriangle(_f):
 def fix_box_drawings(_f):
     left = [
         0x2510, 0x2518, 0x2524, 0x2555, 0x2556, 0x2557, 0x255b, 0x255c, 0x255d,
-        0x2561, 0x2562, 0x2563,
+        0x2561, 0x2562, 0x2563, 0x256e, 0x256f, 0x2574, 0x2578,
+        0xf2510, 0xf2518, 0xf2524, 0xf2555, 0xf2556, 0xf2557, 0xf255b, 0xf255c, 0xf255d,
+        0xff2561, 0xf2562, 0xf2563, 0xf256e, 0xf256f, 0xf2574, 0xf2578
     ]
     right = [
         0x250c, 0x2514, 0x251c, 0x2552, 0x2553, 0x2554, 0x2558, 0x2559, 0x255a,
-        0x255e, 0x255f, 0x2560,
+        0x255e, 0x255f, 0x2560, 0x256d, 0x2570, 0x2576, 0x257a,
+        0xf250c, 0xf2514, 0xf251c, 0xf2552, 0xf2553, 0xf2554, 0xf2558, 0xf2559, 0xf255a,
+        0xf255e, 0xf255f, 0xf2560, 0xf256d, 0xf2570, 0xf2576, 0xf257a
     ]
 
     for g in _f.glyphs():
-        if g.encoding < 0x2500 or g.encoding > 0x256c:
+        if g.encoding < 0x2500:
+            continue
+        if g.encoding > 0x256c and g.encoding < 0xf2500:
             continue
         if g.encoding in left:
             align_to_left(g)
@@ -536,14 +536,54 @@ def reiwa(_f, _weight):
     reiwa.close()
     return _f
 
+def fix_overflow(glyph):
+    """上が820を超えている、または下が-204を超えているグリフを
+    1024x1024の枠にはまるように修正する
+    ※全角のグリフのみに実施する
+    """
+    if glyph.width < 1024:
+        return glyph
+    if glyph.isWorthOutputting:
+        bb = glyph.boundingBox()
+        height = bb[3] - bb[1]
+        if height > 1024:
+            # resize
+            scale = 1024 / height
+            glyph.transform(psMat.scale(scale, scale))
+        bb = glyph.boundingBox()
+        bottom = bb[1]
+        top = bb[3]
+        if bottom < -204:
+            glyph.transform(psMat.translate(0, -204 - bottom))
+        elif top > 820:
+            glyph.transform(psMat.translate(0, 820 - top))
+    return glyph
+
+def import_svg(font):
+    """オリジナルのsvgグリフをインポートする
+    """
+    files = glob.glob('sourceFonts/svg/*.svg')
+    for f in files:
+        filename, _ = os.path.splitext(os.path.basename(f))
+        g = font.createChar(int(filename, 16))
+        g.width = 1024
+        g.vwidth = 1024
+        g.clear()
+        g.importOutlines(f)
+        g = fix_overflow(g)
+    return font
+
+
 def build_font(_f, emoji):
-    log('Generating %s ...' % _f.get('weight_name'))
     hack = fontforge.open('./sourceFonts/%s' % _f.get('hack'))
+    log('remove_glyph_from_hack()')
     hack = remove_glyph_from_hack(hack)
     cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
-    nerd = fontforge.open('./sourceFonts/nerd.ttf')
+    nerd = fontforge.open('./sourceFonts/nerd.sfd')
     icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
 
+
+    log('transform Hack')
     for g in hack.glyphs():
         g.transform((0.42,0,0,0.42,0,0))
         if _f.get('hack_weight_reduce') != 0:
@@ -570,6 +610,7 @@ def build_font(_f, emoji):
         0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
         0x309b, 0x309c,
     ]
+    log('transform Mgen+')
     for g in cica.glyphs():
         g.transform((0.91,0,0,0.91,0,0))
         full_half_threshold = 700
@@ -589,10 +630,17 @@ def build_font(_f, emoji):
         else:
             g = align_to_center(g)
 
+    log('modify border glyphs')
     for g in hack.glyphs():
         if  g.isWorthOutputting:
             if _f.get('italic'):
                 g.transform(psMat.skew(0.25))
+            if g.encoding >= 0x2500 and g.encoding <= 0x257f:
+                # 全角の罫線を0xf0000以降に退避
+                cica.selection.select(g.encoding)
+                cica.copy()
+                cica.selection.select(g.encoding + 0xf0000)
+                cica.paste()
             if g.encoding >= 0x2500 and g.encoding <= 0x25af:
                 g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
                 g = align_to_center(g)
@@ -601,15 +649,23 @@ def build_font(_f, emoji):
             cica.selection.select(g.encoding)
             cica.paste()
 
+    log('modify nerd glyphs')
     for g in nerd.glyphs():
-        if g.encoding < 0xe0a0 or g.encoding > 0xf4ff:
+        if g.encoding < 0xe0a0 or g.encoding > 0xfd46:
             continue
         g = modify_nerd(g)
         nerd.selection.select(g.encoding)
         nerd.copy()
-        cica.selection.select(g.encoding)
-        cica.paste()
+        if g.encoding >= 0xf500:
+            # Material Design IconsはNerd Fontsに従うとアラビア文字等を壊して
+            # しまうので、0xf0000〜に配置する
+            cica.selection.select(g.encoding + 0xf0000)
+            cica.paste()
+        else:
+            cica.selection.select(g.encoding)
+            cica.paste()
 
+    log('modify icons_for_devs glyphs')
     for g in icons_for_devs.glyphs():
         if g.encoding < 0xe900 or g.encoding > 0xe950:
             continue
@@ -634,6 +690,11 @@ def build_font(_f, emoji):
     cica = add_dejavu(cica, _f)
     cica = resize_supersub(cica)
 
+    log("fix_overflow()")
+    for g in cica.glyphs():
+        g = fix_overflow(g)
+    log("import_svg()")
+    cica = import_svg(cica)
     cica.ascent = ASCENT
     cica.descent = DESCENT
     cica.upos = 45
@@ -913,14 +974,16 @@ def modify_ellipsis(_f):
 
 
 def main():
-    print('')
-    print('### Generating Cica started. ###')
     check_files()
     for _f in fonts:
+        log("Started: dist/" + _f["filename"])
         build_font(_f, True)
+        log("Finished: dist/" + _f["filename"])
+        log("")
+        log("Started: dist/noemoji/" + _f["filename"])
         build_font(_f, False)
-
-    print('### Succeeded ###')
+        log("Finished: dist/noemoji/" + _f["filename"])
+        log("")
 
 
 if __name__ == '__main__':
