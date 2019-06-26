@@ -15,7 +15,7 @@ DESCENT = 204
 SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '5.0.0'
+VERSION = '5.0.1'
 FAMILY = 'Cica'
 
 fonts = [
@@ -570,7 +570,8 @@ def import_svg(font):
         g.vwidth = 1024
         g.clear()
         g.importOutlines(f)
-        g = fix_overflow(g)
+        g.transform(psMat.translate(0, -61))
+        # g = fix_overflow(g)
     return font
 
 
