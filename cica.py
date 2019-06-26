@@ -16,7 +16,7 @@ SOURCE = './sourceFonts'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '5.0.0'
-FAMILY = 'Cica5'
+FAMILY = 'Cica'
 
 fonts = [
     {
