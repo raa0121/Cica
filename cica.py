@@ -19,7 +19,6 @@ COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '5.0.1'
 FAMILY = 'Cica'
 
-
 def log(_str):
     """ログ出力
     fontforgeにquietオプションが無いので悲しい
@@ -27,9 +26,20 @@ def log(_str):
     now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
     print(now + " " + _str)
 
+ignoring_center = [i for i in range(0x20, 0x6ff)]
+ignoring_center.extend([
+    0x3001, 0x3002, 0x3008, 0x3009, 0x300a, 0x300b, 0x300c, 0x300d,
+    0x300e, 0x300f, 0x3010, 0x3011, 0x3014, 0x3015, 0x3016, 0x3017,
+    0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
+    0x309b, 0x309c,
+])
+
 def align_to_center(_g):
     """グリフを中央寄せにする
     """
+    if _g.encoding in ignoring_center:
+        return _g
+
     width = 0
 
     if _g.width > 700:
@@ -393,7 +403,6 @@ class Cica:
         self.font_jp.copy()
         self.font_jp.selection.select(0x007c)
         self.font_jp.paste()
-        return self.font_jp
 
     def emdash_to_broken_dash(self):
         """ダッシュ記号を破線にする
@@ -769,6 +778,15 @@ class Cica:
                 rotcen = psMat.compose(trcen, psMat.compose(psMat.rotate(math.radians(-45)), psMat.inverse(trcen)))
                 g.transform(rotcen)
 
+    def stroked_d(self):
+        """DをĐにする
+        """
+        self.font_jp.selection.select(0x110)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x44)
+        self.font_jp.paste()
+
+
     def build_font(self, emoji):
 
         log('remove_glyph_from_en()')
@@ -778,14 +796,9 @@ class Cica:
         for g in self.font_en.glyphs():
             g.transform((0.42,0,0,0.42,0,0))
             g = align_to_center(g)
+
         self.modify_m(self.weight_name)
 
-        ignoring_center = [
-            0x3001, 0x3002, 0x3008, 0x3009, 0x300a, 0x300b, 0x300c, 0x300d,
-            0x300e, 0x300f, 0x3010, 0x3011, 0x3014, 0x3015, 0x3016, 0x3017,
-            0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
-            0x309b, 0x309c,
-        ]
         log('transform font_jp')
         for g in self.font_jp.glyphs():
             g.transform((0.91,0,0,0.91,0,0))
@@ -801,10 +814,7 @@ class Cica:
                 width = 512
             g.transform(psMat.translate((width - g.width)/2, 0))
             g.width = width
-            if g.encoding in ignoring_center:
-                pass
-            else:
-                g = align_to_center(g)
+            g = align_to_center(g)
 
         log('modify border glyphs')
         for g in self.font_en.glyphs():
@@ -855,6 +865,7 @@ class Cica:
         self.zenkaku_space()
         self.dotted_zero()
         self.slashed_zero()
+        self.stroked_d()
         self.modify_WM()
         self.vertical_line_to_broken_bar()
         self.emdash_to_broken_dash()
@@ -954,6 +965,7 @@ fonts = [
         'italic': True,
     }
 ]
+
 
 def main():
     for _f in fonts:
