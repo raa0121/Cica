@@ -6,13 +6,14 @@ import os
 import sys
 import math
 import glob
+import width_parser
 from datetime import datetime
 
 # ASCENT = 850
 # DESCENT = 174
 ASCENT = 820
 DESCENT = 204
-SOURCE = './sourceFonts'
+SOURCE = './source'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '5.0.1'
@@ -202,11 +203,11 @@ class Cica:
         self.weight = weight
         self.weight_name = weight_name
         self.style_name = style_name
-        self.font_en = fontforge.open('./sourceFonts/%s' % font_en)
-        self.font_jp = fontforge.open('./sourceFonts/%s' % font_jp)
+        self.font_en = fontforge.open('./source/%s' % font_en)
+        self.font_jp = fontforge.open('./source/%s' % font_jp)
         self.italic = italic
-        self.nerd = fontforge.open('./sourceFonts/nerd.sfd')
-        self.icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
+        self.nerd = fontforge.open('./source/nerd.sfd')
+        self.icons_for_devs = fontforge.open('./source/iconsfordevs.ttf')
 
     def remove_glyph_from_en(self):
         """jpフォント側を採用したいグリフをenフォントから削除
@@ -260,9 +261,9 @@ class Cica:
         dejavu = None
         weight_name = self.weight_name
         if weight_name == "Regular":
-            dejavu = fontforge.open('./sourceFonts/DejaVuSansMono.ttf')
+            dejavu = fontforge.open('./source/DejaVuSansMono.ttf')
         elif weight_name == "Bold":
-            dejavu = fontforge.open('./sourceFonts/DejaVuSansMono-Bold.ttf')
+            dejavu = fontforge.open('./source/DejaVuSansMono-Bold.ttf')
 
         for g in dejavu.glyphs():
             g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
@@ -447,10 +448,10 @@ class Cica:
     def modify_m(self, _weight):
         """mの中央の棒を少し短くする
         """
-        m = fontforge.open('./sourceFonts/m-Regular.sfd')
+        m = fontforge.open('./source/m-Regular.sfd')
         if _weight == 'Bold':
             m.close()
-            m = fontforge.open('./sourceFonts/m-Bold.sfd')
+            m = fontforge.open('./source/m-Bold.sfd')
         m.selection.select(0x6d)
         m.copy()
         self.font_en.selection.select(0x6d)
@@ -512,10 +513,10 @@ class Cica:
     def reiwa(self, _weight):
         """令和グリフを追加
         """
-        reiwa = fontforge.open('./sourceFonts/reiwa.sfd')
+        reiwa = fontforge.open('./source/reiwa.sfd')
         if _weight == 'Bold':
             reiwa.close()
-            reiwa = fontforge.open('./sourceFonts/reiwa-Bold.sfd')
+            reiwa = fontforge.open('./source/reiwa-Bold.sfd')
         for g in reiwa.glyphs():
             if g.isWorthOutputting:
                 reiwa.selection.select(0x00)
@@ -527,7 +528,7 @@ class Cica:
     def import_svg(self):
         """オリジナルのsvgグリフをインポートする
         """
-        files = glob.glob('sourceFonts/svg/*.svg')
+        files = glob.glob('source/svg/*.svg')
         for f in files:
             filename, _ = os.path.splitext(os.path.basename(f))
             g = self.font_jp.createChar(int(filename, 16))
@@ -538,7 +539,7 @@ class Cica:
             g.transform(psMat.translate(0, -61))
 
     def add_notoemoji(self):
-        notoemoji = fontforge.open('./sourceFonts/NotoEmoji-Regular.ttf')
+        notoemoji = fontforge.open('./source/NotoEmoji-Regular.ttf')
         for g in notoemoji.glyphs():
             if g.isWorthOutputting and g.encoding > 0x04f9:
                 g.transform((0.42,0,0,0.42,0,0))
@@ -552,7 +553,7 @@ class Cica:
     def add_gopher(self):
         """半身Gopherくんを追加
         """
-        gopher = fontforge.open('./sourceFonts/gopher.sfd')
+        gopher = fontforge.open('./source/gopher.sfd')
         for g in gopher.glyphs():
             if g.isWorthOutputting:
                 gopher.selection.select(0x40)
@@ -700,17 +701,12 @@ class Cica:
                 align_to_center(g)
 
     def in_scripts(self, encoding, scripts):
+        """scriptsの中にencodingが含まれるかをチェックする
+        """
         for s in scripts:
             if encoding == s["dest"]:
                 return True
         return False
-
-
-    def scripts_from(self, encoding, scripts):
-        for s in scripts:
-            if encoding == s["dest"]:
-                return s["src"]
-        raise ValueError
 
     def modify_ellipsis(self):
         """3点リーダーを半角にする
@@ -897,8 +893,6 @@ class Cica:
         self.nerd.close()
         self.icons_for_devs.close()
 
-
-
 fonts = [
     {
         'family': FAMILY,
@@ -942,7 +936,6 @@ fonts = [
         'italic': True,
     }
 ]
-
 
 def main():
     for _f in fonts:
