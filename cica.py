@@ -195,33 +195,20 @@ def modify_iconsfordevs(_g):
 
 
 class Cica:
-    def __init__(self, family, name, output_name, weight, weight_name, style_name, src_font_en, src_font_jp):
+    def __init__(self, family, name, output_name, weight, weight_name, style_name, font_en, font_jp, italic):
         self.family = family
         self.name = name
         self.output_name = output_name
         self.weight = weight
         self.weight_name = weight_name
         self.style_name = style_name
-        self.src_font_en = src_font_en
-        self.src_font_jp = src_font_jp
-        self.check_files()
+        self.font_en = fontforge.open('./sourceFonts/%s' % font_en)
+        self.font_jp = fontforge.open('./sourceFonts/%s' % font_jp)
+        self.italic = italic
+        self.nerd = fontforge.open('./sourceFonts/nerd.sfd')
+        self.icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
 
-    def check_files(self):
-        """ファイルがあるかチェック
-        無ければ1を返してコマンドを終了させる
-        """
-        err = 0
-        if not os.path.isfile('./sourceFonts/%s' % self.src_font_en):
-            log('%s not exists.' % self.src_font_en)
-            err = 1
-        if not os.path.isfile('./sourceFonts/%s' % self.src_font_jp):
-            log('%s not exists.' % self.src_font_jp)
-            err = 1
-
-        if err > 0:
-            sys.exit(err)
-
-    def remove_glyph_from_en(self, _font):
+    def remove_glyph_from_en(self):
         """jpフォント側を採用したいグリフをenフォントから削除
         """
         glyphs = [
@@ -229,52 +216,49 @@ class Cica:
                 ]
 
         for g in glyphs:
-            _font.selection.select(g)
-            _font.clear()
+            self.font_en.selection.select(g)
+            self.font_en.clear()
 
-        return _font
-
-    def set_os2_values(self, _font, _info):
+    def set_os2_values(self):
         """フォントメタ情報の設定
         """
-        weight = _info.get('weight')
-        style_name = _info.get('style_name')
-        _font.os2_weight = weight
-        _font.os2_width = 5
-        _font.os2_fstype = 0
+        weight = self.weight
+        style_name = self.style_name
+        self.font_jp.os2_weight = weight
+        self.font_jp.os2_width = 5
+        self.font_jp.os2_fstype = 0
         if style_name == 'Regular':
-            _font.os2_stylemap = 64
+            self.font_jp.os2_stylemap = 64
         elif style_name == 'Bold':
-            _font.os2_stylemap = 32
+            self.font_jp.os2_stylemap = 32
         elif style_name == 'Italic':
-            _font.os2_stylemap = 1
+            self.font_jp.os2_stylemap = 1
         elif style_name == 'Bold Italic':
-            _font.os2_stylemap = 33
-        _font.os2_vendor = 'TMNM'
-        _font.os2_version = 1
-        _font.os2_winascent = ASCENT
-        _font.os2_winascent_add = False
-        _font.os2_windescent = DESCENT
-        _font.os2_windescent_add = False
+            self.font_jp.os2_stylemap = 33
+        self.font_jp.os2_vendor = 'TMNM'
+        self.font_jp.os2_version = 1
+        self.font_jp.os2_winascent = ASCENT
+        self.font_jp.os2_winascent_add = False
+        self.font_jp.os2_windescent = DESCENT
+        self.font_jp.os2_windescent_add = False
 
-        _font.os2_typoascent = -150
-        _font.os2_typoascent_add = True
-        _font.os2_typodescent = 100
-        _font.os2_typodescent_add = True
-        _font.os2_typolinegap = 0
+        self.font_jp.os2_typoascent = -150
+        self.font_jp.os2_typoascent_add = True
+        self.font_jp.os2_typodescent = 100
+        self.font_jp.os2_typodescent_add = True
+        self.font_jp.os2_typolinegap = 0
 
-        _font.hhea_ascent = -150
-        _font.hhea_ascent_add = True
-        _font.hhea_descent = 100
-        _font.hhea_descent_add = True
-        _font.hhea_linegap = 0
-        _font.os2_panose = (2, 11, int(weight / 100), 9, 2, 2, 3, 2, 2, 7)
-        return _font
+        self.font_jp.hhea_ascent = -150
+        self.font_jp.hhea_ascent_add = True
+        self.font_jp.hhea_descent = 100
+        self.font_jp.hhea_descent_add = True
+        self.font_jp.hhea_linegap = 0
+        self.font_jp.os2_panose = (2, 11, int(weight / 100), 9, 2, 2, 3, 2, 2, 7)
 
 
-    def add_dejavu(self, _f, conf):
+    def add_dejavu(self):
         dejavu = None
-        weight_name = conf.get('weight_name')
+        weight_name = self.weight_name
         if weight_name == "Regular":
             dejavu = fontforge.open('./sourceFonts/DejaVuSansMono.ttf')
         elif weight_name == "Bold":
@@ -284,7 +268,7 @@ class Cica:
             g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
             g.width = 512
 
-        _f.importLookups(dejavu, dejavu.gpos_lookups)
+        self.font_jp.importLookups(dejavu, dejavu.gpos_lookups)
 
         # 0x0300 - 0x036f - Combining Diacritical Marks
         for g in dejavu.glyphs():
@@ -333,8 +317,8 @@ class Cica:
                     g.transform(psMat.translate(0, 0))
                 dejavu.selection.select(g.encoding)
                 dejavu.copy()
-                _f.selection.select(g.encoding)
-                _f.paste()
+                self.font_jp.selection.select(g.encoding)
+                self.font_jp.paste()
         # 0x0370 - 0x03ff - GREEK
         for g in dejavu.glyphs():
             if g.encoding < 0x0370 or g.encoding > 0x03ff or g.encoding == 0x0398:
@@ -345,8 +329,8 @@ class Cica:
                     g.anchorPoints = (('Anchor-7', 'mark', 256, bb[3] + 20),)
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         # 0x2100 - 0x214f Letterlike Symbols
         for g in dejavu.glyphs():
             if g.encoding < 0x2100 or g.encoding > 0x214f or g.encoding == 0x2122:
@@ -355,8 +339,8 @@ class Cica:
                 if len(g.references) == 0:
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         # 0x2150 - 0x218f Number Forms
         for g in dejavu.glyphs():
             if g.encoding < 0x2150 or g.encoding > 0x218f:
@@ -365,8 +349,8 @@ class Cica:
                 if len(g.references) == 0:
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         # 0x2190 - 0x21ff Arrows
         # TODO: 矢印を全角のままにしたパターンも生成したい
         for g in dejavu.glyphs():
@@ -376,8 +360,8 @@ class Cica:
                 if len(g.references) == 0:
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         # 0x2200 - 0x22ff Mathematical Operators
         for g in dejavu.glyphs():
             if g.encoding < 0x2200 or g.encoding > 0x22ff:
@@ -386,8 +370,8 @@ class Cica:
                 if len(g.references) == 0:
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         # 0x2300 - 0x23ff Miscellaneous Technical
         for g in dejavu.glyphs():
             if g.encoding < 0x2300 or g.encoding > 0x23ff:
@@ -396,76 +380,71 @@ class Cica:
                 if len(g.references) == 0:
                     dejavu.selection.select(g.encoding)
                     dejavu.copy()
-                    _f.selection.select(g.encoding)
-                    _f.paste()
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.paste()
         dejavu.close()
-        return _f
 
 
-    def vertical_line_to_broken_bar(self, _f):
+    def vertical_line_to_broken_bar(self):
         """縦線を破線にする
         """
-        _f.selection.select(0x00a6)
-        _f.copy()
-        _f.selection.select(0x007c)
-        _f.paste()
-        return _f
+        self.font_jp.selection.select(0x00a6)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x007c)
+        self.font_jp.paste()
+        return self.font_jp
 
-    def emdash_to_broken_dash(self, _f):
+    def emdash_to_broken_dash(self):
         """ダッシュ記号を破線にする
         """
-        _f.selection.select(0x006c)
-        _f.copy()
-        _f.selection.select(0x2014)
-        _f.pasteInto()
-        _f.intersect()
-        return _f
+        self.font_jp.selection.select(0x006c)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x2014)
+        self.font_jp.pasteInto()
+        self.font_jp.intersect()
 
-    def zenkaku_space(self, _f):
+    def zenkaku_space(self):
         """全角スペースに枠をつけて可視化する
         """
-        _f.selection.select(0x2610)
-        _f.copy()
-        _f.selection.select(0x3000)
-        _f.paste()
-        _f.selection.select(0x271a)
-        _f.copy()
-        _f.selection.select(0x3000)
-        _f.pasteInto()
-        _f.intersect()
-        for g in _f.selection.byGlyphs:
+        self.font_jp.selection.select(0x2610)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x3000)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0x271a)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x3000)
+        self.font_jp.pasteInto()
+        self.font_jp.intersect()
+        for g in self.font_jp.selection.byGlyphs:
             g = align_to_center(g)
-        return _f
 
-    def zero(self, _f):
+    def zero(self):
         """半角数字の0をドットゼロにする
         """
-        _f.selection.select(0x4f)
-        _f.copy()
-        _f.selection.select(0x30)
-        _f.paste()
-        _f.selection.select(0xb7)
-        _f.copy()
-        _f.selection.select(0x30)
-        _f.pasteInto()
-        for g in _f.selection.byGlyphs:
+        self.font_jp.selection.select(0x4f)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x30)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0xb7)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x30)
+        self.font_jp.pasteInto()
+        for g in self.font_jp.selection.byGlyphs:
             g = align_to_center(g)
-        return _f
 
-    def modify_WM(self, _f):
+    def modify_WM(self):
         """WとMの字体を調整
         """
-        _f.selection.select(0x57)
-        _f.transform(psMat.scale(0.95, 1.0))
-        _f.copy()
-        _f.selection.select(0x4d)
-        _f.paste()
-        _f.transform(psMat.compose(psMat.rotate(math.radians(180)), psMat.translate(0, 627)))
-        for g in _f.selection.byGlyphs:
+        self.font_jp.selection.select(0x57)
+        self.font_jp.transform(psMat.scale(0.95, 1.0))
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x4d)
+        self.font_jp.paste()
+        self.font_jp.transform(psMat.compose(psMat.rotate(math.radians(180)), psMat.translate(0, 627)))
+        for g in self.font_jp.selection.byGlyphs:
             g = align_to_center(g)
-        return _f
 
-    def modify_m(self, _f, _weight):
+    def modify_m(self, _weight):
         """mの中央の棒を少し短くする
         """
         m = fontforge.open('./sourceFonts/m-Regular.sfd')
@@ -474,41 +453,37 @@ class Cica:
             m = fontforge.open('./sourceFonts/m-Bold.sfd')
         m.selection.select(0x6d)
         m.copy()
-        _f.selection.select(0x6d)
-        _f.paste()
+        self.font_en.selection.select(0x6d)
+        self.font_en.paste()
         for g in m.glyphs():
             if g.encoding == 0x6d:
                 anchorPoints = g.anchorPoints
-        for g in _f.glyphs():
+        for g in self.font_en.glyphs():
             if g.encoding == 0x6d:
                 g.anchorPoints = anchorPoints
 
-        return _f
 
-
-    def add_smalltriangle(self, _f):
+    def add_smalltriangle(self):
         """小さいサンカクを追加
         NerdTree用
         """
-        _f.selection.select(0x25bc)
-        _f.copy()
-        _f.selection.select(0x25be)
-        _f.paste()
-        _f.transform(psMat.compose(psMat.scale(0.64), psMat.translate(0, 68)))
-        _f.copy()
-        _f.selection.select(0x25b8)
-        _f.paste()
-        _f.transform(psMat.rotate(math.radians(90)))
-        _f.transform(psMat.translate(0, 212))
+        self.font_jp.selection.select(0x25bc)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x25be)
+        self.font_jp.paste()
+        self.font_jp.transform(psMat.compose(psMat.scale(0.64), psMat.translate(0, 68)))
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x25b8)
+        self.font_jp.paste()
+        self.font_jp.transform(psMat.rotate(math.radians(90)))
+        self.font_jp.transform(psMat.translate(0, 212))
 
-        for g in _f.glyphs():
+        for g in self.font_jp.glyphs():
             if g.encoding == 0x25be or g.encoding == 0x25b8:
                 g.width = 512
                 g = align_to_center(g)
 
-        return _f
-
-    def fix_box_drawings(self, _f):
+    def fix_box_drawings(self):
         """罫線を調整
         """
         left = [
@@ -524,7 +499,7 @@ class Cica:
             0xf255e, 0xf255f, 0xf2560, 0xf256d, 0xf2570, 0xf2576, 0xf257a
         ]
 
-        for g in _f.glyphs():
+        for g in self.font_jp.glyphs():
             if g.encoding < 0x2500:
                 continue
             if g.encoding > 0x256c and g.encoding < 0xf2500:
@@ -534,9 +509,7 @@ class Cica:
             elif g.encoding in right:
                 align_to_right(g)
 
-        return _f
-
-    def reiwa(self, _f, _weight):
+    def reiwa(self, _weight):
         """令和グリフを追加
         """
         reiwa = fontforge.open('./sourceFonts/reiwa.sfd')
@@ -547,189 +520,24 @@ class Cica:
             if g.isWorthOutputting:
                 reiwa.selection.select(0x00)
                 reiwa.copy()
-                _f.selection.select(0x32ff)
-                _f.paste()
+                self.font_jp.selection.select(0x32ff)
+                self.font_jp.paste()
         reiwa.close()
-        return _f
 
-    def import_svg(self, font):
+    def import_svg(self):
         """オリジナルのsvgグリフをインポートする
         """
         files = glob.glob('sourceFonts/svg/*.svg')
         for f in files:
             filename, _ = os.path.splitext(os.path.basename(f))
-            g = font.createChar(int(filename, 16))
+            g = self.font_jp.createChar(int(filename, 16))
             g.width = 1024
             g.vwidth = 1024
             g.clear()
             g.importOutlines(f)
             g.transform(psMat.translate(0, -61))
-            # g = fix_overflow(g)
-        return font
 
-
-    def build_font(self, _f, emoji):
-        hack = fontforge.open('./sourceFonts/%s' % _f.get('hack'))
-        log('remove_glyph_from_hack()')
-        hack = self.remove_glyph_from_en(hack)
-        cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
-        nerd = fontforge.open('./sourceFonts/nerd.sfd')
-        icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
-
-
-        log('transform Hack')
-        for g in hack.glyphs():
-            g.transform((0.42,0,0,0.42,0,0))
-            if _f.get('hack_weight_reduce') != 0:
-                # g.changeWeight(_f.get('hack_weight_reduce'), 'auto', 0, 0, 'auto')
-                g.stroke("circular", _f.get('hack_weight_reduce'), 'butt', 'round', 'removeexternal')
-            g = align_to_center(g)
-        hack = self.modify_m(hack, _f.get('weight_name'))
-
-
-        alternate_expands = [
-            0x306e,
-        ]
-
-        if _f.get('mgen_weight_add') != 0:
-            for g in cica.glyphs():
-                # g.changeWeight(_f.get('mgen_weight_add'), 'auto', 0, 0, 'auto')
-                g.stroke("caligraphic", _f.get('mgen_weight_add'), _f.get('mgen_weight_add'), 45, 'removeinternal')
-                # g.stroke("circular", _f.get('mgen_weight_add'), 'butt', 'round', 'removeinternal')
-
-
-        ignoring_center = [
-            0x3001, 0x3002, 0x3008, 0x3009, 0x300a, 0x300b, 0x300c, 0x300d,
-            0x300e, 0x300f, 0x3010, 0x3011, 0x3014, 0x3015, 0x3016, 0x3017,
-            0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
-            0x309b, 0x309c,
-        ]
-        log('transform Mgen+')
-        for g in cica.glyphs():
-            g.transform((0.91,0,0,0.91,0,0))
-            full_half_threshold = 700
-            if _f.get('italic'):
-                g.transform(psMat.skew(0.25))
-                skew_amount = g.font.ascent * 0.91 * 0.25
-                g.width = g.width + skew_amount
-                full_half_threshold += skew_amount
-            if g.width > full_half_threshold:
-                width = 1024
-            else:
-                width = 512
-            g.transform(psMat.translate((width - g.width)/2, 0))
-            g.width = width
-            if g.encoding in ignoring_center:
-                pass
-            else:
-                g = align_to_center(g)
-
-        log('modify border glyphs')
-        for g in hack.glyphs():
-            if  g.isWorthOutputting:
-                if _f.get('italic'):
-                    g.transform(psMat.skew(0.25))
-                if g.encoding >= 0x2500 and g.encoding <= 0x257f:
-                    # 全角の罫線を0xf0000以降に退避
-                    cica.selection.select(g.encoding)
-                    cica.copy()
-                    cica.selection.select(g.encoding + 0xf0000)
-                    cica.paste()
-                if g.encoding >= 0x2500 and g.encoding <= 0x25af:
-                    g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
-                    g = align_to_center(g)
-                hack.selection.select(g.encoding)
-                hack.copy()
-                cica.selection.select(g.encoding)
-                cica.paste()
-
-        log('modify nerd glyphs')
-        for g in nerd.glyphs():
-            if g.encoding < 0xe0a0 or g.encoding > 0xfd46:
-                continue
-            g = modify_nerd(g)
-            nerd.selection.select(g.encoding)
-            nerd.copy()
-            if g.encoding >= 0xf500:
-                # Material Design IconsはNerd Fontsに従うとアラビア文字等を壊して
-                # しまうので、0xf0000〜に配置する
-                cica.selection.select(g.encoding + 0xf0000)
-                cica.paste()
-            else:
-                cica.selection.select(g.encoding)
-                cica.paste()
-
-        log('modify icons_for_devs glyphs')
-        for g in icons_for_devs.glyphs():
-            if g.encoding < 0xe900 or g.encoding > 0xe950:
-                continue
-            g = modify_iconsfordevs(g)
-            icons_for_devs.selection.select(g.encoding)
-            icons_for_devs.copy()
-            cica.selection.select(g.encoding)
-            cica.paste()
-
-        cica = self.fix_box_drawings(cica)
-        cica = self.zenkaku_space(cica)
-        cica = self.zero(cica)
-        cica = self.modify_WM(cica)
-        cica = self.vertical_line_to_broken_bar(cica)
-        cica = self.emdash_to_broken_dash(cica)
-        cica = self.reiwa(cica, _f.get('weight_name'))
-        cica = self.add_gopher(cica)
-        cica = self.modify_ellipsis(cica)
-        if emoji:
-            cica = self.add_notoemoji(cica)
-        cica = self.add_smalltriangle(cica)
-        cica = self.add_dejavu(cica, _f)
-        cica = self.resize_supersub(cica)
-
-        log("fix_overflow()")
-        for g in cica.glyphs():
-            g = fix_overflow(g)
-        log("import_svg()")
-        cica = self.import_svg(cica)
-        cica.ascent = ASCENT
-        cica.descent = DESCENT
-        cica.upos = 45
-        cica.fontname = _f.get('family')
-        cica.familyname = _f.get('family')
-        cica.fullname = _f.get('name')
-        cica.weight = _f.get('weight_name')
-        cica = self.set_os2_values(cica, _f)
-        cica.appendSFNTName(0x411,0, COPYRIGHT)
-        cica.appendSFNTName(0x411,1, _f.get('family'))
-        cica.appendSFNTName(0x411,2, _f.get('style_name'))
-        cica.appendSFNTName(0x411,4, _f.get('name'))
-        cica.appendSFNTName(0x411,5, "Version " + VERSION)
-        cica.appendSFNTName(0x411,6, _f.get('family') + "-" + _f.get('weight_name'))
-        cica.appendSFNTName(0x411,13, LICENSE)
-        cica.appendSFNTName(0x411,16, _f.get('family'))
-        cica.appendSFNTName(0x411,17, _f.get('style_name'))
-        cica.appendSFNTName(0x409,0, COPYRIGHT)
-        cica.appendSFNTName(0x409,1, _f.get('family'))
-        cica.appendSFNTName(0x409,2, _f.get('style_name'))
-        cica.appendSFNTName(0x409,3, VERSION + ";" + _f.get('family') + "-" + _f.get('style_name'))
-        cica.appendSFNTName(0x409,4, _f.get('name'))
-        cica.appendSFNTName(0x409,5, "Version " + VERSION)
-        cica.appendSFNTName(0x409,6, _f.get('name'))
-        cica.appendSFNTName(0x409,13, LICENSE)
-        cica.appendSFNTName(0x409,16, _f.get('family'))
-        cica.appendSFNTName(0x409,17, _f.get('style_name'))
-        if emoji:
-            fontpath = './dist/%s' % _f.get('filename')
-        else:
-            fontpath = './dist/noemoji/%s' % _f.get('filename')
-
-        cica.generate(fontpath)
-
-        cica.close()
-        hack.close()
-        nerd.close()
-        icons_for_devs.close()
-
-
-    def add_notoemoji(self, _f):
+    def add_notoemoji(self):
         notoemoji = fontforge.open('./sourceFonts/NotoEmoji-Regular.ttf')
         for g in notoemoji.glyphs():
             if g.isWorthOutputting and g.encoding > 0x04f9:
@@ -737,27 +545,29 @@ class Cica:
                 g = align_to_center(g)
                 notoemoji.selection.select(g.encoding)
                 notoemoji.copy()
-                _f.selection.select(g.encoding)
-                _f.paste()
+                self.font_jp.selection.select(g.encoding)
+                self.font_jp.paste()
         notoemoji.close()
-        return _f
 
-    def add_gopher(self, _f):
+    def add_gopher(self):
+        """半身Gopherくんを追加
+        """
         gopher = fontforge.open('./sourceFonts/gopher.sfd')
         for g in gopher.glyphs():
             if g.isWorthOutputting:
                 gopher.selection.select(0x40)
                 gopher.copy()
-                _f.selection.select(0xE160)
-                _f.paste()
+                self.font_jp.selection.select(0xE160)
+                self.font_jp.paste()
                 g.transform(psMat.compose(psMat.scale(-1, 1), psMat.translate(g.width, 0)))
                 gopher.copy()
-                _f.selection.select(0xE161)
-                _f.paste()
+                self.font_jp.selection.select(0xE161)
+                self.font_jp.paste()
         gopher.close()
-        return _f
 
-    def resize_supersub(self, _f):
+    def resize_supersub(self):
+        """上付文字、下付文字を調整して可読性を上げる
+        """
         superscripts = [
                 {"src": 0x0031, "dest": 0x00b9}, {"src": 0x0032, "dest": 0x00b2},
                 {"src": 0x0033, "dest": 0x00b3}, {"src": 0x0030, "dest": 0x2070},
@@ -849,17 +659,17 @@ class Cica:
         ]
 
         for g in superscripts:
-            _f.selection.select(g["src"])
-            _f.copy()
-            _f.selection.select(g["dest"])
-            _f.paste()
+            self.font_jp.selection.select(g["src"])
+            self.font_jp.copy()
+            self.font_jp.selection.select(g["dest"])
+            self.font_jp.paste()
         for g in subscripts:
-            _f.selection.select(g["src"])
-            _f.copy()
-            _f.selection.select(g["dest"])
-            _f.paste()
+            self.font_jp.selection.select(g["src"])
+            self.font_jp.copy()
+            self.font_jp.selection.select(g["dest"])
+            self.font_jp.paste()
 
-        for g in _f.glyphs("encoding"):
+        for g in self.font_jp.glyphs("encoding"):
             if g.encoding > 0x2c7d:
                 continue
             elif self.in_scripts(g.encoding, superscripts):
@@ -888,7 +698,6 @@ class Cica:
                     y = -60
                 g.transform(psMat.translate(0, y))
                 align_to_center(g)
-        return _f
 
     def in_scripts(self, encoding, scripts):
         for s in scripts:
@@ -903,24 +712,24 @@ class Cica:
                 return s["src"]
         raise ValueError
 
-    def modify_ellipsis(self, _f):
+    def modify_ellipsis(self):
         """3点リーダーを半角にする
         DejaVuSansMono の U+22EF(⋯) をU+2026(…)、U+22EE(⋮)、U+22F0(⋰)、U+22F1(⋱)
         にコピーした上で回転させて生成
 
         三点リーダの文字幅について · Issue #41 · miiton/Cica https://github.com/miiton/Cica/issues/41
         """
-        _f.selection.select(0x22ef)
-        _f.copy()
-        _f.selection.select(0x2026)
-        _f.paste()
-        _f.selection.select(0x22ee)
-        _f.paste()
-        _f.selection.select(0x22f0)
-        _f.paste()
-        _f.selection.select(0x22f1)
-        _f.paste()
-        for g in _f.glyphs("encoding"):
+        self.font_jp.selection.select(0x22ef)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x2026)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0x22ee)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0x22f0)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0x22f1)
+        self.font_jp.paste()
+        for g in self.font_jp.glyphs("encoding"):
             if g.encoding < 0x22ee:
                 continue
             elif g.encoding > 0x22f1:
@@ -946,45 +755,180 @@ class Cica:
                 trcen = psMat.translate(-cx, -cy)
                 rotcen = psMat.compose(trcen, psMat.compose(psMat.rotate(math.radians(-45)), psMat.inverse(trcen)))
                 g.transform(rotcen)
-        return _f
+
+    def build_font(self, emoji):
+
+        log('remove_glyph_from_en()')
+        self.remove_glyph_from_en()
+
+        log('transform font_en')
+        for g in self.font_en.glyphs():
+            g.transform((0.42,0,0,0.42,0,0))
+            g = align_to_center(g)
+        self.modify_m(self.weight_name)
+
+        ignoring_center = [
+            0x3001, 0x3002, 0x3008, 0x3009, 0x300a, 0x300b, 0x300c, 0x300d,
+            0x300e, 0x300f, 0x3010, 0x3011, 0x3014, 0x3015, 0x3016, 0x3017,
+            0x3018, 0x3019, 0x301a, 0x301b, 0x301d, 0x301e, 0x3099, 0x309a,
+            0x309b, 0x309c,
+        ]
+        log('transform font_jp')
+        for g in self.font_jp.glyphs():
+            g.transform((0.91,0,0,0.91,0,0))
+            full_half_threshold = 700
+            if self.italic:
+                g.transform(psMat.skew(0.25))
+                skew_amount = g.font.ascent * 0.91 * 0.25
+                g.width = g.width + skew_amount
+                full_half_threshold += skew_amount
+            if g.width > full_half_threshold:
+                width = 1024
+            else:
+                width = 512
+            g.transform(psMat.translate((width - g.width)/2, 0))
+            g.width = width
+            if g.encoding in ignoring_center:
+                pass
+            else:
+                g = align_to_center(g)
+
+        log('modify border glyphs')
+        for g in self.font_en.glyphs():
+            if  g.isWorthOutputting:
+                if self.italic:
+                    g.transform(psMat.skew(0.25))
+                if g.encoding >= 0x2500 and g.encoding <= 0x257f:
+                    # 全角の罫線を0xf0000以降に退避
+                    self.font_jp.selection.select(g.encoding)
+                    self.font_jp.copy()
+                    self.font_jp.selection.select(g.encoding + 0xf0000)
+                    self.font_jp.paste()
+                if g.encoding >= 0x2500 and g.encoding <= 0x25af:
+                    g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
+                    g = align_to_center(g)
+                self.font_en.selection.select(g.encoding)
+                self.font_en.copy()
+                self.font_jp.selection.select(g.encoding)
+                self.font_jp.paste()
+
+        log('modify nerd glyphs')
+        for g in self.nerd.glyphs():
+            if g.encoding < 0xe0a0 or g.encoding > 0xfd46:
+                continue
+            g = modify_nerd(g)
+            self.nerd.selection.select(g.encoding)
+            self.nerd.copy()
+            if g.encoding >= 0xf500:
+                # Material Design IconsはNerd Fontsに従うとアラビア文字等を壊して
+                # しまうので、0xf0000〜に配置する
+                self.font_jp.selection.select(g.encoding + 0xf0000)
+                self.font_jp.paste()
+            else:
+                self.font_jp.selection.select(g.encoding)
+                self.font_jp.paste()
+
+        log('modify icons_for_devs glyphs')
+        for g in self.icons_for_devs.glyphs():
+            if g.encoding < 0xe900 or g.encoding > 0xe950:
+                continue
+            g = modify_iconsfordevs(g)
+            self.icons_for_devs.selection.select(g.encoding)
+            self.icons_for_devs.copy()
+            self.font_jp.selection.select(g.encoding)
+            self.font_jp.paste()
+
+        self.fix_box_drawings()
+        self.zenkaku_space()
+        self.zero()
+        self.modify_WM()
+        self.vertical_line_to_broken_bar()
+        self.emdash_to_broken_dash()
+        self.reiwa(self.weight_name)
+        self.add_gopher()
+        self.modify_ellipsis()
+        if emoji:
+            self.add_notoemoji()
+        self.add_smalltriangle()
+        self.add_dejavu()
+        self.resize_supersub()
+
+        log("fix_overflow()")
+        for g in self.font_jp.glyphs():
+            g = fix_overflow(g)
+        log("import_svg()")
+        self.import_svg()
+        self.font_jp.ascent = ASCENT
+        self.font_jp.descent = DESCENT
+        self.font_jp.upos = 45
+        self.font_jp.fontname = self.family
+        self.font_jp.familyname = self.family
+        self.font_jp.fullname = self.name
+        self.font_jp.weight = self.weight_name
+        self.set_os2_values()
+        self.font_jp.appendSFNTName(0x411,0, COPYRIGHT)
+        self.font_jp.appendSFNTName(0x411,1, self.family)
+        self.font_jp.appendSFNTName(0x411,2, self.style_name)
+        self.font_jp.appendSFNTName(0x411,4, self.name)
+        self.font_jp.appendSFNTName(0x411,5, "Version " + VERSION)
+        self.font_jp.appendSFNTName(0x411,6, self.family + "-" + self.weight_name)
+        self.font_jp.appendSFNTName(0x411,13, LICENSE)
+        self.font_jp.appendSFNTName(0x411,16, self.family)
+        self.font_jp.appendSFNTName(0x411,17, self.style_name)
+        self.font_jp.appendSFNTName(0x409,0, COPYRIGHT)
+        self.font_jp.appendSFNTName(0x409,1, self.family)
+        self.font_jp.appendSFNTName(0x409,2, self.style_name)
+        self.font_jp.appendSFNTName(0x409,3, VERSION + ";" + self.family + "-" + self.style_name)
+        self.font_jp.appendSFNTName(0x409,4, self.name)
+        self.font_jp.appendSFNTName(0x409,5, "Version " + VERSION)
+        self.font_jp.appendSFNTName(0x409,6, self.name)
+        self.font_jp.appendSFNTName(0x409,13, LICENSE)
+        self.font_jp.appendSFNTName(0x409,16, self.family)
+        self.font_jp.appendSFNTName(0x409,17, self.style_name)
+        if emoji:
+            fontpath = './dist/%s' % self.output_name
+        else:
+            fontpath = './dist/noemoji/%s' % self.output_name
+
+        self.font_jp.generate(fontpath)
+
+        self.font_jp.close()
+        self.font_en.close()
+        self.nerd.close()
+        self.icons_for_devs.close()
+
 
 
 fonts = [
     {
-         'family': FAMILY,
-         'name': FAMILY + '-Regular',
-         'filename': FAMILY + '-Regular.ttf',
-         'weight': 400,
-         'weight_name': 'Regular',
-         'style_name': 'Regular',
-         'hack': 'Hack-Regular.ttf',
-         'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
-         'hack_weight_reduce': 0,
-         'mgen_weight_add': 0,
-         'italic': False,
-     }, {
-         'family': FAMILY,
-         'name': FAMILY + '-RegularItalic',
-         'filename': FAMILY + '-RegularItalic.ttf',
-         'weight': 400,
-         'weight_name': 'Regular',
-         'style_name': 'Italic',
-         'hack': 'Hack-Regular.ttf',
-         'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
-         'hack_weight_reduce': 0,
-         'mgen_weight_add': 0,
-         'italic': True,
+        'family': FAMILY,
+        'name': FAMILY + '-Regular',
+        'filename': FAMILY + '-Regular.ttf',
+        'weight': 400,
+        'weight_name': 'Regular',
+        'style_name': 'Regular',
+        'hack': 'Hack-Regular.ttf',
+        'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
+        'italic': False,
+    }, {
+        'family': FAMILY,
+        'name': FAMILY + '-RegularItalic',
+        'filename': FAMILY + '-RegularItalic.ttf',
+        'weight': 400,
+        'weight_name': 'Regular',
+        'style_name': 'Italic',
+        'hack': 'Hack-Regular.ttf',
+        'mgen_plus': 'rounded-mgenplus-1m-regular.ttf',
+        'italic': True,
     }, {
         'family': FAMILY,
         'name': FAMILY + '-Bold',
         'filename': FAMILY + '-Bold.ttf',
         'weight': 700,
         'weight_name': 'Bold',
-         'style_name': 'Bold',
+        'style_name': 'Bold',
         'hack': 'Hack-Bold.ttf',
         'mgen_plus': 'rounded-mgenplus-1m-bold.ttf',
-        'hack_weight_reduce': 0,
-        'mgen_weight_add': 0,
         'italic': False,
     }, {
         'family': FAMILY,
@@ -995,8 +939,6 @@ fonts = [
         'style_name': 'Bold Italic',
         'hack': 'Hack-Bold.ttf',
         'mgen_plus': 'rounded-mgenplus-1m-bold.ttf',
-        'hack_weight_reduce': 0,
-        'mgen_weight_add': 0,
         'italic': True,
     }
 ]
@@ -1011,9 +953,10 @@ def main():
                 _f["weight_name"],
                 _f["style_name"],
                 _f["hack"],
-                _f["mgen_plus"]
+                _f["mgen_plus"],
+                _f["italic"]
                 )
-        cica.build_font(_f["name"], True)
+        cica.build_font(True)
 
 if __name__ == '__main__':
     main()
