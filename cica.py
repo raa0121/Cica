@@ -419,7 +419,7 @@ class Cica:
         for g in self.font_jp.selection.byGlyphs:
             g = align_to_center(g)
 
-    def zero(self):
+    def dotted_zero(self):
         """半角数字の0をドットゼロにする
         """
         self.font_jp.selection.select(0x4f)
@@ -432,6 +432,23 @@ class Cica:
         self.font_jp.pasteInto()
         for g in self.font_jp.selection.byGlyphs:
             g = align_to_center(g)
+
+    def slashed_zero(self):
+        """半角数字の0をスラッシュゼロにする
+        """
+        self.font_jp.selection.select(0x4f)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x30)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0x2f)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x1)
+        self.font_jp.paste()
+        self.font_jp.transform(psMat.compose(psMat.scale(0.7, 0.75), psMat.translate(70, 115)))
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x30)
+        self.font_jp.pasteInto()
+        self.font_jp.removeOverlap()
 
     def modify_WM(self):
         """WとMの字体を調整
@@ -836,7 +853,8 @@ class Cica:
 
         self.fix_box_drawings()
         self.zenkaku_space()
-        self.zero()
+        self.dotted_zero()
+        self.slashed_zero()
         self.modify_WM()
         self.vertical_line_to_broken_bar()
         self.emdash_to_broken_dash()
