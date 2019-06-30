@@ -38,7 +38,7 @@ class WidthParser:
         start = int(u[0], 16)
         if len(u) == 2:
             finish = int(u[1], 16)
-            for i in range(start, finish):
+            for i in range(start, finish + 1):
                 self.dictionary[i] = width
         else:
             self.dictionary[start] = width
@@ -61,10 +61,14 @@ class WidthParser:
         data.close()
 
     def width(self, uni):
-        return self.dictionary[uni]
+        try:
+            return self.dictionary[uni]
+        except:
+            pass
+
 
 
 
 if __name__ == '__main__':
     wp = WidthParser()
-    print(wp.width(0x3000))
+    print(wp.width(0x25a1))
