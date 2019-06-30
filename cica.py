@@ -37,9 +37,6 @@ ignoring_center.extend([
 def align_to_center(_g):
     """グリフを中央寄せにする
     """
-    if _g.encoding in ignoring_center:
-        return _g
-
     width = 0
 
     if _g.width > 700:
@@ -48,10 +45,13 @@ def align_to_center(_g):
         width = 512
 
     _g.width = width
+    if _g.encoding in ignoring_center:
+        return
+
     _g.left_side_bearing = _g.right_side_bearing = (_g.left_side_bearing + _g.right_side_bearing)/2
     _g.width = width
 
-    return _g
+    return
 
 def align_to_left(_g):
     """グリフを左寄せにする
@@ -168,9 +168,9 @@ def modify_nerd(_g):
             _g.width = 1024
         if _g.encoding == 0xe0cf:
             _g.transform(psMat.scale(0.9, 1.0))
-            _g = align_to_center(_g)
+            align_to_center(_g)
         if _g.encoding == 0xe0d0:
-            _g = align_to_center(_g)
+            align_to_center(_g)
         if _g.encoding == 0xe0d1:
             _g.transform(psMat.compose(psMat.scale(1.0, 0.982), psMat.translate(0, -1)))
             _g.left_side_bearing = 0
@@ -188,11 +188,11 @@ def modify_nerd(_g):
     elif _g.encoding >= 0xf000 and _g.encoding <= 0xf2e0:
         _g.transform(psMat.compose(psMat.scale(0.75, 0.75), psMat.translate(0, 55)))
         _g.width = 1024
-        _g = align_to_center(_g)
+        align_to_center(_g)
     else:
         _g.transform(psMat.translate(0, -55))
         _g.width = 1024
-        _g = align_to_center(_g)
+        align_to_center(_g)
 
     return _g
 
@@ -201,7 +201,7 @@ def modify_iconsfordevs(_g):
     """
     _g.transform(psMat.compose(psMat.scale(2), psMat.translate(0, -126)))
     _g.width = 1024
-    _g = align_to_center(_g)
+    align_to_center(_g)
     return _g
 
 
@@ -426,7 +426,7 @@ class Cica:
         self.font_jp.pasteInto()
         self.font_jp.intersect()
         for g in self.font_jp.selection.byGlyphs:
-            g = align_to_center(g)
+            align_to_center(g)
 
     def dotted_zero(self):
         """半角数字の0をドットゼロにする
@@ -440,7 +440,7 @@ class Cica:
         self.font_jp.selection.select(0x30)
         self.font_jp.pasteInto()
         for g in self.font_jp.selection.byGlyphs:
-            g = align_to_center(g)
+            align_to_center(g)
 
     def slashed_zero(self):
         """半角数字の0をスラッシュゼロにする
@@ -453,7 +453,7 @@ class Cica:
         self.font_jp.copy()
         self.font_jp.selection.select(0x1)
         self.font_jp.paste()
-        self.font_jp.transform(psMat.compose(psMat.scale(0.7, 0.75), psMat.translate(70, 115)))
+        self.font_jp.transform(psMat.compose(psMat.scale(0.7, 0.75), psMat.translate(80, 115)))
         self.font_jp.copy()
         self.font_jp.selection.select(0x30)
         self.font_jp.pasteInto()
@@ -463,13 +463,15 @@ class Cica:
         """WとMの字体を調整
         """
         self.font_jp.selection.select(0x57)
-        self.font_jp.transform(psMat.scale(0.95, 1.0))
+        self.font_jp.transform(psMat.compose(psMat.scale(0.95, 1.0), psMat.translate(10, 0)))
+        for g in self.font_jp.selection.byGlyphs:
+            align_to_center(g)
         self.font_jp.copy()
         self.font_jp.selection.select(0x4d)
         self.font_jp.paste()
-        self.font_jp.transform(psMat.compose(psMat.rotate(math.radians(180)), psMat.translate(0, 627)))
+        self.font_jp.transform(psMat.compose(psMat.rotate(math.radians(180)), psMat.translate(512, 627)))
         for g in self.font_jp.selection.byGlyphs:
-            g = align_to_center(g)
+            align_to_center(g)
 
     def modify_m(self, _weight):
         """mの中央の棒を少し短くする
@@ -508,7 +510,7 @@ class Cica:
         for g in self.font_jp.glyphs():
             if g.encoding == 0x25be or g.encoding == 0x25b8:
                 g.width = 512
-                g = align_to_center(g)
+                align_to_center(g)
 
     def fix_box_drawings(self):
         """罫線を調整
@@ -569,7 +571,7 @@ class Cica:
         for g in notoemoji.glyphs():
             if g.isWorthOutputting and g.encoding > 0x04f9:
                 g.transform((0.42,0,0,0.42,0,0))
-                g = align_to_center(g)
+                align_to_center(g)
                 notoemoji.selection.select(g.encoding)
                 notoemoji.copy()
                 self.font_jp.selection.select(g.encoding)
@@ -795,7 +797,7 @@ class Cica:
         log('transform font_en')
         for g in self.font_en.glyphs():
             g.transform((0.42,0,0,0.42,0,0))
-            g = align_to_center(g)
+            align_to_center(g)
 
         self.modify_m(self.weight_name)
 
@@ -814,7 +816,7 @@ class Cica:
                 width = 512
             g.transform(psMat.translate((width - g.width)/2, 0))
             g.width = width
-            g = align_to_center(g)
+            align_to_center(g)
 
         log('modify border glyphs')
         for g in self.font_en.glyphs():
@@ -829,7 +831,7 @@ class Cica:
                     self.font_jp.paste()
                 if g.encoding >= 0x2500 and g.encoding <= 0x25af:
                     g.transform(psMat.compose(psMat.scale(1.024, 1.024), psMat.translate(0, -30)))
-                    g = align_to_center(g)
+                    align_to_center(g)
                 self.font_en.selection.select(g.encoding)
                 self.font_en.copy()
                 self.font_jp.selection.select(g.encoding)
