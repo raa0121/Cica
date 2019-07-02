@@ -466,6 +466,8 @@ class Cica:
         self.font_jp.selection.select(0x30)
         self.font_jp.pasteInto()
         self.font_jp.removeOverlap()
+        self.font_jp.selection.select(0x1)
+        self.font_jp.clear()
 
     def modify_WM(self):
         """WとMの字体を調整
@@ -791,13 +793,21 @@ class Cica:
                 g.transform(rotcen)
 
     def stroked_d(self):
-        """DをĐにする
+        """Dを横線入りのĐにする
         """
         self.font_jp.selection.select(0x110)
         self.font_jp.copy()
         self.font_jp.selection.select(0x44)
         self.font_jp.paste()
 
+    def asterisk(self, up = 200):
+        """アスタリスクを放射状にする
+        """
+        self.font_jp.selection.select(0xffbc2)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0x2a)
+        self.font_jp.paste()
+        self.font_jp.transform(psMat.compose(psMat.scale(0.5, 0.5), psMat.translate(0, up)))
 
     def build(self, emoji):
 
@@ -908,6 +918,7 @@ class Cica:
         self.reiwa(self.weight_name)
         self.add_gopher()
         self.modify_ellipsis()
+        self.asterisk(300)  # 200 or 300   ##
         if emoji:
             self.add_notoemoji()
         self.add_smalltriangle()
