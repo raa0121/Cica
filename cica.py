@@ -808,9 +808,11 @@ class Cica:
         self.font_jp.selection.select(0x2a)
         self.font_jp.paste()
         self.font_jp.transform(psMat.compose(psMat.scale(0.5, 0.5), psMat.translate(0, up)))
+        if self.weight_name == 'Bold':
+            self.font_jp.stroke("circular", 20, 'butt', 'round', 'removeinternal')
+
 
     def build(self, emoji):
-
         log('transform font_en')
         for g in self.font_en.glyphs():
             g.transform((0.42,0,0,0.42,0,0))
@@ -835,12 +837,12 @@ class Cica:
             g.width = width
             align_to_center(g)
 
-        # TODO: 0x2715 -> 0xd7 : 乗算記号
+        # 0x2715 -> 0xd7 : 乗算記号
         self.font_jp.selection.select(0x2715)
         self.font_jp.copy()
         self.font_jp.selection.select(0xd7)
         self.font_jp.paste()
-        # TODO: 0xff1a + 0xff0d -> 0xf7 : 除算記号
+        # 0xff1a + 0xff0d -> 0xf7 : 除算記号
         self.font_jp.selection.select(0xff1a)
         self.font_jp.copy()
         self.font_jp.selection.select(0xf7)
@@ -849,7 +851,7 @@ class Cica:
         self.font_jp.copy()
         self.font_jp.selection.select(0xf7)
         self.font_jp.pasteInto()
-        # TODO: 0xff0b + 0xff3f -> 0xb1 : プラスマイナス記号
+        # 0xff0b + 0xff3f -> 0xb1 : プラスマイナス記号
         self.font_jp.selection.select(0xff0b)
         self.font_jp.copy()
         self.font_jp.selection.select(0xb1)
