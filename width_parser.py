@@ -71,4 +71,4 @@ class WidthParser:
 
 if __name__ == '__main__':
     wp = WidthParser()
-    print(wp.width(0x25a1))
+    print(wp.width(0xb1))

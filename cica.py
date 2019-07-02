@@ -17,7 +17,10 @@ SOURCE = './source'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '5.0.1'
-FAMILY = 'Cica'
+FAMILY = 'CicaTest'
+AMBI = 0
+SINGLE = 1
+DOUBLE = 2
 
 def log(_str):
     """ログ出力
@@ -218,17 +221,7 @@ class Cica:
         self.italic = italic
         self.nerd = fontforge.open('./source/nerd.sfd')
         self.icons_for_devs = fontforge.open('./source/iconsfordevs.ttf')
-
-    def remove_glyph_from_en(self):
-        """jpフォント側を採用したいグリフをenフォントから削除
-        """
-        glyphs = [
-                0x2026, # …
-                ]
-
-        for g in glyphs:
-            self.font_en.selection.select(g)
-            self.font_en.clear()
+        self.wp = width_parser.WidthParser()
 
     def set_os2_values(self):
         """フォントメタ情報の設定
@@ -276,6 +269,8 @@ class Cica:
             dejavu = fontforge.open('./source/DejaVuSansMono-Bold.ttf')
 
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
             g.width = 512
 
@@ -283,6 +278,8 @@ class Cica:
 
         # 0x0300 - 0x036f - Combining Diacritical Marks
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x0300 or g.encoding > 0x036f or g.encoding == 0x0398:
                 continue
             else:
@@ -332,6 +329,8 @@ class Cica:
                 self.font_jp.paste()
         # 0x0370 - 0x03ff - GREEK
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x0370 or g.encoding > 0x03ff or g.encoding == 0x0398:
                 continue
             else:
@@ -344,6 +343,8 @@ class Cica:
                     self.font_jp.paste()
         # 0x2100 - 0x214f Letterlike Symbols
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x2100 or g.encoding > 0x214f or g.encoding == 0x2122:
                 continue
             else:
@@ -354,6 +355,8 @@ class Cica:
                     self.font_jp.paste()
         # 0x2150 - 0x218f Number Forms
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x2150 or g.encoding > 0x218f:
                 continue
             else:
@@ -363,8 +366,9 @@ class Cica:
                     self.font_jp.selection.select(g.encoding)
                     self.font_jp.paste()
         # 0x2190 - 0x21ff Arrows
-        # TODO: 矢印を全角のままにしたパターンも生成したい
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x2190 or g.encoding > 0x21ff:
                 continue
             else:
@@ -375,6 +379,8 @@ class Cica:
                     self.font_jp.paste()
         # 0x2200 - 0x22ff Mathematical Operators
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x2200 or g.encoding > 0x22ff:
                 continue
             else:
@@ -385,6 +391,8 @@ class Cica:
                     self.font_jp.paste()
         # 0x2300 - 0x23ff Miscellaneous Technical
         for g in dejavu.glyphs():
+            if self.wp.width(g.encoding) == AMBI:
+                continue
             if g.encoding < 0x2300 or g.encoding > 0x23ff:
                 continue
             else:
@@ -567,6 +575,8 @@ class Cica:
             g.transform(psMat.translate(0, -61))
 
     def add_notoemoji(self):
+        """Noto Emojiを足す
+        """
         notoemoji = fontforge.open('./source/NotoEmoji-Regular.ttf')
         for g in notoemoji.glyphs():
             if g.isWorthOutputting and g.encoding > 0x04f9:
@@ -789,10 +799,7 @@ class Cica:
         self.font_jp.paste()
 
 
-    def build_font(self, emoji):
-
-        log('remove_glyph_from_en()')
-        self.remove_glyph_from_en()
+    def build(self, emoji):
 
         log('transform font_en')
         for g in self.font_en.glyphs():
@@ -818,9 +825,36 @@ class Cica:
             g.width = width
             align_to_center(g)
 
+        # TODO: 0x2715 -> 0xd7 : 乗算記号
+        self.font_jp.selection.select(0x2715)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0xd7)
+        self.font_jp.paste()
+        # TODO: 0xff1a + 0xff0d -> 0xf7 : 除算記号
+        self.font_jp.selection.select(0xff1a)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0xf7)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0xff0d)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0xf7)
+        self.font_jp.pasteInto()
+        # TODO: 0xff0b + 0xff3f -> 0xb1 : プラスマイナス記号
+        self.font_jp.selection.select(0xff0b)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0xb1)
+        self.font_jp.paste()
+        self.font_jp.selection.select(0xff3f)
+        self.font_jp.copy()
+        self.font_jp.selection.select(0xb1)
+        self.font_jp.pasteInto()
+
+
         log('modify border glyphs')
         for g in self.font_en.glyphs():
-            if  g.isWorthOutputting:
+            if self.wp.width(g.encoding) == AMBI:
+                continue
+            if g.isWorthOutputting:
                 if self.italic:
                     g.transform(psMat.skew(0.25))
                 if g.encoding >= 0x2500 and g.encoding <= 0x257f:
@@ -981,7 +1015,7 @@ def main():
                 _f["mgen_plus"],
                 _f["italic"]
                 )
-        cica.build_font(True)
+        cica.build(True)
 
 if __name__ == '__main__':
     main()
