@@ -936,7 +936,12 @@ class Cica:
             self.stroked_d()
 
         self.modify_WM()
-        self.vertical_line_to_broken_bar()
+
+        if args.vertical_line == 0:
+            self.vertical_line_to_broken_bar()
+        elif args.vertical_line == 1:
+            pass
+
         self.emdash_to_broken_dash()
         self.reiwa(self.weight_name)
         self.add_gopher()
