@@ -932,7 +932,9 @@ class Cica:
         elif args.zero == 2:
             pass
 
-        self.stroked_d()
+        if args.stroked_d == 0:
+            self.stroked_d()
+
         self.modify_WM()
         self.vertical_line_to_broken_bar()
         self.emdash_to_broken_dash()
