@@ -950,7 +950,11 @@ class Cica:
         elif args.ellipsis == 1:
             pass
 
-        self.asterisk(300)  # 200 or 300   ##
+        if args.asterisk == 0:
+            self.asterisk(200)  # 200 or 300   ##
+        elif args.asterisk == 1:
+            pass
+
         if emoji:
             self.add_notoemoji()
         self.add_smalltriangle()
