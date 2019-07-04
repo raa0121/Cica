@@ -925,8 +925,13 @@ class Cica:
         if args.space == 0:
             self.zenkaku_space()
 
-        self.dotted_zero()
-        self.slashed_zero()
+        if args.zero == 0:
+            self.dotted_zero()
+        elif args.zero == 1:
+            self.slashed_zero()
+        elif args.zero == 2:
+            pass
+
         self.stroked_d()
         self.modify_WM()
         self.vertical_line_to_broken_bar()
