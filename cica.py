@@ -955,8 +955,11 @@ class Cica:
         elif args.asterisk == 1:
             pass
 
-        if emoji:
+        if args.emoji == 0:
             self.add_notoemoji()
+        elif args.emoji == 1:
+            pass
+
         self.add_smalltriangle()
         self.add_dejavu()
         self.resize_supersub()
