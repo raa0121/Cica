@@ -945,7 +945,11 @@ class Cica:
         self.emdash_to_broken_dash()
         self.reiwa(self.weight_name)
         self.add_gopher()
-        self.modify_ellipsis()
+        if args.ellipsis == 0:
+            self.modify_ellipsis()
+        elif args.ellipsis == 1:
+            pass
+
         self.asterisk(300)  # 200 or 300   ##
         if emoji:
             self.add_notoemoji()
