@@ -922,7 +922,9 @@ class Cica:
             self.font_jp.paste()
 
         self.fix_box_drawings()
-        self.zenkaku_space()
+        if args.space == 0:
+            self.zenkaku_space()
+
         self.dotted_zero()
         self.slashed_zero()
         self.stroked_d()
