@@ -210,15 +210,65 @@ def modify_iconsfordevs(_g):
 
 
 parser = argparse.ArgumentParser()
-parser.add_argument("-s", "--space", type=int, help="全角スペースに枠をつける (0) かつけない (1) か選べます")
-parser.add_argument("-z", "--zero", type=int, help="ゼロを dotted(0)、slashed(1)、Hack(2)、blanked(3) から選べます")
-parser.add_argument("-a", "--asterisk", type=int, help="アスタリスクのタイプを radial(0) か star(1) か選べます")
-parser.add_argument("-d", "--stroked-d", type=int, help="Dを stroked(0) か normal(1) か選べます")
-parser.add_argument("-v", "--vertical-line", type=int, help="縦線を broken(0) か solid(1) か選べます")
-parser.add_argument("-w", "--ambiguous-width", type=int, help="曖昧幅文字幅を single(0) か wide(1) か選べます")
-parser.add_argument("-e", "--ellipsis", type=int, help="三点リーダー類を single(0) か wide(1) か選べます")
-parser.add_argument("-i", "--emoji", type=int, help="絵文字類を noto emoji(0) か system(1) か選べます")
+parser.add_argument(
+    "-s",
+    "--space",
+    type=int,
+    default=int(os.environ.get("CICA_SPACE", "0")),
+    help="全角スペースに枠をつける (0) かつけない (1) か選べます",
+)
+parser.add_argument(
+    "-z",
+    "--zero",
+    type=int,
+    default=int(os.environ.get("CICA_ZERO", "0")),
+    help="ゼロを dotted(0)、slashed(1)、Hack(2)、blanked(3) から選べます",
+)
+parser.add_argument(
+    "-a",
+    "--asterisk",
+    type=int,
+    default=int(os.environ.get("CICA_ASTERISK", "0")),
+    help="アスタリスクのタイプを radial(0) か star(1) か選べます",
+)
+parser.add_argument(
+    "-d",
+    "--stroked-d",
+    type=int,
+    default=int(os.environ.get("CICA_STROKED_D", "0")),
+    help="Dを stroked(0) か normal(1) か選べます",
+)
+parser.add_argument(
+    "-v",
+    "--vertical-line",
+    type=int,
+    default=int(os.environ.get("CICA_VERTICAL_LINE", "0")),
+    help="縦線を broken(0) か solid(1) か選べます",
+)
+parser.add_argument(
+    "-w",
+    "--ambiguous-width",
+    type=int,
+    default=int(os.environ.get("CICA_AMBIGUOUS_WIDTH", "0")),
+    help="曖昧幅文字幅を single(0) か wide(1) か選べます",
+)
+parser.add_argument(
+    "-e",
+    "--ellipsis",
+    type=int,
+    default=int(os.environ.get("CICA_ELLIPSIS", "0")),
+    help="三点リーダー類を single(0) か wide(1) か選べます",
+)
+parser.add_argument(
+    "-i",
+    "--emoji",
+    type=int,
+    default=int(os.environ.get("CICA_EMOJI", "0")),
+    help="絵文字類を noto emoji(0) か system(1) か選べます",
+)
 args = parser.parse_args()
+
+print(args)
 
 class Cica:
     def __init__(self, family, name, output_name, weight, weight_name, style_name, font_en, font_jp, italic):
