@@ -215,56 +215,77 @@ parser.add_argument(
     "--space",
     type=int,
     default=int(os.environ.get("CICA_SPACE", "0")),
-    help="全角スペースに枠をつける (0) かつけない (1) か選べます",
+    help="全角スペースに枠をつける (0) かつけない (1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-z",
     "--zero",
     type=int,
     default=int(os.environ.get("CICA_ZERO", "0")),
-    help="ゼロを dotted(0)、slashed(1)、Hack(2)、blanked(3) から選べます",
+    help="ゼロを dotted(0)、slashed(1)、Hack(2)、blanked(3) から選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-a",
     "--asterisk",
     type=int,
     default=int(os.environ.get("CICA_ASTERISK", "0")),
-    help="アスタリスクのタイプを radial(0) か star(1) か選べます",
+    help="アスタリスクのタイプを radial(0) か star(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-d",
     "--stroked-d",
     type=int,
     default=int(os.environ.get("CICA_STROKED_D", "0")),
-    help="Dを stroked(0) か normal(1) か選べます",
+    help="Dを stroked(0) か normal(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-v",
     "--vertical-line",
     type=int,
     default=int(os.environ.get("CICA_VERTICAL_LINE", "0")),
-    help="縦線を broken(0) か solid(1) か選べます",
+    help="縦線を broken(0) か solid(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-w",
     "--ambiguous-width",
     type=int,
     default=int(os.environ.get("CICA_AMBIGUOUS_WIDTH", "0")),
-    help="曖昧幅文字幅を single(0) か wide(1) か選べます",
+    help="曖昧幅文字幅を single(0) か wide(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-e",
     "--ellipsis",
     type=int,
     default=int(os.environ.get("CICA_ELLIPSIS", "0")),
-    help="三点リーダー類を single(0) か wide(1) か選べます",
+    help="三点リーダー類を single(0) か wide(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-i",
     "--emoji",
     type=int,
     default=int(os.environ.get("CICA_EMOJI", "0")),
-    help="絵文字類を noto emoji(0) か system(1) か選べます",
+    help="絵文字類を noto emoji(0) か system(1) か選べます (デフォルト: 0)",
+)
+parser.add_argument(
+    "-m",
+    "--modified-m",
+    type=int,
+    default=int(os.environ.get("CICA_MODIFIED_LOWERCASE_M", "0")),
+    help="mの中心の線が short(0) か Hack(1) か選べます (デフォルト: 0)",
+)
+parser.add_argument(
+    "-W",
+    "--modified-WM",
+    type=int,
+    default=int(os.environ.get("CICA_MODIFIED_WM", "0")),
+    help="WとMが modified(0) か Hack(1) か選べます (デフォルト: 0)",
+)
+parser.add_argument(
+    "-b",
+    "--broken-emdash",
+    type=int,
+    default=int(os.environ.get("CICA_BROKEN_EMDASH", "0")),
+    help="emdashを broken(0) にするか Hack(1) か選べます (デフォルト: 0)",
 )
 args = parser.parse_args()
 
@@ -880,7 +901,8 @@ class Cica:
             g.transform((0.42,0,0,0.42,0,0))
             align_to_center(g)
 
-        self.modify_m(self.weight_name)
+        if args.modified_m == 0:
+            self.modify_m(self.weight_name)
 
         log('transform font_jp')
         for g in self.font_jp.glyphs():
@@ -985,14 +1007,16 @@ class Cica:
         if args.stroked_d == 0:
             self.stroked_d()
 
-        self.modify_WM()
+        if args.modified_WM == 0:
+            self.modify_WM()
 
         if args.vertical_line == 0:
             self.vertical_line_to_broken_bar()
         elif args.vertical_line == 1:
             pass
 
-        self.emdash_to_broken_dash()
+        if args.broken_emdash == 0:
+            self.emdash_to_broken_dash()
         self.reiwa(self.weight_name)
         self.add_gopher()
         if args.ellipsis == 0:
