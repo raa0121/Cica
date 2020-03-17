@@ -17,7 +17,7 @@ DESCENT = 204
 SOURCE = './source'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '5.0.1'
+VERSION = '5.0.2'
 FAMILY = 'CicaTest'
 AMBI = 0
 SINGLE = 1
@@ -533,6 +533,48 @@ class Cica:
         for g in self.font_jp.selection.byGlyphs:
             align_to_center(g)
 
+    def fix_box_drawings_block_elements(self):
+        """罫線やブロック(プログレスバーによく使われる)グリフの左右寄せを調整する
+        """
+        left = [
+            0x2510, 0x2518, 0x2524, 0x2555, 0x2556, 0x2557, 0x255b, 0x255c, 0x255d,
+            0x2561, 0x2562, 0x2563, 0x256e, 0x256f, 0x2574, 0x2578,
+            0x2589, 0x258a, 0x258b, 0x258c, 0x258d, 0x258e, 0x258f,
+            0x2596, 0x2598,
+            0xf2510, 0xf2518, 0xf2524, 0xf2555, 0xf2556, 0xf2557, 0xf255b, 0xf255c, 0xf255d,
+            0xff2561, 0xf2562, 0xf2563, 0xf256e, 0xf256f, 0xf2574, 0xf2578
+        ]
+        right = [
+            0x250c, 0x2514, 0x251c, 0x2552, 0x2553, 0x2554, 0x2558, 0x2559, 0x255a,
+            0x255e, 0x255f, 0x2560, 0x256d, 0x2570, 0x2576, 0x257a,
+            0x2590, 0x2595, 0x2597, 0x259d,
+            0xf250c, 0xf2514, 0xf251c, 0xf2552, 0xf2553, 0xf2554, 0xf2558, 0xf2559, 0xf255a,
+            0xf255e, 0xf255f, 0xf2560, 0xf256d, 0xf2570, 0xf2576, 0xf257a
+        ]
+
+        for g in self.font_jp.glyphs():
+            if g.encoding < 0x2500:
+                continue
+            if g.encoding > 0x259f and g.encoding < 0xf2500:
+                continue
+            if g.encoding in left:
+                align_to_left(g)
+            elif g.encoding in right:
+                align_to_right(g)
+
+    def reiwa(self, _weight):
+        reiwa = fontforge.open('./sourceFonts/reiwa.sfd')
+        if _weight == 'Bold':
+            reiwa.close()
+            reiwa = fontforge.open('./sourceFonts/reiwa-Bold.sfd')
+        for g in reiwa.glyphs():
+            if g.isWorthOutputting:
+                reiwa.selection.select(0x00)
+                reiwa.copy()
+                self.font_jp.selection.select(0x32ff)
+                self.font_jp.paste()
+        reiwa.close()
+
     def slashed_zero(self):
         """半角数字の0をスラッシュゼロにする
         """
@@ -605,31 +647,6 @@ class Cica:
                 g.width = 512
                 align_to_center(g)
 
-    def fix_box_drawings(self):
-        """罫線を調整
-        """
-        left = [
-            0x2510, 0x2518, 0x2524, 0x2555, 0x2556, 0x2557, 0x255b, 0x255c, 0x255d,
-            0x2561, 0x2562, 0x2563, 0x256e, 0x256f, 0x2574, 0x2578,
-            0xf2510, 0xf2518, 0xf2524, 0xf2555, 0xf2556, 0xf2557, 0xf255b, 0xf255c, 0xf255d,
-            0xff2561, 0xf2562, 0xf2563, 0xf256e, 0xf256f, 0xf2574, 0xf2578
-        ]
-        right = [
-            0x250c, 0x2514, 0x251c, 0x2552, 0x2553, 0x2554, 0x2558, 0x2559, 0x255a,
-            0x255e, 0x255f, 0x2560, 0x256d, 0x2570, 0x2576, 0x257a,
-            0xf250c, 0xf2514, 0xf251c, 0xf2552, 0xf2553, 0xf2554, 0xf2558, 0xf2559, 0xf255a,
-            0xf255e, 0xf255f, 0xf2560, 0xf256d, 0xf2570, 0xf2576, 0xf257a
-        ]
-
-        for g in self.font_jp.glyphs():
-            if g.encoding < 0x2500:
-                continue
-            if g.encoding > 0x256c and g.encoding < 0xf2500:
-                continue
-            if g.encoding in left:
-                align_to_left(g)
-            elif g.encoding in right:
-                align_to_right(g)
 
     def reiwa(self, _weight):
         """令和グリフを追加
@@ -904,23 +921,6 @@ class Cica:
         if args.modified_m == 0:
             self.modify_m(self.weight_name)
 
-        log('transform font_jp')
-        for g in self.font_jp.glyphs():
-            g.transform((0.91,0,0,0.91,0,0))
-            full_half_threshold = 700
-            if self.italic:
-                g.transform(psMat.skew(0.25))
-                skew_amount = g.font.ascent * 0.91 * 0.25
-                g.width = g.width + skew_amount
-                full_half_threshold += skew_amount
-            if g.width > full_half_threshold:
-                width = 1024
-            else:
-                width = 512
-            g.transform(psMat.translate((width - g.width)/2, 0))
-            g.width = width
-            align_to_center(g)
-
         # 0x2715 -> 0xd7 : 乗算記号
         self.font_jp.selection.select(0x2715)
         self.font_jp.copy()
@@ -944,7 +944,6 @@ class Cica:
         self.font_jp.copy()
         self.font_jp.selection.select(0xb1)
         self.font_jp.pasteInto()
-
 
         log('modify border glyphs')
         for g in self.font_en.glyphs():
@@ -993,7 +992,7 @@ class Cica:
             self.font_jp.selection.select(g.encoding)
             self.font_jp.paste()
 
-        self.fix_box_drawings()
+        self.fix_box_drawings_block_elements()
         if args.space == 0:
             self.zenkaku_space()
 
