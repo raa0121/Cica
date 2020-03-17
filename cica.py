@@ -14,6 +14,13 @@ import argparse
 # DESCENT = 174
 ASCENT = 820
 DESCENT = 204
+WIN_ASCENT = 820
+WIN_DESCENT = 204
+TYPO_ASCENT = 670
+TYPO_DESCENT = -104
+TYPO_LINEGAP = 80
+HHEA_ASCENT = 855
+HHEA_DESCENT = -169
 SOURCE = './source'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
@@ -74,7 +81,7 @@ def align_to_right(_g):
     _g.width = width
 
 def fix_overflow(glyph):
-    """上が820を超えている、または下が-204を超えているグリフを
+    """上がASCENTを超えている、または下が-DESCENTを超えているグリフを
     1024x1024の枠にはまるように修正する
     ※全角のグリフのみに実施する
     """
@@ -90,10 +97,10 @@ def fix_overflow(glyph):
         bb = glyph.boundingBox()
         bottom = bb[1]
         top = bb[3]
-        if bottom < -204:
-            glyph.transform(psMat.translate(0, -204 - bottom))
-        elif top > 820:
-            glyph.transform(psMat.translate(0, 820 - top))
+        if bottom < -DESCENT:
+            glyph.transform(psMat.translate(0, -DESCENT - bottom))
+        elif top > ASCENT:
+            glyph.transform(psMat.translate(0, ASCENT - top))
     return glyph
 
 def modify_nerd(_g):
@@ -324,21 +331,21 @@ class Cica:
             self.font_jp.os2_stylemap = 33
         self.font_jp.os2_vendor = 'TMNM'
         self.font_jp.os2_version = 1
-        self.font_jp.os2_winascent = ASCENT
+        self.font_jp.os2_winascent = WIN_ASCENT
         self.font_jp.os2_winascent_add = False
-        self.font_jp.os2_windescent = DESCENT
+        self.font_jp.os2_windescent = WIN_DESCENT
         self.font_jp.os2_windescent_add = False
 
-        self.font_jp.os2_typoascent = -150
-        self.font_jp.os2_typoascent_add = True
-        self.font_jp.os2_typodescent = 100
-        self.font_jp.os2_typodescent_add = True
-        self.font_jp.os2_typolinegap = 0
+        self.font_jp.os2_typoascent = TYPO_ASCENT
+        self.font_jp.os2_typoascent_add = False
+        self.font_jp.os2_typodescent = TYPO_DESCENT
+        self.font_jp.os2_typodescent_add = False
+        self.font_jp.os2_typolinegap = TYPO_LINEGAP
 
-        self.font_jp.hhea_ascent = -150
-        self.font_jp.hhea_ascent_add = True
-        self.font_jp.hhea_descent = 100
-        self.font_jp.hhea_descent_add = True
+        self.font_jp.hhea_ascent = HHEA_ASCENT
+        self.font_jp.hhea_ascent_add = False
+        self.font_jp.hhea_descent = HHEA_DESCENT
+        self.font_jp.hhea_descent_add = False
         self.font_jp.hhea_linegap = 0
         self.font_jp.os2_panose = (2, 11, int(weight / 100), 9, 2, 2, 3, 2, 2, 7)
 
