@@ -18,14 +18,14 @@ WIN_ASCENT = 820
 WIN_DESCENT = 204
 TYPO_ASCENT = 670
 TYPO_DESCENT = -104
-TYPO_LINEGAP = 80
+TYPO_LINEGAP = 0
 HHEA_ASCENT = 855
 HHEA_DESCENT = -169
 SOURCE = './source'
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '5.0.2'
-FAMILY = 'CicaTest'
+VERSION = '6.0.0-beta'
+FAMILY = 'Cica'
 AMBI = 0
 SINGLE = 1
 DOUBLE = 2
@@ -257,14 +257,14 @@ parser.add_argument(
     "--ambiguous-width",
     type=int,
     default=int(os.environ.get("CICA_AMBIGUOUS_WIDTH", "0")),
-    help="曖昧幅文字幅を single(0) か wide(1) か選べます (デフォルト: 0)",
+    help="曖昧幅文字幅を single(0) か double(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-e",
     "--ellipsis",
     type=int,
     default=int(os.environ.get("CICA_ELLIPSIS", "0")),
-    help="三点リーダー類を single(0) か wide(1) か選べます (デフォルト: 0)",
+    help="三点リーダー類の幅を single(0) か double(1) か選べます (デフォルト: 0)",
 )
 parser.add_argument(
     "-i",
@@ -359,8 +359,6 @@ class Cica:
             dejavu = fontforge.open('./source/DejaVuSansMono-Bold.ttf')
 
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
             g.width = 512
 
@@ -368,8 +366,6 @@ class Cica:
 
         # 0x0300 - 0x036f - Combining Diacritical Marks
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x0300 or g.encoding > 0x036f or g.encoding == 0x0398:
                 continue
             else:
@@ -419,8 +415,6 @@ class Cica:
                 self.font_jp.paste()
         # 0x0370 - 0x03ff - GREEK
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x0370 or g.encoding > 0x03ff or g.encoding == 0x0398:
                 continue
             else:
@@ -433,8 +427,6 @@ class Cica:
                     self.font_jp.paste()
         # 0x2100 - 0x214f Letterlike Symbols
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x2100 or g.encoding > 0x214f or g.encoding == 0x2122:
                 continue
             else:
@@ -445,8 +437,6 @@ class Cica:
                     self.font_jp.paste()
         # 0x2150 - 0x218f Number Forms
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x2150 or g.encoding > 0x218f:
                 continue
             else:
@@ -457,8 +447,6 @@ class Cica:
                     self.font_jp.paste()
         # 0x2190 - 0x21ff Arrows
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x2190 or g.encoding > 0x21ff:
                 continue
             else:
@@ -469,8 +457,6 @@ class Cica:
                     self.font_jp.paste()
         # 0x2200 - 0x22ff Mathematical Operators
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x2200 or g.encoding > 0x22ff:
                 continue
             else:
@@ -481,8 +467,6 @@ class Cica:
                     self.font_jp.paste()
         # 0x2300 - 0x23ff Miscellaneous Technical
         for g in dejavu.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.encoding < 0x2300 or g.encoding > 0x23ff:
                 continue
             else:
@@ -928,6 +912,26 @@ class Cica:
         if args.modified_m == 0:
             self.modify_m(self.weight_name)
 
+        log('transform font_jp')
+        for g in self.font_jp.glyphs():
+            g.transform((0.91,0,0,0.91,0,0))
+            full_half_threshold = 700
+            if self.italic:
+                g.transform(psMat.skew(0.25))
+                skew_amount = g.font.ascent * 0.91 * 0.25
+                g.width = g.width + skew_amount
+                full_half_threshold += skew_amount
+            if g.width > full_half_threshold:
+                width = 1024
+            else:
+                width = 512
+            g.transform(psMat.translate((width - g.width)/2, 0))
+            g.width = width
+            if g.encoding in ignoring_center:
+                pass
+            else:
+                align_to_center(g)
+
         # 0x2715 -> 0xd7 : 乗算記号
         self.font_jp.selection.select(0x2715)
         self.font_jp.copy()
@@ -954,8 +958,6 @@ class Cica:
 
         log('modify border glyphs')
         for g in self.font_en.glyphs():
-            if self.wp.width(g.encoding) == AMBI:
-                continue
             if g.isWorthOutputting:
                 if self.italic:
                     g.transform(psMat.skew(0.25))
