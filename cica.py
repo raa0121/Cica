@@ -12,7 +12,7 @@ from datetime import datetime
 # DESCENT = 174
 ASCENT = 820
 DESCENT = 204
-SOURCE = './sourceFonts'
+SOURCE = os.getenv('CICA_SOURCE_FONTS_PATH', './sourceFonts')
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
 VERSION = '5.0.1'
@@ -91,12 +91,12 @@ def remove_glyph_from_hack(_font):
 def check_files():
     err = 0
     for f in fonts:
-        if not os.path.isfile('./sourceFonts/%s' % f.get('hack')):
-            logger.error('%s not exists.' % f)
+        if not os.path.isfile(os.path.join(SOURCE, f.get('hack'))):
+            log('%s not exists.' % f)
             err = 1
 
-        if not os.path.isfile('./sourceFonts/%s' % f.get('mgen_plus')):
-            logger.error('%s not exists.' % f)
+        if not os.path.isfile(os.path.join(SOURCE, f.get('mgen_plus'))):
+            log('%s not exists.' % f)
             err = 1
 
 
@@ -168,9 +168,9 @@ def add_dejavu(_f, conf):
     dejavu = None
     weight_name = conf.get('weight_name')
     if weight_name == "Regular":
-        dejavu = fontforge.open('./sourceFonts/DejaVuSansMono.ttf')
+        dejavu = fontforge.open(os.path.join(SOURCE, 'DejaVuSansMono.ttf'))
     elif weight_name == "Bold":
-        dejavu = fontforge.open('./sourceFonts/DejaVuSansMono-Bold.ttf')
+        dejavu = fontforge.open(os.path.join(SOURCE, 'DejaVuSansMono-Bold.ttf'))
 
     for g in dejavu.glyphs():
         g.transform(psMat.compose(psMat.scale(0.45, 0.45), psMat.translate(-21, 0)))
@@ -459,10 +459,10 @@ def modify_WM(_f):
     return _f
 
 def modify_m(_f, _weight):
-    m = fontforge.open('./sourceFonts/m-Regular.sfd')
+    m = fontforge.open(os.path.join(SOURCE, 'm-Regular.sfd'))
     if _weight == 'Bold':
         m.close()
-        m = fontforge.open('./sourceFonts/m-Bold.sfd')
+        m = fontforge.open(os.path.join(SOURCE, 'm-Bold.sfd'))
     m.selection.select(0x6d)
     m.copy()
     _f.selection.select(0x6d)
@@ -523,10 +523,10 @@ def fix_box_drawings(_f):
     return _f
 
 def reiwa(_f, _weight):
-    reiwa = fontforge.open('./sourceFonts/reiwa.sfd')
+    reiwa = fontforge.open(os.path.join(SOURCE, 'reiwa.sfd'))
     if _weight == 'Bold':
         reiwa.close()
-        reiwa = fontforge.open('./sourceFonts/reiwa-Bold.sfd')
+        reiwa = fontforge.open(os.path.join(SOURCE, 'reiwa-Bold.sfd'))
     for g in reiwa.glyphs():
         if g.isWorthOutputting:
             reiwa.selection.select(0x00)
@@ -562,7 +562,7 @@ def fix_overflow(glyph):
 def import_svg(font):
     """オリジナルのsvgグリフをインポートする
     """
-    files = glob.glob('sourceFonts/svg/*.svg')
+    files = glob.glob(os.path.join(SOURCE, 'svg/*.svg'))
     for f in files:
         filename, _ = os.path.splitext(os.path.basename(f))
         g = font.createChar(int(filename, 16))
@@ -576,12 +576,12 @@ def import_svg(font):
 
 
 def build_font(_f, emoji):
-    hack = fontforge.open('./sourceFonts/%s' % _f.get('hack'))
+    hack = fontforge.open(os.path.join(SOURCE, _f.get('hack')))
     log('remove_glyph_from_hack()')
     hack = remove_glyph_from_hack(hack)
-    cica = fontforge.open('./sourceFonts/%s' % _f.get('mgen_plus'))
-    nerd = fontforge.open('./sourceFonts/nerd.sfd')
-    icons_for_devs = fontforge.open('./sourceFonts/iconsfordevs.ttf')
+    cica = fontforge.open(os.path.join(SOURCE, _f.get('mgen_plus')))
+    nerd = fontforge.open(os.path.join(SOURCE, 'nerd.sfd'))
+    icons_for_devs = fontforge.open(os.path.join(SOURCE, 'iconsfordevs.ttf'))
 
 
     log('transform Hack')
@@ -754,7 +754,7 @@ def build_font(_f, emoji):
 
 
 def add_notoemoji(_f):
-    notoemoji = fontforge.open('./sourceFonts/NotoEmoji-Regular.ttf')
+    notoemoji = fontforge.open(os.path.join(SOURCE, 'NotoEmoji-Regular.ttf'))
     for g in notoemoji.glyphs():
         if g.isWorthOutputting and g.encoding > 0x04f9:
             g.transform((0.42,0,0,0.42,0,0))
@@ -767,7 +767,7 @@ def add_notoemoji(_f):
     return _f
 
 def add_gopher(_f):
-    gopher = fontforge.open('./sourceFonts/gopher.sfd')
+    gopher = fontforge.open(os.path.join(SOURCE, 'gopher.sfd'))
     for g in gopher.glyphs():
         if g.isWorthOutputting:
             gopher.selection.select(0x40)
