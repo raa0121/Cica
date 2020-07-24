@@ -15,7 +15,7 @@ DESCENT = 204
 SOURCE = os.getenv('CICA_SOURCE_FONTS_PATH', './sourceFonts')
 LICENSE = open('./LICENSE.txt').read()
 COPYRIGHT = open('./COPYRIGHT.txt').read()
-VERSION = '5.0.1'
+VERSION = '5.0.2'
 FAMILY = 'Cica'
 
 fonts = [
@@ -853,9 +853,7 @@ def resize_supersub(_f):
     subscripts = [
             {"src": 0x0069, "dest": 0x1d62}, {"src": 0x0072, "dest": 0x1d63},
             {"src": 0x0075, "dest": 0x1d64}, {"src": 0x0076, "dest": 0x1d65},
-            {"src": 0x03b2, "dest": 0x1d66}, {"src": 0x03b3, "dest": 0x1d67},
-            {"src": 0x03c1, "dest": 0x1d68}, {"src": 0x03c6, "dest": 0x1d69},
-            {"src": 0x03c7, "dest": 0x1d6a}, {"src": 0x006a, "dest": 0x2c7c},
+            {"src": 0x006a, "dest": 0x2c7c},
             {"src": 0x0030, "dest": 0x2080}, {"src": 0x0031, "dest": 0x2081},
             {"src": 0x0032, "dest": 0x2082}, {"src": 0x0033, "dest": 0x2083},
             {"src": 0x0034, "dest": 0x2084}, {"src": 0x0035, "dest": 0x2085},
