@@ -92,11 +92,11 @@ def check_files():
     err = 0
     for f in fonts:
         if not os.path.isfile('./sourceFonts/%s' % f.get('hack')):
-            logger.error('%s not exists.' % f)
+            log('%s not exists.' % f)
             err = 1
 
         if not os.path.isfile('./sourceFonts/%s' % f.get('mgen_plus')):
-            logger.error('%s not exists.' % f)
+            log('%s not exists.' % f)
             err = 1
 
 
