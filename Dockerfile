@@ -1,5 +1,4 @@
 FROM ubuntu:18.04
-MAINTAINER miiton <468745+miiton@users.noreply.github.com>
 
 ENV HACK_VERSION v3.003
 ENV MGENPLUS_VERSION 20150602
