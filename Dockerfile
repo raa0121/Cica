@@ -5,6 +5,7 @@ ENV MGENPLUS_VERSION 20150602
 ENV NOTO_EMOJI_VERSION master
 ENV DEJAVU_VERSION 2.37
 ENV ICONSFORDEVS_VERSION master
+ENV CICA_SOURCE_FONTS_PATH /work/sourceFonts
 
 RUN apt-get update && \
     DEBIAN_FRONTEND=noninteractive apt-get -y install \
